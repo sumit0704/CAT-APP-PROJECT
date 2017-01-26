@@ -9,7 +9,7 @@
 </head>
 <body>
 Cat-App Cover Page<br></br>
-<a href="Admin">Admin page</a><br></br>
+<a href="Adminpage">Admin page</a><br></br>
 <a href="UserHome">User Home Page</a><br></br>
 <a href="NewUser">New User Request page</a><br></br>
 <a href="Upload">File upload page</a><br></br>
