@@ -32,7 +32,8 @@ public class UserHomeServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.println("User Home Page<br> From UserHomeServlet.java: Hello Java!");
 		
-		// request.getRequestDispatcher("/Admin2.jsp").forward(request, response);
+		getServletContext().getRequestDispatcher("/WEB-INF/UserHome.jsp").forward(request, response);
+		// This line is go to "/WEB-INF/UserHome.jsp" with all the parameters.
 		
 	}
 

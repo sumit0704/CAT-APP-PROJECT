@@ -32,7 +32,8 @@ public class NewUserServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.println("New User Application Page<br> From NewUserServlet.java: Hello Java!");
 		
-		// request.getRequestDispatcher("/Admin2.jsp").forward(request, response);
+		getServletContext().getRequestDispatcher("/WEB-INF/NewUser.jsp").forward(request, response);
+		// This line is go to "/WEB-INF/Adminpage.jsp" with all the parameters.
 		
 	}
 

@@ -32,7 +32,8 @@ public class UploadServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.println("View and Download Page<br> From ViewDownloadServlet.java: Hello Java!");
 		
-		// request.getRequestDispatcher("/Admin2.jsp").forward(request, response);
+		getServletContext().getRequestDispatcher("/WEB-INF/Upload.jsp").forward(request, response);
+		// This line is go to "/WEB-INF/Adminpage.jsp" with all the parameters.
 		
 	}
 

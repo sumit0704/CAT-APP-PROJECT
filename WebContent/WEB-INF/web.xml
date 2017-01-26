@@ -8,6 +8,9 @@
   <servlet-class>com.catapp.servlet.AdminServlet</servlet-class>
  </servlet>
  
+ 
+ 
+ 
  <servlet>
   <display-name>NewUserServlet</display-name>
   <servlet-name>NewUserServlet</servlet-name>
@@ -38,8 +41,13 @@
 
  <servlet-mapping>
   <servlet-name>AdminServlet</servlet-name>
-  <url-pattern>/Adminpage</url-pattern>
+  <url-pattern>/Admin</url-pattern>
  </servlet-mapping>
+ 
+ 
+ 
+ 
+ 
  
 <servlet-mapping>
   <servlet-name>NewUserServlet</servlet-name>
@@ -64,6 +72,6 @@
  
  
  <welcome-file-list>
-  <welcome-file>/WEB-INF/Cover.jsp</welcome-file>
+  <welcome-file>\WEB-INF\Cover.jsp</welcome-file>
  </welcome-file-list>
 </web-app>

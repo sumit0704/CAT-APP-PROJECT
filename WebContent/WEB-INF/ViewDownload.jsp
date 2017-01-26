@@ -8,11 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-Cat-App Cover Page<br></br>
-<a href="Admin">Admin page</a><br></br>
-<a href="UserHome">User Home Page</a><br></br>
-<a href="NewUser">New User Request page</a><br></br>
-<a href="Upload">File upload page</a><br></br>
-<a href="ViewDownload">File view and download page</a><br></br>
+View and Download Files<br></br>
+Here is ViewDownload.jsp
 </body>
 </html>

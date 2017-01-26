@@ -31,11 +31,16 @@ public class AdminServlet extends HttpServlet {
 		
 		//PrintWriter out = response.getWriter();
 		//out.println("Administration Page<br> From AdminServlet.java: Hello Java!");
-		
-		request.getRequestDispatcher("/WEB-INF/Adminpage.jsp").forward(request, response);
+
+		getServletContext().getRequestDispatcher("/WEB-INF/Admin.jsp").forward(request, response);
+		// This line is go to "/WEB-INF/Adminpage.jsp" with all the parameters.
 		
 	}
 
+	
+	
+	
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
