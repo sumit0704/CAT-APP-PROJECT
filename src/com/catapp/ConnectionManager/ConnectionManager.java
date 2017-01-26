@@ -15,6 +15,7 @@ public class ConnectionManager {
     public static Connection getConnection() {
         try {
             Class.forName(driverName);
+            
             try {
                 con = DriverManager.getConnection(urlstring, username, password);
             } catch (SQLException ex) {
