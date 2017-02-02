@@ -1,5 +1,5 @@
 
-package com.catapp.ConnectionManager;
+package com.catapp.connection;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.LogManager;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.catapp.Interfaces.IBaseEntity;
@@ -145,7 +145,7 @@ public abstract class BaseEntity implements IBaseEntity
 				try
 				{
 				rowStateFound = false;
-				lPreparedStatement = prepareInsertStatement(pConnection,lHostelRequested);
+				lPreparedStatement = prepareInsertStatement(pConnection);
 				setParentEntityId(0L);
 				setDataCenterId(getDcnId());
 				
@@ -235,7 +235,7 @@ public abstract class BaseEntity implements IBaseEntity
      * @return
      * @
      */
-    public PreparedStatement getSavePreparedStatement(Connection pConnection, PreparedStatement pPreparedStatement, IUser pUser)
+    public PreparedStatement getSavePreparedStatement(Connection pConnection, PreparedStatement pPreparedStatement,IUser pUser)
     
     {
     try
@@ -250,18 +250,17 @@ public abstract class BaseEntity implements IBaseEntity
         else
         {
             rowStateFound = true;
-            organizationOwnsRecord(pConnection, pUser);
             fillAuditColumns(pUser);
             this.setRowstate(new Long(this.getRowstate().longValue() + 1));
             this.setInsertValues(pPreparedStatement);
             this.setUpdateValues(pPreparedStatement);
         }
-        return pPreparedStatement;
+       
     }catch(Exception e){
     	
     }
     
-   
+    return pPreparedStatement;
     }
 
 	// TODO - Change the concept of datacenter column
@@ -435,12 +434,12 @@ public abstract class BaseEntity implements IBaseEntity
 		}
 		catch (SQLException pException1)
 		{
-			logger.error("Error in Method --> setRowstate", pException1);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException1);
 			
 		}
 		catch (Exception pException2)
 		{
-			logger.error("Error in Method --> setRowstate", pException2);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException2);
 		}
 		return lPreparedStatement;
 	}
@@ -459,12 +458,12 @@ public abstract class BaseEntity implements IBaseEntity
 	
 		catch (SQLException pException1)
 		{
-			logger.error("Error in Method --> setRowstate", pException1);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException1);
 			
 		}
 		catch (Exception pException2)
 		{
-			logger.error("Error in Method --> setRowstate", pException2);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException2);
 		}
 		return lPreparedStatement;
 	}
@@ -475,19 +474,19 @@ public abstract class BaseEntity implements IBaseEntity
 		// returned from here
 		// and will be closed in
 		// calling method
-		logger.info(pIncrementFlag);
+		logger.info(pIncrementFlag+"");
 		try
 		{
 			lPreparedStatement = pConnection.prepareStatement(pSQLStatement,Statement.RETURN_GENERATED_KEYS);
 		}
 		catch (SQLException pException1)
 		{
-			logger.error("Error in Method --> setRowstate", pException1);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException1);
 			
 		}
 		catch (Exception pException2)
 		{
-			logger.error("Error in Method --> setRowstate", pException2);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException2);
 		}
 		return lPreparedStatement;
 	}
@@ -504,60 +503,10 @@ public abstract class BaseEntity implements IBaseEntity
 	 */
 	public void delete(Connection pConnection, IUser pUser) 
 	{
-		delete(pConnection, pUser, pUser.getOrganizationId());
+		delete(pConnection, pUser);
 	}
 
-	/**
-	 * This method deletes the record corresponding to the entity from the
-	 * database.
-	 * 
-	 * @param pConnection -
-	 *            The Object of the Connection of Type java.sql.Connection
-	 * @param pUser -
-	 *            This is the logged in User.
-	 * @param pOrganizationId -
-	 *            This is the Organization that owns the Record. This parameter
-	 *            is to be passed in scenarios where no User is logged in but
-	 *            the Organization is known.
-	 * @,
-	 *             AccessRightsException, ExecutionException
-	 */
-	public void delete(Connection pConnection, IUser pUser, Long pOrganizationId) 
-	{
-		PreparedStatement lPreparedStatement = null;
-		try
-		{
-			lPreparedStatement = prepareDeleteStatement(pConnection);
-			setDeleteKeyValues(lPreparedStatement);
-			lPreparedStatement.execute();
-		}
-		catch (SQLException pException1)
-		{
-			logger.error("Error in Method --> setRowstate", pException1);
-			
-		}
-		catch (DatabaseException pException2)
-		{
-			logger.error("Error in Method --> setRowstate", pException2);
-		}
-		catch (Exception pException3)
-		{
-			logger.error("Error in Method --> setRowstate", pException3);
-		}
-		finally
-		{
-			// CloseResources.close(lPreparedStatement, this);
-			try
-			{
-				if (lPreparedStatement != null)
-					lPreparedStatement.close();
-			}
-			catch (Exception pException4)
-			{
-				logger.error("delete : Disconnect Failed", pException4);
-			}
-		}
-	}
+
 
 	/**
 	 * This method is used to logically delete the record. The rowstate of the
@@ -572,7 +521,7 @@ public abstract class BaseEntity implements IBaseEntity
 	 */
 	public void logicalDelete(Connection pConnection, IUser pUser) 
 	{
-		logicalDelete(pConnection, pUser, pUser.getOrganizationId());
+		logicalDelete(pConnection, pUser);
 	}
 
 	/**
@@ -607,16 +556,12 @@ public abstract class BaseEntity implements IBaseEntity
 		}
 		catch (SQLException pException1)
 		{
-			logger.error("Error in Method --> setRowstate", pException1);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException1);
 			
-		}
-		catch (DatabaseException pException2)
-		{
-			logger.error("Error in Method --> setRowstate", pException2);
 		}
 		catch (Exception pException3)
 		{
-			logger.error("Error in Method --> setRowstate", pException3);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException3);
 		}
 		finally
 		{
@@ -628,7 +573,7 @@ public abstract class BaseEntity implements IBaseEntity
 			}
 			catch (Exception pException4)
 			{
-				logger.error("logicalDelete : Disconnect Failed", pException4);
+				logger.log(Level.INFO,"logicalDelete : Disconnect Failed", pException4);
 			}
 		}
 	}
@@ -646,7 +591,7 @@ public abstract class BaseEntity implements IBaseEntity
 		this.setPrimaryKeyValues(pPreparedStatement);
 	}
 
-	public void find(Connection pConnection, String[] pColumns, IUser pUser) 
+	public void find(Connection pConnection, User pUser) 
 	{
 		String lSQLStatement = "";
 		String lWhereClause;
@@ -659,10 +604,10 @@ public abstract class BaseEntity implements IBaseEntity
 		try
 		{
 			lEntities.add(this.getClass().newInstance());
-			lWhereClause = this.getPrimaryKeyPreparedWhere(); /* new */
-			lSQLStatement = lQueryEngine.buildFindQuery(pConnection, lEntities, pTableAliases, pColumns, lWhereClause, null, pUser);
-			lPreparedStatement = pConnection.prepareStatement(lSQLStatement); /* new */
-			setPrimaryKeyValues(lPreparedStatement); /* new */
+			lWhereClause = this.getPrimaryKeyPreparedWhere(); 
+			lSQLStatement = lQueryEngine.buildFindQuery(pConnection, lEntities, pTableAliases, lWhereClause, pUser);
+			lPreparedStatement = pConnection.prepareStatement(lSQLStatement);
+			setPrimaryKeyValues(lPreparedStatement);
 			lResultSet = lPreparedStatement.executeQuery();
 			if (lResultSet.next())
 			{
@@ -670,29 +615,21 @@ public abstract class BaseEntity implements IBaseEntity
 			}
 			else
 			{
-				throw new DatabaseException("Record Not Found!!!");
+				
 			}
 			if (lResultSet.next())
 			{
-				throw new DatabaseException("Too many Records Found!!!");
+				
 			}
 		}
 		catch (SQLException pException1)
 		{
-			logger.error("Error in Method --> setRowstate", pException1);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException1);
 			
-		}
-		catch (DatabaseException pException2)
-		{
-			logger.error("Error in Method --> setRowstate", pException2);
-		}
-		catch (ExecutionException pException3)
-		{
-			logger.error("Error in Method --> setRowstate", pException3);
-		}
+		} 
 		catch (Exception pException4)
 		{
-			logger.error("Error in Method --> setRowstate", pException4);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException4);
 		}
 		finally
 		{
@@ -705,7 +642,7 @@ public abstract class BaseEntity implements IBaseEntity
 			}
 			catch (Exception pException5)
 			{
-				logger.error("Error in Method --> setRowstate", pException5);
+				logger.log(Level.INFO,"Error in Method --> setRowstate", pException5);
 			}
 			try
 			{
@@ -716,64 +653,18 @@ public abstract class BaseEntity implements IBaseEntity
 			}
 			catch (SQLException pException6)
 			{
-				logger.error("Error in Method --> setRowstate", pException6);
-				LogManager.log(this, LogManager.LOG_LEVEL_WARN, "Error closing Statement", pException6);
+				logger.log(Level.INFO,"Error in Method --> setRowstate", pException6);
+				
 			}
 			catch (Exception pException7)
 			{
-				logger.error("Error in Method --> setRowstate", pException7);
+				logger.log(Level.INFO,"Error in Method --> setRowstate", pException7);
 			}
 		}
 	}
 
-	public void find(Connection pConnection, String[] pColumns,String lWhereClause, User pUser) {
-		String lSQLStatement = "";
-		//String lWhereClause;
-		ArrayList<IBaseEntity> lEntities;
-		String[] pTableAliases = { "A" };
-		PreparedStatement lPreparedStatement = null;
-		QueryEngine lQueryEngine = new QueryEngine();
-		ResultSet lResultSet = null;
-		lEntities = new ArrayList<IBaseEntity>();
-		try{
-			lEntities.add(this.getClass().newInstance());
-			//lWhereClause = this.getPrimaryKeyPreparedWhere(); /* new */
-			lSQLStatement = lQueryEngine.buildFindQuery(pConnection, lEntities, pTableAliases, pColumns, lWhereClause, null, pUser);
-			lPreparedStatement = pConnection.prepareStatement(lSQLStatement); /* new */
-			//setPrimaryKeyValues(lPreparedStatement); /* new */
-			lResultSet = lPreparedStatement.executeQuery();
-			if (lResultSet.next()){
-				this.fill(lResultSet, pTableAliases[0]);
-			}
-			
-			if (lResultSet.next()){
-				throw new DatabaseException("Too many Records Found!!!");
-			}
-			
-		}
-		catch (SQLException pException1){
-			logger.error("Error in Method --> setRowstate", pException1);
-			
-		}catch (DatabaseException pException2){
-			logger.error("Error in Method --> setRowstate", pException2);
-		}catch (ExecutionException pException3){
-			logger.error("Error in Method --> setRowstate", pException3);
-		}catch (Exception pException4){
-			logger.error("Error in Method --> setRowstate", pException4);
-		}finally{
-			try{
-				if (lResultSet != null){
-					lResultSet.close();
-				}
-				if (lPreparedStatement != null)
-				{
-					lPreparedStatement.close();
-				}
-			}catch (Exception pException5){
-				logger.error("Error in Method --> setRowstate", pException5);
-			}
-		}
-	}
+	
+
 	
 	public String[] getCompareFields()
 	{
@@ -941,15 +832,15 @@ public abstract class BaseEntity implements IBaseEntity
 		}
 		catch (SecurityException pException1)
 		{
-			logger.error("Error in Method --> setRowstate", pException1);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException1);
 		}
 		catch (NoSuchMethodException pException2)
 		{
-			logger.error("Error in Method --> setRowstate", pException2);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException2);
 		}
 		catch (Exception pException3)
 		{
-			logger.error("Error in Method --> setRowstate", pException3);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException3);
 		}
 		return lReturnCompareValue;
 	}
@@ -961,7 +852,7 @@ public abstract class BaseEntity implements IBaseEntity
 
 	public String getPrimaryKeyPreparedWhere()
 	{
-		return f_entityId + " = ?" + " AND " + f_dataCenterId + " = ?";
+		return f_entityId + " = ?";
 	}
 
 	public String getPrimaryKey()
@@ -974,16 +865,15 @@ public abstract class BaseEntity implements IBaseEntity
 		try
 		{
 			pPreparedStatement.setLong(1, getEntityId());
-			pPreparedStatement.setLong(2, getDataCenterId());
 		}
 		catch (SQLException pException1)
 		{
-			logger.error("Error in Method --> setRowstate", pException1);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException1);
 			
 		}
 		catch (Exception pException2)
 		{
-			logger.error("Error in Method --> setRowstate", pException2);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException2);
 		}
 	}
 
@@ -999,12 +889,12 @@ public abstract class BaseEntity implements IBaseEntity
 		}
 		catch (SQLException pException1)
 		{
-			logger.error("Error in Method --> setRowstate", pException1);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException1);
 			
 		}
 		catch (Exception pException2)
 		{
-			logger.error("Error in Method --> setRowstate", pException2);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException2);
 		}
 	}
 
@@ -1030,26 +920,23 @@ public abstract class BaseEntity implements IBaseEntity
 				lRowState = lResultSet.getLong(1);
 				if (this.getRowstate().longValue() != lRowState)
 				{
-					throw new DatabaseException(Applications.getInstance().getMessage(Applications.MSG_DATA_CHANGED_ERROR));
+					//throw new DatabaseException(Applications.getInstance().getMessage(Applications.MSG_DATA_CHANGED_ERROR));
 				}
 			}
 			else
 			{
-				throw new DatabaseException(Applications.getInstance().getMessage(Applications.MSG_DATA_NOT_FOUND_ERROR));
+				//throw new DatabaseException(Applications.getInstance().getMessage(Applications.MSG_DATA_NOT_FOUND_ERROR));
 			}
 		}
 		catch (SQLException pException1)
 		{
-			logger.error("Error in Method --> setRowstate", pException1);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException1);
 			
 		}
-		catch (DatabaseException pException2)
-		{
-			logger.error("Error in Method --> setRowstate", pException2);
-		}
+		
 		catch (Exception pException3)
 		{
-			logger.error("Error in Method --> setRowstate", pException3);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException3);
 		}
 		finally
 		{
@@ -1064,7 +951,7 @@ public abstract class BaseEntity implements IBaseEntity
 			}
 			catch (Exception pException4)
 			{
-				logger.error("organizationOwnsRecord : Disconnect Failed", pException4);
+				logger.log(Level.INFO,"organizationOwnsRecord : Disconnect Failed", pException4);
 			}
 		}
 	}
@@ -1118,11 +1005,11 @@ public abstract class BaseEntity implements IBaseEntity
 		}
 		catch (IOException pException1)
 		{
-			logger.error("Error in Method --> setRowstate", pException1);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException1);
 		}
 		catch (Exception pException2)
 		{
-			logger.error("Error in Method --> setRowstate", pException2);
+			logger.log(Level.INFO,"Error in Method --> setRowstate", pException2);
 		}
 		finally
 		{
@@ -1131,7 +1018,7 @@ public abstract class BaseEntity implements IBaseEntity
 				oFileInputStream.close();
 			}
 			catch(IOException pException4){
-				logger.error("Error in Method --> ", pException4);
+				logger.log(Level.INFO,"Error in Method --> ", pException4);
 			}
 		}
 		return Long.parseLong(lDcnId);

@@ -388,5 +388,5 @@ public interface IBaseEntity extends Comparable<IBaseEntity>
 	 * @throws 
 	 * @throws 
 	 */
-	void organizationOwnsRecord(Connection pConnection, IUser pUser) ;
+//	void organizationOwnsRecord(Connection pConnection, IUser pUser) ;
 }
