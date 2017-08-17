@@ -1,0 +1,114 @@
+.span12 {
+	border: none;
+	background-color: silver;
+	margin-left: 5 px;
+	padding-left: 15 px;
+	margin-right: 20px;
+}
+
+.spacer {
+	margin-top: 40px; /* define margin as you see fit */
+	width: 40
+}
+
+.scrollDiv {
+	max-height: 500px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: none;
+	border-radius: 0px;
+	background-color: #aaa;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 0px;
+	-webkit-box-shadow: inset 1px 1px 6px #333;
+	background-color: #666;
+}
+
+.dropbtn {
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
+
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+.dropdown-content a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+}
+
+.dropdown-content a:hover {
+	background-color: #f1f1f1
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.dropdown:hover .dropbtn {
+	background-color: #3e8e41;
+}
+
+.easyPaginateNav a {
+	padding: 5px;
+}
+
+.easyPaginateNav a.current {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.vr-all {
+	padding: 0px;
+	border-right: 1px solid #CC0000;
+}
+
+.vr-xs {
+	padding: 0px;
+}
+
+.vr-md {
+	padding: 0px;
+}
+
+.hrspacing {
+	padding: 0px;
+}
+
+.hrcolor {
+	border-color: #CC0000;
+	border-style: solid;
+	border-bottom: 1px;
+	margin: 0px;
+	padding: 0px;
+}
+/* remove right vertical rule on small */
+@media ( min-width :992px) {
+	.vr-xs {
+		border-right: 1px solid #CC0000;
+	}
+}
