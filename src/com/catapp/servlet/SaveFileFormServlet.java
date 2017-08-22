@@ -74,6 +74,7 @@ public class SaveFileFormServlet extends HttpServlet {
 		String lFileName  = "";
 		String lUploadPath = "";
 		String lFileSaveParamter =  "";
+		String lPhenotype ="";
 		Connection lConn  = null;
 		User lUser =(User)request.getSession().getAttribute("user");
 		File lFiletoDelete =null;
@@ -101,6 +102,10 @@ public class SaveFileFormServlet extends HttpServlet {
 						}
 						else if(item.getFieldName().equals("fileRadio")){
 							lFileSaveParamter=item.getString();
+							
+						}
+						else if(item.getFieldName().equals("phenotypes")){
+							lPhenotype=item.getString();
 							
 						}
 						/*else if(item.getFieldName().equals("processed")){
@@ -134,7 +139,7 @@ public class SaveFileFormServlet extends HttpServlet {
 			//lFileSaveParamter="Y";
 			if(lFileSaveParamter!=null && lFileSaveParamter.equals("processed")){
 				
-				new SaveExceltoDB().saveExcelDataToDb(lCellLine,lAssay,lTimePoint,lFiletoDelete, lConn);
+				new SaveExceltoDB().saveExcelDataToDb(lCellLine,lAssay,lTimePoint,lPhenotype,lFiletoDelete, lConn);
 				
 			}else{
 				String Path_for_SQL = "C:\\Users\\ssingh\\serverfiles\\" + lCellLine;	

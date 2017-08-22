@@ -99,6 +99,7 @@
 								document.getElementById('step4').style.display = "none";
 								document.getElementById('step5').style.display = "none";
 								document.getElementById('step6').style.display = "none";
+								jQuery("#phenotypes").hide();
 								document.getElementById('desc').innerHTML = "Description:";
 
 								var element = document
@@ -113,8 +114,9 @@
 								jQuery("#step5").hide();
 								//document.getElementById('step5').style.display = "none";
 								document.getElementById('step6').style.display = "none";
-								document.getElementById('desc').innerHTML = "Phenotype:";
-
+								document.getElementById('desc').innerHTML = " Please select a phenotype:";
+								jQuery("#ta").hide();
+								jQuery("#phenotypes").show();
 								var element = document
 										.getElementById('cellline');
 								element.value = "CM";
@@ -205,10 +207,10 @@
 												<option value="CM">1. iCell® Cardiomyocytes</option>
 												<option value="HEP">2. iCell® Hepatocytes 2.0</option>
 												<option value="ENDO">3. iCell Endothelial Cells</option>
-												<option value="HUV">4. Human Umbilical Vein
+												<option value="HUVEC">4. Human Umbilical Vein
 													Endothelial Cells</option>
 												<option value="Neur">5. iCell Neurons</option>
-												<option value="Macro">6. iCell Macrophages</option>
+												<option value="Macro ">6. iCell Macrophages</option>
 												<option value="A375">7. A-375 Skin Melanoma</option>
 												<option value="A549">8. A549 Lung Carcinoma</option>
 												<option value="HepG2">9. HepG2 Hepatocyte Carcinoma
@@ -407,7 +409,13 @@
 										<div id="step6" class="form-group" style="display: none;">
 											<div>
 												<label id="desc">Description:</label>
-												<textarea class="form-control" rows="3"></textarea>
+												<textarea id="ta" class="form-control" rows="3"></textarea>
+												<select
+													id='phenotypes' name ='phenotypes' onchange='selectphenotypes()'>
+													<option value='0'>---Select One---</option>
+													
+												</select> 
+												
 											</div>
 											<br></br>
 											<div>
@@ -425,6 +433,9 @@
 
 
 										</div>
+										
+										
+									
 					</form>
 				</div>
 			</div>

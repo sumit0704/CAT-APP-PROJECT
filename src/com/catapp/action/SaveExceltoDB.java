@@ -18,7 +18,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class SaveExceltoDB {
 	public static final Logger logger = Logger.getLogger(SaveExceltoDB.class.toString());
 	
-	public String saveExcelDataToDb (String pCellLine, String pAssay, String pTimePoint,File pFile,Connection pConnection){
+	public String saveExcelDataToDb (String pCellLine, String pAssay, String pTimePoint,String pPheno,File pFile,Connection pConnection){
 		String lReturnResponse	     =       "failure";
 		String lInsertQuery		     =       null;
 		PreparedStatement lPstmt     =       null;
@@ -42,8 +42,8 @@ public class SaveExceltoDB {
 			Long lheaderID=null;
 			lInsertQuery= "INSERT INTO processed_readings_header (cellline, assay,"
 					+ " timepoint,logged_date,logged_by,last_updated_date,"
-					+ " last_updated_by,is_active,rowstate) "
-		            + " VALUES(?,?,?,?,?,?,?,?,?)";
+					+ " last_updated_by,is_active,rowstate,phenotype) "
+		            + " VALUES(?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement lPstmttoClose=pConnection.prepareStatement(lInsertQuery,Statement.RETURN_GENERATED_KEYS);
 			lPstmttoClose.setString(1, pCellLine);
 			lPstmttoClose.setString(2, pAssay);
@@ -54,6 +54,7 @@ public class SaveExceltoDB {
 			lPstmttoClose.setNull(7, java.sql.Types.BIGINT);
 			lPstmttoClose.setString(8, "Y");
 			lPstmttoClose.setInt(9, 1);
+			lPstmttoClose.setString(10, pPheno);
 			lPstmttoClose.executeUpdate();
 			ResultSet lRs = lPstmttoClose.getGeneratedKeys();
 			if(lRs.next()){
