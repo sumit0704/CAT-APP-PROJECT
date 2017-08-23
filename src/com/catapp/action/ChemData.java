@@ -137,7 +137,8 @@ public class ChemData {
 			lPstmt =pConnection.prepareStatement(lBuilder);
 			lRst = lPstmt.executeQuery();
 			while(lRst.next()){
-				lChemicalMap.put(lRst.getString(1), lRst.getString(2));	
+				lChemicalMap.put(lRst.getString(1), lRst.getString(2));
+				System.out.print(true);
 			}
 			
 		}catch(Exception e){
