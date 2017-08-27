@@ -47,8 +47,8 @@
 
 
 		<p
-			style="font family: Open Sans, Arial, sans-serif; font-size: 30px; color: #FFF;">Category
-			Approaches and Read-across in Regulatory Programmes</p>
+			style="font family: Open Sans, Arial, sans-serif; font-size: 20px; color: #FFF;">Category
+			Approaches and Read-across in Regulatory Programmes (Cat-App)</p>
 	</div>
 	<!--
     <div class="address-bar" style="width: 100%;
@@ -93,9 +93,47 @@
 			<div class="box">
 
 				<div class="col-lg-8 col-lg-offset-2">
+				
+				
+				<div class="row">
+                <div class="col-lg-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Ivan Rusyn
+                        </div>
+                        <div class="panel-body">
+                            <h6>irusyn@tamu.edu</h6>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Hans Ketelslegers
+                        </div>
+                        <div class="panel-body">
+                            <h6 style="font:wrap;">hans.ketelslegers@concawe.org</h6>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Klaus Lenz
+                        </div>
+                        <div class="panel-body">
+                            <h6>K.Lenz@syn-com.com</h6>
+                        </div>
+                        
+                    </div>
+                </div>
+                </div>
+				
 					<!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
 					<!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-					<form name="sentMessage" id="contactForm" data-toggle="validator">
+					<!-- <form name="sentMessage" id="contactForm" data-toggle="validator">
 						<div class="row control-group">
 							<div
 								class="form-group col-xs-12 floating-label-form-group controls">
@@ -147,7 +185,7 @@
 							class="fa fa-angle-double-down animated"></i>
 						</a>
 
-					</form>
+					</form> -->
 				</div>
 			</div>
 

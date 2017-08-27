@@ -3,6 +3,7 @@ package com.catapp.servlet;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,10 +35,14 @@ public class CatAppDownloadPageServlet extends HttpServlet {
 		try{
 			
 			lConn= new DBConnection().getConnection();
-			HashMap<Long,String>lPhenoMap =  new ChemData().getNamesofInputs("phenotypes",lConn);
-			HashMap<Long,String>lAssayMap =  new ChemData().getNamesofInputs("assaynames",lConn);
-			HashMap<Long,String>lCellMap  =  new ChemData().getNamesofInputs("celllines",lConn);
+			HashMap <String,String>lChemicalMap=new ChemData().getChemicalNames(lConn);
+			LinkedHashMap <String,String>lPhenoMap =  new ChemData().getNamesofInputs("phenotypes",lConn);
+			LinkedHashMap <String,String>lAssayMap =  new ChemData().getNamesofInputs("assaynames",lConn);
+			LinkedHashMap <String,String>lCellMap  =  new ChemData().getNamesofInputs("celllines",lConn);
 			HashMap<Long,String>lTimMap   =  new ChemData().getTimePoints();
+			System.out.println("lPhenoMap"+lPhenoMap.size()+"lAssayMap::"+lAssayMap.size()+
+					"lCellMap::"+lCellMap.size()+"lTimMap::"+lTimMap.size());
+			request.setAttribute("chemicals", lChemicalMap);
 			request.setAttribute("pheno", lPhenoMap);
 			request.setAttribute("assay", lAssayMap);
 			request.setAttribute("cell", lCellMap);

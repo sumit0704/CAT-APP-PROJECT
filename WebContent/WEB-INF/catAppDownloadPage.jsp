@@ -50,6 +50,52 @@
 	-o-background-size: cover;
 }
 </style>
+<script type="text/javascript">
+	function displayDownloadForm() {
+		if (document.getElementById('asIsFiles').checked) {
+			//alert("Hello");
+			document.getElementById('downloadByAsIsFiles').style.display = "block";
+			document.getElementById('downloadByComp').style.display = "none";
+			document.getElementById('downloadByCellLine').style.display = "none";
+
+		} else if (document.getElementById('byComp').checked) {
+			//alert("Hii");
+			document.getElementById('downloadByAsIsFiles').style.display = "none";
+			document.getElementById('downloadByComp').style.display = "block";
+			document.getElementById('downloadByCellLine').style.display = "none";
+			
+			//reset
+
+
+		} else if (document.getElementById('byCell').checked) {
+			//alert("heyy");
+			document.getElementById('downloadByAsIsFiles').style.display = "none";
+			document.getElementById('downloadByComp').style.display = "none";
+			document.getElementById('downloadByCellLine').style.display = "block";
+			
+			//reset
+
+		}
+
+	}
+
+	function filterchem() {
+
+		var input = jQuery("#chemsearch").val();
+		var lListSize = jQuery(".chemical").length
+		for (var i = 0; i < lListSize; i++) {
+			if (jQuery(".chemical")[i].innerHTML.indexOf(input) > -1) {
+				document.getElementsByClassName("chemical")[i].style.display = "";
+			} else {
+				document.getElementsByClassName("chemical")[i].style.display = "none";
+			}
+		}
+		/* var input, listsize, i;
+		input =jQuery("#chemsearch").val();
+		listsize=jQuery("#li").size(); */
+
+	}
+</script>
 </head>
 <!-- function located line 57 -->
 <body onload="enalbe_cell_lines()">
@@ -71,156 +117,191 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Download Files in CAT-APP</h1>
+					<h1 class="page-header">Download Files in Cat-App</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
-
 			<div class="row">
-				<div class="col-md-6" id="left">
-					<div id="cell line selection" style="margin-left: 40px;">
+				<div class="col-lg-12">
 
-						<sql:setDataSource var="snapshot"
-							driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-							url="jdbc:sqlserver://IRUSYN1LAP\\SQLEXPRESS;databaseName=CATAPP;integratedSecurity=true" />
+					<div class="panel panel-default">
+
+						<div class="panel-heading" id="selectDownloadTypeDiv">
+							<label class="radio-inline"> <input type="radio"
+								name="fileRadio" id="asIsFiles" value="asIsFiles"
+								onchange="displayDownloadForm()">Download uploaded files
+							</label> <label class="radio-inline"> <input type="radio"
+								name="fileRadio" id="byComp" value="byComp"
+								onchange="displayDownloadForm()">Download by compound
+							</label> <label class="radio-inline"> <input type="radio"
+								name="fileRadio" id="byCell" value="byCell"
+								onchange="displayDownloadForm()">Download by cellline
+							</label>
+						</div>
+						
+						<div class="row" id="downloadByAsIsFiles" class="form-group"
+							style="display: none;">
+							<div class="col-md-6" id="left">
+								<div id="cell line selection" style="margin-left: 40px;">
+
+									<sql:setDataSource var="snapshot"
+										driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+										url="jdbc:sqlserver://IRUSYN1LAP\\SQLEXPRESS;databaseName=CATAPP;integratedSecurity=true" />
 
 
-						<sql:query dataSource="${snapshot}" var="result">
+									<sql:query dataSource="${snapshot}" var="result">
 		select distinct cell_line_id from file_info; 
 	</sql:query>
 
-						<script type="text/javascript">
-							function enalbe_cell_lines() { ////////////////////////// enable_cell_lines()
-								<c:forEach var="row" items="${result.rows}">
-								$("#${row.cell_line_id}")
-										.removeAttr("disabled");
-								$("#${row.cell_line_id}_B").css({
-									'color' : 'Black',
-									'font-size' : '105%',
-									'font-weight' : 'bold'
-								});
-								</c:forEach>
-							}
-						</script>
+									<script type="text/javascript">
+										function enalbe_cell_lines() { ////////////////////////// enable_cell_lines()
+											<c:forEach var="row" items="${result.rows}">
+											$("#${row.cell_line_id}")
+													.removeAttr("disabled");
+											$("#${row.cell_line_id}_B").css({
+												'color' : 'Black',
+												'font-size' : '105%',
+												'font-weight' : 'bold'
+											});
+											</c:forEach>
+										}
+									</script>
 
-						<h4>
-							<a href="#" id="cell_line_title"
-								onclick="click_cell_line_title()"><b><u>Please
-										select cell lines:</u></b></a> <a href="#" id="cell_line_button"
-								onclick="click_cell_line_button()" style="display: none;">
-								<button type="button" class="btn btn-xs btn-primary">
-									Next <span class="fa fa-chevron-right"></span>
-								</button>
-							</a>
-						</h4>
+									<h4>
+										<a href="#" id="cell_line_title"
+											onclick="click_cell_line_title()"><b><u>Please
+													select cell lines:</u></b></a> <a href="#" id="cell_line_button"
+											onclick="click_cell_line_button()" style="display: none;">
+											<button type="button" class="btn btn-xs btn-primary">
+												Next <span class="fa fa-chevron-right"></span>
+											</button>
+										</a>
+									</h4>
 
-						<div id="cell_line_list" style="color: Gray; margin: 20px;">
-							<input type="checkbox" disabled class="cell_lines" id="CM"
-								name="CM" value="CM"><span id="CM_B">1. iCell
-								Cardiomyocytes<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="HEP"
-								name="HEP" value="HEP"><span id="HEP_B">2. iCell
-								Hepatocytes 2.0<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="ENDO"
-								name="ENDO" value="ENDO"><span id="ENDO_B">3.
-								iCell Endothelial Cells<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="HUV"
-								name="HUV" value="HUV"><span id="HUV_B">4. Human
-								Umbilical Vein Endothelial Cells<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="Neur"
-								name="Neur" value="Neur"><span id="Neur_B">5.
-								iCell Neurons<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="Macro"
-								name="Macro" value="Macro"><span id="Macro_B">6.
-								iCell Macrophages<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="A375"
-								name="A375" value="A375"><span id="A375_B">7.
-								A-375 Skin Melanoma<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="A549"
-								name="A549" value="A549"><span id="A549_B">8.
-								A549 Lung Carcinoma<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="HepG2"
-								name="HepG2" value="HepG2"><span id="HepG2_B">9.
-								HepG2 Hepatocyte Carcinoma<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="HepaRG"
-								name="HepaRG" value="HepaRG"><span id="HepaRG_B">10.
-								HepaRG Hepatocyte Carcinoma<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="MCF7"
-								name="MCF7" value="MCF7"><span id="MCF7_B">11.
-								MCF7 Breast Adenocarcinoma<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="HT29"
-								name="HT29" value="HT29"><span id="HT29_B">12.
-								HT-29 Colon Adenocarcinoma<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="LN229"
-								name="LN229" value="LN229"><span id="LN229_B">13.
-								LN-229 Glioblastoma<br>
-							</span> <input type="checkbox" disabled class="cell_lines"
-								id="HEK10205f" name="HEK10205f" value="HEK10205f"><span
-								id="HEK10205f_B">14. HEK10205f Human Epidermal
-								Keratinocytes; Foetal<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="HLMVEC"
-								name="HLMVEC" value="HLMVEC"><span id="HLMVEC_B">15.
-								HLMVEC Human Lung Microvascular Endothelial Cells<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="HMePC"
-								name="HMePC" value="HMePC"><span id="HMePC_B">16.
-								HMePC Human Mammary Epithelial Cell<br>
-							</span> <input type="checkbox" disabled class="cell_lines" id="SH-SY5Y"
-								name="SH-SY5Y" value="SH-SY5Y"><span id="SH-SY5Y_B">17.
-								SH-SY5Y Neuroblastoma<br>
-							</span>
+									<div id="cell_line_list" style="color: Gray; margin: 20px;">
+										<input type="checkbox" disabled class="cell_lines" id="CM"
+											name="CM" value="CM"><span id="CM_B">1. iCell
+											Cardiomyocytes<br>
+										</span> <input type="checkbox" disabled class="cell_lines" id="HEP"
+											name="HEP" value="HEP"><span id="HEP_B">2.
+											iCell Hepatocytes 2.0<br>
+										</span> <input type="checkbox" disabled class="cell_lines" id="ENDO"
+											name="ENDO" value="ENDO"><span id="ENDO_B">3.
+											iCell Endothelial Cells<br>
+										</span> <input type="checkbox" disabled class="cell_lines" id="HUV"
+											name="HUV" value="HUV"><span id="HUV_B">4.
+											Human Umbilical Vein Endothelial Cells<br>
+										</span> <input type="checkbox" disabled class="cell_lines" id="Neur"
+											name="Neur" value="Neur"><span id="Neur_B">5.
+											iCell Neurons<br>
+										</span> <input type="checkbox" disabled class="cell_lines" id="Macro"
+											name="Macro" value="Macro"><span id="Macro_B">6.
+											iCell Macrophages<br>
+										</span> <input type="checkbox" disabled class="cell_lines" id="A375"
+											name="A375" value="A375"><span id="A375_B">7.
+											A-375 Skin Melanoma<br>
+										</span> <input type="checkbox" disabled class="cell_lines" id="A549"
+											name="A549" value="A549"><span id="A549_B">8.
+											A549 Lung Carcinoma<br>
+										</span> <input type="checkbox" disabled class="cell_lines" id="HepG2"
+											name="HepG2" value="HepG2"><span id="HepG2_B">9.
+											HepG2 Hepatocyte Carcinoma<br>
+										</span> <input type="checkbox" disabled class="cell_lines"
+											id="HepaRG" name="HepaRG" value="HepaRG"><span
+											id="HepaRG_B">10. HepaRG Hepatocyte Carcinoma<br>
+										</span> <input type="checkbox" disabled class="cell_lines" id="MCF7"
+											name="MCF7" value="MCF7"><span id="MCF7_B">11.
+											MCF7 Breast Adenocarcinoma<br>
+										</span> <input type="checkbox" disabled class="cell_lines" id="HT29"
+											name="HT29" value="HT29"><span id="HT29_B">12.
+											HT-29 Colon Adenocarcinoma<br>
+										</span> <input type="checkbox" disabled class="cell_lines" id="LN229"
+											name="LN229" value="LN229"><span id="LN229_B">13.
+											LN-229 Glioblastoma<br>
+										</span> <input type="checkbox" disabled class="cell_lines"
+											id="HEK10205f" name="HEK10205f" value="HEK10205f"><span
+											id="HEK10205f_B">14. HEK10205f Human Epidermal
+											Keratinocytes; Foetal<br>
+										</span> <input type="checkbox" disabled class="cell_lines"
+											id="HLMVEC" name="HLMVEC" value="HLMVEC"><span
+											id="HLMVEC_B">15. HLMVEC Human Lung Microvascular
+											Endothelial Cells<br>
+										</span> <input type="checkbox" disabled class="cell_lines" id="HMePC"
+											name="HMePC" value="HMePC"><span id="HMePC_B">16.
+											HMePC Human Mammary Epithelial Cell<br>
+										</span> <input type="checkbox" disabled class="cell_lines"
+											id="SH-SY5Y" name="SH-SY5Y" value="SH-SY5Y"><span
+											id="SH-SY5Y_B">17. SH-SY5Y Neuroblastoma<br>
+										</span>
+									</div>
+								</div>
+								<!-- end of the cell line selection -->
+
+
+								<div id="Assays_A" style="display:; margin-left: 40px;">.</div>
+								<!-- end of div for assays. -->
+
+								<div id="Phenotypes_A" style="display:; margin-left: 40px;">..
+
+								</div>
+								<!-- end of div for Phenotypes. -->
+
+
+							</div>
+
+							<!-- end of div left -->
+
+
+
+							<div id="file_display" class="col-md-6">
+
+								<form action="DownloadFileServlet">
+									<div id="file_list" style="display:;">
+										<br></br> <a
+											href="/CAT-APP-PROJECT/resources/Notes/Notes.html">Assay
+											group notes.</a><br> Explain file name components.
+									</div>
+									<div id="file_button" style="margin-left: 80px; display: none;">
+										<br></br> <input type="submit" class="btn btn-primary"
+											name="download" style="border-radius: 5px;" value="Download">
+										<input type="submit" class="btn btn-primary" name="json"
+											style="border-radius: 5px;" value="Convert to Json">
+									</div>
+								</form>
+							</div>
+							<!-- end of div file_display -->
+
+
+							<!-- end of div row -->
+
+							<!-- end of the container-fluid -->
+
+							<br></br> <br></br> <br></br> <br></br>
+
+
+
+
 						</div>
-					</div>
-					<!-- end of the cell line selection -->
-
-
-					<div id="Assays_A" style="display:; margin-left: 40px;">.</div>
-					<!-- end of div for assays. -->
-
-					<div id="Phenotypes_A" style="display:; margin-left: 40px;">..
-
-					</div>
-					<!-- end of div for Phenotypes. -->
-
-
-				</div>
-
-				<!-- end of div left -->
-
-
-
-				<div id="file_display" class="col-md-6">
-
-					<form action="DownloadFileServlet">
-						<div id="file_list" style="display:;">
-							<br></br> <a href="/CAT-APP-PROJECT/resources/Notes/Notes.html">Assay
-								group notes.</a><br> Explain file name components.
+						
+						<br>
+						<div id="downloadByComp" style="display: none;"class="form-group">
+							<jsp:include page="downloadByComp_Int.jsp" />
 						</div>
-						<div id="file_button" style="margin-left: 80px; display: none;">
-							<br></br> <input type="submit" class="btn btn-primary"
-								name="download" style="border-radius: 5px;" value="Download">
-							<input type="submit" class="btn btn-primary" name="json"
-								style="border-radius: 5px;" value="Convert to Json">
+						<br>
+						<div id="downloadByCellLine" style="display: none;" class="form-group">
+						
+							<jsp:include page="downloadByCell_Int.jsp" />
 						</div>
-					</form>
-				</div>
-				<!-- end of div file_display -->
+						
+						</div>
+						</div>
+						</div>
 
-
-				<!-- end of div row -->
-
-				<!-- end of the container-fluid -->
-
-				<br></br> <br></br> <br></br> <br></br>
-
-
-
-
-			</div>
-			<%-- 		<jsp:include page="footer.jsp" />
+						<%-- 		<jsp:include page="footer.jsp" />
  --%>
-		</div>
-		<!-- jQuery -->
-		<!-- <script src="/CAT-APP-PROJECT/resources/js/jquery.js"></script>
+					</div>
+					<!-- jQuery -->
+					<!-- <script src="/CAT-APP-PROJECT/resources/js/jquery.js"></script>
 	Bootstrap Core JavaScript
 	JQUERY SCRIPTS
 	<script src="/CAT-APP-PROJECT/resources/js/jquery-1.10.2.js"></script>
@@ -243,20 +324,20 @@
 	<script src="/CAT-APP-PROJECT/resources/js/sb-admin-2.js"></script> -->
 
 
-		<!-- jQuery -->
-		<script src="/CAT-APP-PROJECT/resources/js/jquery.min.js"></script>
+					<!-- jQuery -->
+					<script src="/CAT-APP-PROJECT/resources/js/jquery.min.js"></script>
 
-		<script src="/CAT-APP-PROJECT/resources/js/metisMenu.min.js"></script>
-		<script src="/CAT-APP-PROJECT/resources/js/Download.js"></script>
+					<script src="/CAT-APP-PROJECT/resources/js/metisMenu.min.js"></script>
+					<script src="/CAT-APP-PROJECT/resources/js/Download.js"></script>
 
 
 
-		<!-- Bootstrap Core JavaScript -->
-		<script src="/CAT-APP-PROJECT/resources/js/bootstrap.min.js"></script>
+					<!-- Bootstrap Core JavaScript -->
+					<script src="/CAT-APP-PROJECT/resources/js/bootstrap.min.js"></script>
 
-		<!-- METISMENU SCRIPTS -->
-		<script src="/CAT-APP-PROJECT/resources/js/jquery.metisMenu.js"></script>
-		<!-- CUSTOM SCRIPTS -->
-		<script src="/CAT-APP-PROJECT/resources/js/sb-admin-2.js"></script>
+					<!-- METISMENU SCRIPTS -->
+					<script src="/CAT-APP-PROJECT/resources/js/jquery.metisMenu.js"></script>
+					<!-- CUSTOM SCRIPTS -->
+					<script src="/CAT-APP-PROJECT/resources/js/sb-admin-2.js"></script>
 </body>
 </html>

@@ -14,7 +14,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>CAT-APP</title>
+<title>Cat-App</title>
 <link rel="shortcut icon"
 	href="/CAT-APP-PROJECT/resources/images/logo2.ico" />
 
@@ -213,8 +213,8 @@ select#secqu, select#soflow-color {
 
 
 		<p
-			style="font family: Open Sans, Arial, sans-serif; font-size: 30px; color: #FFF;">Category
-			Approaches and Read-across in Regulatory Programmes</p>
+			style="font family: Open Sans, Arial, sans-serif; font-size: 20px; color: #FFF;">Category
+			Approaches and Read-across in Regulatory Programmes(Cat-App)</p>
 	</div>
 	<!--
     <div class="address-bar" style="width: 100%;
@@ -411,7 +411,7 @@ select#secqu, select#soflow-color {
 								</div>
 								<div class="form-group">
 									<input type="text" id="last_Name" name="last_Name"
-										class="form-control input-lg" placeholder="Last Name">
+										class="form-control input-lg" placeholder="Last Name *">
 								</div>
 
 
@@ -423,7 +423,7 @@ select#secqu, select#soflow-color {
 								<div class="form-group">
 									<input type="text" id="phone_number" name="phone_number"
 										maxlength="10" class="form-control input-lg"
-										placeholder="Contact No">
+										placeholder="Contact Phone">
 								</div>
 
 								<div class="form-group">
@@ -432,7 +432,7 @@ select#secqu, select#soflow-color {
 								</div>
 
 
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<input type="text" id="supervisor_name" name="supervisor_name"
 										class="form-control input-lg" data-provide="typeahead"
 										placeholder="Supervisor  Name *" required="required">
@@ -448,7 +448,7 @@ select#secqu, select#soflow-color {
 										name="supervisor_email" class="form-control input-lg"
 										data-provide="typeahead" placeholder="Supervisor Email * "
 										required="required">
-								</div>
+								</div> -->
 								<div class="form-group">
 
 									<input type="password" id="password" name="password"
@@ -551,10 +551,12 @@ select#secqu, select#soflow-color {
 			<div class="box">
 				<div class="col-lg-12">
 					<hr>
-					<h2 class="intro-text text-center">About CAT APP</h2>
+					<p class="text-center">About Cat-App</p> 	
 					<hr>
+					<a href="https://www.concawe.eu/">
 					<img class="img-responsive img-border img-left"
 						src="/CAT-APP-PROJECT/resources/images/intro-pic.png" alt="">
+						</a>
 					<hr class="visible-xs">
 					<p>The Cat-App project, initiated and funded by Concawe,
 						tackles this specific challenge by investigating practical
@@ -590,6 +592,7 @@ select#secqu, select#soflow-color {
 
 	</div>
 	<!-- /.container -->
+
 
 	<jsp:include page="footer.jsp" />
 

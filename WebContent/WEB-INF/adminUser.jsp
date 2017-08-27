@@ -98,7 +98,7 @@
 									</div>
 									<div class="col-xs-9 text-right">
 										<div class="huge"></div>
-										<div>CAT-APP</div>
+										<div>Cat-App</div>
 									</div>
 								</div>
 							</div>

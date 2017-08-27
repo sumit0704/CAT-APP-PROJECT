@@ -4,29 +4,30 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.apache.log4j.Logger;
 
 public class ChemData {
 	
 	public static final Logger logger = Logger.getLogger(ChemData.class.toString());
-	public HashMap<Long,String> getNamesofInputs(String pTableName,Connection pConnection){
+	public LinkedHashMap<String,String> getNamesofInputs(String pTableName,Connection pConnection){
 		
-		HashMap<Long,String> lPhenotypeMap =new HashMap<Long,String>();
+		LinkedHashMap<String,String> lPhenotypeMap =new LinkedHashMap<String,String>();
 		PreparedStatement lPstmt = null;
 		ResultSet lRst 			 = null;
 		try{
-			if(pTableName!="celllines"){
+			/*if(pTableName!="celllines"){
 				
-				lPhenotypeMap.put(0l, "---Select One---");
-			}
-			String lBuilder = "select entity_id,name,dsc from xxx where rowstate!=-1 ";
+				lPhenotypeMap.put(, "---Select One---");
+			}*/
+			String lBuilder = "select tag,name,dsc from xxx where rowstate!=-1 ";
 			lBuilder =lBuilder.replaceAll("xxx", pTableName);
 			lPstmt =pConnection.prepareStatement(lBuilder);
 			lRst = lPstmt.executeQuery();
 			while(lRst.next()){
 				
-					lPhenotypeMap.put(lRst.getLong(1), lRst.getString(2));
+					lPhenotypeMap.put(lRst.getString(1), lRst.getString(2));
 					
 				
 			}

@@ -20,7 +20,7 @@
 					class="icon-bar"></span>
 			</button>
 			<form action="" method="get">
-				<a href="BackToMainServlet" class="navbar-brand">CAT-APP</a>
+				<a href="BackToMainServlet" class="navbar-brand">Cat-App Database</a>
 			</form>
 		</div>
 		<!-- Collect the nav links, forms, and other content for toggling -->
