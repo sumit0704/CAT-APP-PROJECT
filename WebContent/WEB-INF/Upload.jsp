@@ -493,23 +493,6 @@
 
 
 	<script src="/CAT-APP-PROJECT/resources/js/Uploadjs.js"></script>
-	<!--  
-	<script src="/CAT-APP-PROJECT/resources/js/jquery-1.11.1.min.js"></script>
-	<script src="/CAT-APP-PROJECT/resources/js/bootstrap.min.js"></script>
-
-	<script src="/CAT-APP-PROJECT/resources/js/retina-1.1.0.min.js"></script>
-	<script src="/CAT-APP-PROJECT/resources/js/scripts.js"></script>
-
-	jQuery
-	<script src="/CAT-APP-PROJECT/resources/js/jquery.min.js"></script>
-
-	<script src="/CAT-APP-PROJECT/resources/js/metisMenu.min.js"></script>
-	METISMENU SCRIPTS
-	<script src="/CAT-APP-PROJECT/resources/js/jquery.metisMenu.js"></script>
-	CUSTOM SCRIPTS
-	<script src="/CAT-APP-PROJECT/resources/js/sb-admin-2.js"></script> -->
-
-
 	<!-- jQuery -->
 	<script src="/CAT-APP-PROJECT/resources/js/jquery.min.js"></script>
 

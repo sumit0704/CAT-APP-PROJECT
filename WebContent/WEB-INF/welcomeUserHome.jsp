@@ -88,7 +88,7 @@
 
 
 				<div class="row">
-					<div class="col-lg-3 col-md-6">
+					<div class="col-lg-4 col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
 								<div class="row">
@@ -117,6 +117,12 @@
 												value="Upload">
 										</form>
 									</span>
+									<span class="text-center">
+										<form action="responseServlet" method="post">
+											<input type="submit" class="btn btn-primary btn-xs"
+												value="Response Curves">
+										</form>
+									</span>
 									<div class="clearfix"></div>
 
 
@@ -139,10 +145,16 @@
 							</div>
 							<a href="#">
 								<div class="panel-footer">
-									<span class="pull-left"><button type="button"
-											class="btn btn-success btn-xs">Download</button></span> <span
-										class="pull-right"><button type="button"
-											class="btn btn-success btn-xs">Upload</button></span>
+									<span class="pull-left">
+										<form action="downloadAnalytical" method="post">
+											<button type="submit" class="btn btn-success btn-xs">Download</button>
+										</form>
+									</span> <span class="pull-right">
+										<form action="uploadAnalytical" method="post">
+											<input type="submit" class="btn btn-success btn-xs"
+												value="Upload">
+										</form>
+									</span>
 									<div class="clearfix"></div>
 								</div>
 							</a>

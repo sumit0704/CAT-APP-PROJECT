@@ -560,4 +560,10 @@ function selectphenotypes(){
           
     });
 }
+function closemessageheader(){
+	jQuery(".alert").hide();
+}
 
+setTimeout(function() {
+    $('#messagebox').fadeOut('slow');
+}, 1000);

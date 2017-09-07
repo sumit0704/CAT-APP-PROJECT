@@ -105,56 +105,49 @@
 	<!--  <div class="inner-bg"> -->
 	<div class="container">
 		<c:if test="${param.success eq 1}">
-			<div id="messagebox" class="page-alerts">
-				<div class="alert alert-success">
-					<button type="button" class="close">
-						<i class="glyphicon glyphicon-remove-circle text-success"></i>
-					</button>
-					<h4>Success</h4>
-					<p>The file was uploaded successfully</p>
-				</div>
-			</div>
-		</c:if>
-		<c:if test="${param.failure eq 2}">
-			<div class="alert alert-danger">
-				<button href="#" type="button" class="close"></button>
-				<h4>Validation Failed</h4>
-				<p>
-					The uploaded file has some issues. Additional information <a
-						class="alert-link" href="#myModal" data-toggle="modal">Click
-						Here</a> to read
-				</p>
-			</div>
-		</c:if>
-
-
-		<div id="myModal" class="modal fade" role="dialog">
-			<div class="modal-dialog">
-
-				<!-- Modal content-->
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Errors & Warnings</h4>
+                <div id="messagebox" class="page-alerts">
+     			<div class="alert alert-success">
+      			<button  type="button" class="close"><i class="glyphicon glyphicon-remove-circle text-success"></i></button>
+      			<h4>Success</h4>
+      			<p>The file was uploaded successfully</p>
+    			</div>
+    			</div>
+				</c:if>
+				<c:if test="${param.failure eq 2}">
+				 <div class="alert alert-danger">
+      			<button  href="#" type="button"  class="close"></button>
+      			<h4>Validation Failed</h4>
+      			<p>The uploaded file has some issues. Additional information <a class="alert-link" href="#myModal" data-toggle="modal">Click Here</a> to read</p>
+   				 </div>
+				</c:if>
+				
+				
+				<div id="myModal" class="modal fade" role="dialog">
+					  <div class="modal-dialog">
+					
+					    <!-- Modal content-->
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal">&times;</button>
+					        <h4 class="modal-title">Errors & Warnings</h4>
+					      </div>
+					      <div class="modal-body">
+					        	<c:forEach var="errorkey" items="${errormap}">
+											 
+    							<c:forEach var="errorarray" items="${errorkey.value}">
+    							
+    							<div>${errorarray}</div>
+    							
+    							</c:forEach>	 
+								</c:forEach>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closemessageheader()">Close</button>
+					      </div>
+					    </div>
+					
+					  </div>
 					</div>
-					<div class="modal-body">
-						<c:forEach var="errorkey" items="${errormap}">
-
-							<c:forEach var="errorarray" items="${errorkey.value}">
-
-								<div>${errorarray}</div>
-
-							</c:forEach>
-						</c:forEach>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal"
-							onclick="closemessageheader()">Close</button>
-					</div>
-				</div>
-
-			</div>
-		</div>
 
 
 

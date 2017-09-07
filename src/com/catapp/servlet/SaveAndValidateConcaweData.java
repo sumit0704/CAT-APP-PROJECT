@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,12 +25,11 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.poi.hssf.util.CellReference;
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.catapp.action.CatAppConstants;
 import com.catapp.action.ChemData;
 import com.catapp.connection.DBConnection;
 import com.catapp.entity.User;
@@ -42,6 +42,7 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final String UPLOAD_DIRECTORY = "C:/Users/ssingh/serverfiles";
 	public static final Logger logger = Logger.getLogger(SaveAndValidateConcaweData.class.toString());
+	HashMap<String,Long> lAttributes	 		  = new HashMap<String,Long>();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -64,10 +65,10 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection lConn    	= null;
-		String lConcaweID 	    = null;
+		
 		String lCatAppId  	    = null;
 		String lSample  	    = null;
-		String lDescription 	= null;
+		
 		String lUploadPath		= null;
 		String name				= null;
 		User lUser 				= (User)request.getSession().getAttribute("user");
@@ -79,32 +80,28 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 			for(FileItem item : multiparts){
 				
 				if(item.isFormField()){
-					if(item.getFieldName().equals("concawe")){
-						lConcaweID=item.getString();
-					}else if(item.getFieldName().equals("casnames")){
+					 if(item.getFieldName().equals("cas")){
 						lCatAppId=item.getString();
 					}else if(item.getFieldName().equals("sample")){
 						lSample=item.getString();
-					}else if(item.getFieldName().equals("desc")){
-						lDescription=item.getString();
 					}
 					
 				}
 				if(!item.isFormField()){
 					
-					lUploadPath = UPLOAD_DIRECTORY+File.separator+"ConcaweFiles"+File.separator+lSample;
-					File lFile = new File(lUploadPath);
+					lUploadPath = UPLOAD_DIRECTORY+File.separator+"ConcaweFiles"+File.separator;
+					/*File lFile = new File(lUploadPath);
 					if(!lFile.exists()){
 						lFile.mkdirs();
-					}
-					name = new File(item.getName()).getName();
-					item.write( new File(lUploadPath + File.separator + name));
+					}*/
+				//	name = new File(item.getName()).getName();
+					item.write( new File(lUploadPath + File.separator + lCatAppId));
 				}
 			}
 			
 			
 		}
-		File lFile =new File(lUploadPath + File.separator + name);
+		File lFile =new File(lUploadPath + File.separator + lCatAppId);
 		
 		FileInputStream fis = new FileInputStream(lFile);
 		XSSFWorkbook myWorkBook = new XSSFWorkbook (fis);
@@ -113,17 +110,24 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 			HashMap<String,String>lCASNumberMap =  new ChemData().getCasNames(lConn,1l);
 			
 			HashMap<String,String>lConcaweMap =  new ChemData().getCasNames(lConn,2l);
-			request.setAttribute("cas", lCASNumberMap);
-			request.setAttribute("concawe", lConcaweMap);
+			request.setAttribute("casnumber", lCASNumberMap);
+			/*request.setAttribute("concawe", lConcaweMap);*/
 			request.setAttribute("errormap", lValidationOutputMap);
 			if(lValidationOutputMap.isEmpty()){
 
-				saveConcaweData(lConn, myWorkBook, lCatAppId, lSample);
-				RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/UploadConcaweData.jsp?success=2");
-				rd.forward(request, response);
+				String lReturnResponse=saveConcaweData(lConn, myWorkBook, lCatAppId, lSample);
+				if(lReturnResponse=="Success"){
+					
+					RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/uploadAnalytical.jsp?success=1");
+					rd.forward(request, response);
+				}else{
+					RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/uploadAnalytical.jsp?failure=2");
+					rd.forward(request, response);
+				}
+				
 			}else{
 				
-				RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/UploadConcaweData.jsp?failure=2");
+				RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/uploadAnalytical.jsp?failure=2");
 				rd.forward(request, response);
 			}
 			
@@ -134,13 +138,12 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 		
 		
 	}
-	@SuppressWarnings("deprecation")
+	
 	public HashMap<Integer,ArrayList<String>>validateUploadedFiles(Connection pConnection,XSSFWorkbook pWorkbook,String pCatAppId,String pSampleValue){
 		
 		HashMap<Integer,ArrayList<String>> lReturnMap = new HashMap<Integer,ArrayList<String>>();
 		PreparedStatement lPstmt 					  = null;
 		ResultSet lRst								  = null;
-		HashMap<String,String> lAttributes	 		  = new HashMap<String,String>();
 		Integer lErrorFlag							  = 0;						
 		
 		try{
@@ -150,10 +153,10 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 				lPstmt=pConnection.prepareStatement(lQuery);
 				lRst=lPstmt.executeQuery();
 				while(lRst.next()){
-					lAttributes.put(lRst.getString(2),"Y");
+					lAttributes.put(lRst.getString(2),lRst.getLong(1));
 				}
 				XSSFSheet mySheet = pWorkbook.getSheetAt(0);
-				Row row =mySheet.getRow(1);
+				Row row =mySheet.getRow(2);
 				ArrayList<String>lErrorList =new ArrayList<String>();
 				
 				
@@ -161,8 +164,7 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 				
 				for(int i=0;i<row.getLastCellNum()-1;i++){
 					
-					if(lAttributes.get(row.getCell(i).getStringCellValue())!=null && 
-							lAttributes.get(row.getCell(i).getStringCellValue()).equals("Y") ){
+					if(lAttributes.get(row.getCell(i).getStringCellValue())!=null && lAttributes.get(row.getCell(i).getStringCellValue())>0l){
 						
 					}else{
 						lErrorFlag=1;
@@ -182,7 +184,7 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 				
 				/**************************** Validation for Sample Start ***********************************/
 				
-				Row lSampleRow =mySheet.getRow(0);
+				Row lSampleRow =mySheet.getRow(1);
 				if(lSampleRow.getCell(0)!=null && lSampleRow.getCell(0).getStringCellValue()!=null
 						&& !lSampleRow.getCell(0).getStringCellValue().equals(pSampleValue)){
 					if(lReturnMap!=null && lReturnMap.get(1)!=null){
@@ -204,8 +206,8 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 				
 				/**************************** Validation for Cas Start ***********************************/
 				
-				/*if(lSampleRow.getCell(2)!=null && lSampleRow.getCell(2).getStringCellValue()!=null
-						&& !lSampleRow.getCell(2).getStringCellValue().equals(pCatAppId)){
+				if(lSampleRow.getCell(2)!=null && lSampleRow.getCell(2).getStringCellValue()!=null
+						&& !lSampleRow.getCell(2).getStringCellValue().equals("CAS"+" "+pCatAppId)){
 					if(lReturnMap!=null && lReturnMap.get(1)!=null){
 						
 						ArrayList<String>lErrorList1=lReturnMap.get(1);
@@ -217,21 +219,24 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 						lErrorList1.add("Cas Number does not match with the selection criteria.");
 						lReturnMap.put(1, lErrorList1);
 					}
-				}*/
+				}
 				
 				/**************************** Validation for Cas End ***********************************/
 				
 				
 				
 				/**************************** Validation for Values Start ***********************************/
-				Double lFinalValue=0.0;
-					for (int i=2;i<mySheet.getLastRowNum()-1;i++){
-						Row datarow =mySheet.getRow(i);
+				
+				    Double lFinalRowValue=0.0;
+					for (int i=3;i<mySheet.getLastRowNum()-1;i++){
 						
+						Row datarow =mySheet.getRow(i);
 						for(int j=0;j<datarow.getLastCellNum()-1;j++){
+							
 								if(j==0){
 									String lCarbonNumber = null;
-									if(datarow.getCell(j).getCellType()==Cell.CELL_TYPE_NUMERIC){
+									CellType type = datarow.getCell(j).getCellTypeEnum();
+									if(type==CellType.NUMERIC){
 										
 											if(datarow.getCell(j).getNumericCellValue()>100){
 												if(lReturnMap!=null && lReturnMap.get(1)!=null){
@@ -245,7 +250,7 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 												}
 											}
 										}
-									else{
+									else if(type==CellType.STRING){
 										if(datarow.getCell(j).getStringCellValue().indexOf("<")!=-1 ||
 												datarow.getCell(j).getStringCellValue().indexOf(">")!=-1) {
 											lCarbonNumber= datarow.getCell(j).getStringCellValue();
@@ -267,8 +272,8 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 									}
 								}
 								else{
-									if(datarow.getCell(j).getNumericCellValue()>0 ){
-										lFinalValue=lFinalValue+datarow.getCell(j).getNumericCellValue();
+									if(datarow.getCell(j).getNumericCellValue()>0){
+										lFinalRowValue=lFinalRowValue+datarow.getCell(j).getNumericCellValue();
 										
 									}
 									
@@ -276,7 +281,7 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 							}
 					}
 					
-					if(lFinalValue>100){
+					if(lFinalRowValue>100){
 						if(lReturnMap!=null && lReturnMap.get(1)!=null){
 							ArrayList<String>lErrorList1=lReturnMap.get(1);
 							lErrorList.add("Summation of all values can't be greater than 100.");
@@ -314,74 +319,108 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 		
 	}
 	
-	public void saveConcaweData(Connection pConnection,XSSFWorkbook pWorkbook,String pCatAppId,String pSampleValue){
-		PreparedStatement lPstmt = null;
-		String lQuery			 = null;
+	public String saveConcaweData(Connection pConnection,XSSFWorkbook pWorkbook,String pCatAppId,String pSampleValue){
+		PreparedStatement lPstmt 					= null;
+		String lQuery						        = null;
+		ResultSet lRst			 				    = null;
+		Long lHeaderId			                    = null;
+		String lReturnResponse						= null;
+		
 		try{
 			HashMap<String,String>lColumnAttributeMapping = new HashMap<String,String>();
 			XSSFSheet lSheet = pWorkbook.getSheetAt(0);
-			Row headerrow=lSheet.getRow(1);
+			Row headerrow=lSheet.getRow(2);
 			for(int j=0;j<headerrow.getLastCellNum();j++){
 				lColumnAttributeMapping.put(CellReference.convertNumToColString(j), headerrow.getCell(j).getStringCellValue());
 			}
-			lQuery= "INSERT INTO concawe_attribute_inputdata(attribute,"
-					+ " rowno,columNno,value,valuetype,logged_by,last_updated_date,"
-					+ " last_updated_by,is_active,rowstate,operator) "
-		            + " VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+			//////////////////////////Start of Save for Concawe Header //////////////////////////////
+			
+			StringBuilder  lHeaderQuery = new StringBuilder ("insert into concawe_values_header (sample,cas_number,logged_Date,logged_by,")
+										  .append("last_updated_date,last_updated_by,is_Active,rowstate)")
+										  .append(" values (?,?,?,?,?,?,?,?) ");
+			
+			lPstmt = pConnection.prepareStatement(lHeaderQuery.toString(),Statement.RETURN_GENERATED_KEYS);
+			
+			lPstmt.setString(1, pSampleValue);
+			lPstmt.setString(2, pCatAppId);
+			lPstmt.setLong(4, 1l);
+			lPstmt.setTimestamp(3,new Timestamp(System.currentTimeMillis()));
+			lPstmt.setNull(5, java.sql.Types.TIMESTAMP);
+			lPstmt.setNull(6, java.sql.Types.BIGINT);
+			lPstmt.setString(7, "Y");
+			lPstmt.setInt(8, 1);
+			
+			
+			lPstmt.execute();
+			lRst = lPstmt.getGeneratedKeys();
+			if(lRst.next()){
+				lHeaderId=lRst.getLong(1);
+			}
+			
+			lPstmt.clearParameters();
+			//////////////////////////End of Save for Concawe Header //////////////////////////////
+			
+			//////////////////////////  Start of Save for Concawe Details //////////////////////////////
+			lQuery= "INSERT INTO concawe_values_details (attributeid,headerid,"
+					+ " rowno,columNno,value,valuetype,logged_date,logged_by,last_updated_date,"
+					+ " last_updated_by,is_active,rowstate) "
+		            + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			lPstmt=pConnection.prepareStatement(lQuery);
-			for(int i=2;i<lSheet.getLastRowNum();i++){
+		
+		
+			for(int i=3;i<=lSheet.getLastRowNum()-1;i++){
 				Row lDataRow =lSheet.getRow(i);
-				 for(int j=0;j<lDataRow.getLastCellNum();j++){
-					 lPstmt.setString(1,lColumnAttributeMapping.get(CellReference.convertNumToColString(j)));
-					 boolean lOperatorFlag=false;
-					 boolean lColumnTypeFlag =false;
-					 if(lDataRow.getCell(j).getCellType()==Cell.CELL_TYPE_STRING){
-						 String lValue= lDataRow.getCell(j).getStringCellValue();
-						 lOperatorFlag=true;
-						 if(lDataRow.getCell(j).getStringCellValue().indexOf(">")!=-1){
-							 lValue=lValue.replaceAll(">", "");
-							 lPstmt.setString(2, lValue);
-							 lPstmt.setString(12, CatAppConstants.operator1);
-						 }else if(lDataRow.getCell(j).getStringCellValue().indexOf("<")!=-1){
-							 lValue=lValue.replaceAll("<", "");
-							 lPstmt.setString(2, lValue);
-							 lPstmt.setString(12, CatAppConstants.operator2);
-						 }else if(lDataRow.getCell(j).getStringCellValue().equals("Total")){
-							 lPstmt.setString(2, null);
-							 lPstmt.setString(12, null);
-						 }
-						  
-					 }else{
-						 lPstmt.setString(2, String.valueOf(lDataRow.getCell(j).getNumericCellValue()));
-					 }
-					 lPstmt.setInt(3, i);
-					 lPstmt.setString(4, CellReference.convertNumToColString(j));
-					 if(lColumnAttributeMapping.get(CellReference.convertNumToColString(j))=="Total"){
-						 lPstmt.setInt(5, CatAppConstants.row_type_total); 
-					 }
-					 else{
-						 lPstmt.setInt(5, CatAppConstants.row_type_solo); 
-					 }
+				 for(int j=0;j<=lDataRow.getLastCellNum()-1;j++){
 					 
-				 	 lPstmt.setTimestamp(6,new Timestamp(System.currentTimeMillis()));
-					 lPstmt.setLong(7, 1l);
-					 lPstmt.setNull(8, java.sql.Types.TIMESTAMP);
-					 lPstmt.setNull(9, java.sql.Types.BIGINT);
-					 lPstmt.setString(10, "Y"); 
-					 lPstmt.setInt(11, 1);
-					 if(!lOperatorFlag){
-						 lPstmt.setString(12, null); 
-					 }
-					 lPstmt.addBatch();
+					 if(lAttributes.get(lColumnAttributeMapping.get(CellReference.convertNumToColString(j)))!=null){
+							 lPstmt.setLong(1, Long.valueOf(lAttributes.get(lColumnAttributeMapping.get(CellReference.convertNumToColString(j)))));
+							  
+						 }
+						 lPstmt.setLong(2, lHeaderId);
+						 lPstmt.setInt(3, i);
+						 lPstmt.setString(4, CellReference.convertNumToColString(j));
+						 CellType type = lDataRow.getCell(j).getCellTypeEnum();
+						 if(type==CellType.STRING){
+							 lPstmt.setString(5, lDataRow.getCell(j).getStringCellValue()+"");
+						 }else if (type==CellType.NUMERIC){
+							 lPstmt.setString(5, lDataRow.getCell(j).getNumericCellValue()+"");
+						 }
+						 if(j==lDataRow.getLastCellNum()-1){
+							 lPstmt.setLong(1, 0l);
+							 lPstmt.setInt(6, 2);
+						 }else if(i==lSheet.getLastRowNum()-1){
+							 lPstmt.setLong(1, 0l);
+							 lPstmt.setInt(6, 3);
+						 }else{
+							
+							 lPstmt.setInt(6, 1);
+						 }
+						 lPstmt.setTimestamp(7,new Timestamp(System.currentTimeMillis()));
+						 lPstmt.setLong(8, 1l);
+						 lPstmt.setNull(9, java.sql.Types.TIMESTAMP);
+						 lPstmt.setNull(10, java.sql.Types.BIGINT);
+						 lPstmt.setString(11, "Y"); 
+						 lPstmt.setInt(12, 1);
+						 lPstmt.addBatch();
+					 
+					
 				 }
 				
 			}
-			int [] i=lPstmt.executeBatch();
+			int [] k=lPstmt.executeBatch();
+			if(k.length>0){
+				lReturnResponse="Success";
+			}
+			
+		 //////////////////////////End of Save for Concawe Details //////////////////////////////
 			
 		}catch(Exception e){
-			
+			logger.log(Level.INFO,"Error Occured while saving the files",e);
+			lReturnResponse="failure";
 		}
+		
+		return lReturnResponse;
 	}
-
+	
 }

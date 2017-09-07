@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="3.0">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   <display-name>CAT-APP-PROJECT</display-name>
   <servlet>
     <servlet-name>AdminServlet</servlet-name>
@@ -54,11 +54,25 @@
     <enabled>true</enabled>
   </servlet>
   <servlet>
+    <display-name>ManageActionServlet</display-name>
+    <servlet-name>ManageActionServlet</servlet-name>
+    <servlet-class>com.catapp.servlet.ManageActionServlet</servlet-class>
+    <enabled>true</enabled>
+  </servlet>
+  <servlet>
     <display-name>SuccessServlet</display-name>
     <servlet-name>SuccessServlet</servlet-name>
     <servlet-class>com.catapp.servlet.SuccessServlet</servlet-class>
     <enabled>true</enabled>
   </servlet>
+  
+  <servlet>
+    <display-name>DownloadConcaweAsIs</display-name>
+    <servlet-name>DownloadConcaweAsIs</servlet-name>
+    <servlet-class>com.catapp.servlet.DownloadConcaweAsIs</servlet-class>
+    <enabled>true</enabled>
+  </servlet>
+  
   <servlet>
     <display-name>Download_InternalServlet</display-name>
     <servlet-name>Download_InternalServlet</servlet-name>
@@ -69,6 +83,18 @@
     <display-name>Download_Internal_CServlet</display-name>
     <servlet-name>Download_Internal_CServlet</servlet-name>
     <servlet-class>com.catapp.servlet.Download_Internal_CServlet</servlet-class>
+    <enabled>true</enabled>
+  </servlet>
+  <servlet>
+    <display-name>responseServlet</display-name>
+    <servlet-name>responseServlet</servlet-name>
+    <servlet-class>cat.response.responseServlet</servlet-class>
+    <enabled>true</enabled>
+  </servlet>
+  <servlet>
+    <display-name>column_3Servlet</display-name>
+    <servlet-name>column_3Servlet</servlet-name>
+    <servlet-class>cat.response.column_3Servlet</servlet-class>
     <enabled>true</enabled>
   </servlet>
   <servlet-mapping>
@@ -112,12 +138,28 @@
     <url-pattern>/UserManagement</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>DownloadConcaweAsIs</servlet-name>
+    <url-pattern>/DownloadConcawe</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
     <servlet-name>Download_Internal_CServlet</servlet-name>
     <url-pattern>/Download_Internal_C</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Download_InternalServlet</servlet-name>
     <url-pattern>/Download_InternalServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>column_3Servlet</servlet-name>
+    <url-pattern>/Response/column_3</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>responseServlet</servlet-name>
+    <url-pattern>/Response/Response</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ManageActionServlet</servlet-name>
+    <url-pattern>/ManageAction</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
     <welcome-file>Home</welcome-file>

@@ -32,8 +32,7 @@
 <link
 	href="/CAT-APP-PROJECT/resources/css/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
-
-<style type="text/css">
+<style>
 #page-wrapper {
 	/* background: RGBA(24, 161, 196, 0.2); */
 	background: url('/CAT-APP-PROJECT/resources/images/bgLight.jpg') repeat
@@ -89,7 +88,7 @@
 
 
 				<div class="row">
-					<div class="col-lg-3 col-md-6">
+					<div class="col-lg-4 col-md-6">
 						<div class="panel panel-primary">
 							<div class="panel-heading">
 								<div class="row">
@@ -118,6 +117,12 @@
 												value="Upload">
 										</form>
 									</span>
+									<span class="text-center">
+										<form action="responseServlet" method="post">
+											<input type="submit" class="btn btn-primary btn-xs"
+												value="Response Curves">
+										</form>
+									</span>
 									<div class="clearfix"></div>
 
 
@@ -140,10 +145,16 @@
 							</div>
 							<a href="#">
 								<div class="panel-footer">
-									<span class="pull-left"><button type="button"
-											class="btn btn-success btn-xs">Download</button></span> <span
-										class="pull-right"><button type="button"
-											class="btn btn-success btn-xs">Upload</button></span>
+									<span class="pull-left">
+										<form action="downloadAnalytical" method="post">
+											<button type="submit" class="btn btn-success btn-xs">Download</button>
+										</form>
+									</span> <span class="pull-right">
+										<form action="uploadAnalytical" method="post">
+											<input type="submit" class="btn btn-success btn-xs"
+												value="Upload">
+										</form>
+									</span>
 									<div class="clearfix"></div>
 								</div>
 							</a>
@@ -173,6 +184,48 @@
 
 				</div>
 
+				<div class="col-lg-5 col-md-2"  style="margin-left:-15px">
+						<div class="panel panel-red">
+							<div class="panel-heading">
+								<div class="row">
+									<div class="col-xs-3">
+										<i class="fa fa-cog fa-5x"></i>
+									</div>
+									<div class="col-xs-9 text-right">
+										<div class="huge"></div>
+										<div>Settings</div>
+									</div>
+								</div>
+							</div>
+							<a href="#">
+								<div class="panel-footer">
+
+
+
+
+									<span class="pull-left">
+										<form action="AdminServlet" method="post">
+											<button type="submit" class="btn btn-red btn-xs">User Management</button>
+										</form>
+									</span> <span class="pull-right">
+										<form action="UploadServlet" method="post">
+											<input type="submit" class="btn btn-red btn-xs"
+												value="Usage Reports">
+										</form>
+									</span>
+									<span class="text-center">
+										<form action="responseServlet" method="post">
+											<input type="submit" class="btn btn-red btn-xs"
+												value="Modify tables">
+										</form>
+									</span>
+									<div class="clearfix"></div>
+
+
+								</div>
+							</a>
+						</div>
+					</div>
 
 
 

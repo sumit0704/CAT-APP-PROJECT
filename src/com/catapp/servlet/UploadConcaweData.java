@@ -41,9 +41,9 @@ public class UploadConcaweData extends HttpServlet {
 			lConn= new DBConnection().getConnection();
 			HashMap<String,String>lCASNumberMap =  new ChemData().getCasNames(lConn,1l);
 			
-			HashMap<String,String>lConcaweMap =  new ChemData().getCasNames(lConn,2l);
-			request.setAttribute("cas", lCASNumberMap);
-			request.setAttribute("concawe", lConcaweMap);
+			//HashMap<String,String>lConcaweMap =  new ChemData().getCasNames(lConn,2l);
+			request.setAttribute("casnumber", lCASNumberMap);
+			//request.setAttribute("concawe", lConcaweMap);
 			HttpSession session=request.getSession(false);
 			if(session!=null){
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/UploadConcaweData.jsp");

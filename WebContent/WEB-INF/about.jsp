@@ -95,8 +95,10 @@
 					<hr>
 					<h2 class="intro-text text-center">About CAT APP</h2>
 					<hr>
+					<a href="https://www.concawe.eu/">
 					<img class="img-responsive img-border img-left"
 						src="/CAT-APP-PROJECT/resources/images/intro-pic.png" alt="">
+						</a>
 					<hr class="visible-xs">
 					<p>The Cat-App project, initiated and funded by Concawe,
 						tackles this specific challenge by investigating practical

@@ -717,7 +717,27 @@ function selectphenotypesForDownload(){
           
     });
 }
+function selectphenotypesForDownloadCell(){
+	var lCellLine=jQuery("#cellLine").val();
+	$.ajax({
+        type: "GET",
+        url: "Phenotypes",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        data: { 
+            'lCM': lCellLine
+          },
+          	 success: function (responseText) {
+          		/* alert("Test");*/
+        	var lPhenolist = responseText.getElementsByTagName("pheno");
+        	for(var i=0;i<lPhenolist.length;i++){
+        		$("#phenotype").append(new Option(
+        				lPhenolist[i].childNodes[0].firstChild.nodeValue, lPhenolist[i].childNodes[1].firstChild.nodeValue));
+        	}
 
+        }
+          
+    });
+}
 //function closemessageheader(){
 //	jQuery(".alert").hide();
 //}

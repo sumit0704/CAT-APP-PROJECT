@@ -114,10 +114,19 @@ a:active {
 		<br>
 
 		<div style="text-align: center;">
+		<c:if test="${param.success eq 1}">
 			<a href="${pageContext.request.contextPath}/UploadServlet">
+			
 				<button type="button" class="btn btn-primary">Upload more
 					files</button>
-			</a> <a href="${pageContext.request.contextPath}/BackToHomeServlet">
+			</a></c:if>
+			<c:if test="${param.success eq 2}">
+			<a href="${pageContext.request.contextPath}/uploadAnalytical	">
+			
+				<button type="button" class="btn btn-primary">Upload more
+					files</button>
+			</a></c:if>
+			 <a href="${pageContext.request.contextPath}/BackToHomeServlet">
 				<button type="button" class="btn btn-success">Back to user
 					home</button>
 			</a> <a href="${pageContext.request.contextPath}">

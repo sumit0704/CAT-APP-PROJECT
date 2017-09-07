@@ -55,8 +55,8 @@ $(document).ready(function()
 
 	<h4 id="assay_head"
 		style="color: Blue; display: none; margin-left: 40px;">
-		<a href="#" id="assay_title" onclick="click_assay_title()"><b><u>Please
-					select assays:</u></b></a> <a href="#" id="assay_button"
+		<a href="#" id="assay_title" onclick="click_assay_title()"><b>Please
+					select assays:</b></a> <a href="#" id="assay_button"
 			onclick="click_assay_button()" style="display: none;">
 			<button type="button" class="btn btn-xs btn-primary">
 				Next <span class="fa fa-chevron-right"></span>
@@ -135,7 +135,7 @@ $(document).ready(function()
 				id="HUV_TubForm_B"> Tube Formation<br></span> <input
 				type="checkbox" disabled class="all_assays" id="HUV_Seq"
 				name="HUV_Seq" value='HUV_Seq'> <span id="HUV_Seq_B">
-				TompOseq<br>
+				TempOseq<br>
 			</span> <br>
 		</div>
 		<div id="Neur_assays" class="all_assays"

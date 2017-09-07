@@ -233,7 +233,7 @@ select#secqu, select#soflow-color {
 						class="icon-bar"></span>
 				</button>
 				<!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
-				<a class="navbar-brand" href="index.html">Business Casual</a>
+				<a class="navbar-brand" href="index.jsp">Cat-App</a>
 			</div>
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse"
@@ -257,44 +257,49 @@ select#secqu, select#soflow-color {
 
 		<div class="row">
 			<div class="box">
-				<div class="col-lg-8 text-center">
-					<div id="carousel-example-generic" class="carousel slide">
+				<div class="col-lg-6 text-center">
+					<div id="carousel-example-generic" class="carousel">
+					
+					<div class="item">
+								<img class="img-responsive img-full" 
+									src="/CAT-APP-PROJECT/resources/images/slide-2.png" alt="">
+							</div>
 						<!-- Indicators -->
-						<ol class="carousel-indicators hidden-xs">
+						<!-- <ol class="carousel-indicators hidden-xs">
 							<li data-target="#carousel-example-generic" data-slide-to="0"
 								class="active"></li>
 							<li data-target="#carousel-example-generic" data-slide-to="1"></li>
 							<li data-target="#carousel-example-generic" data-slide-to="2"></li>
-						</ol>
+						</ol> -->
 
 						<!-- Wrapper for slides -->
-						<div class="carousel-inner">
+						<!-- <div class="carousel-inner">
 							<div class="item active">
-								<img class="img-responsive img-full"
+								<img class="img-responsive img-full" style="height:350px;" 
 									src="/CAT-APP-PROJECT/resources/images/slide-1.png" alt="">
 							</div>
 							<div class="item">
-								<img class="img-responsive img-full"
+								<img class="img-responsive img-full" style="height:350px;"
 									src="/CAT-APP-PROJECT/resources/images/slide-2.png" alt="">
 							</div>
 							<div class="item">
-								<img class="img-responsive img-full"
+								<img class="img-responsive img-full" style="height:350px;"
 									src="/CAT-APP-PROJECT/resources/images/slide-3.jpeg" alt="">
 							</div>
-						</div>
+						</div> -->
 
 						<!-- Controls -->
-						<a class="left carousel-control" href="#carousel-example-generic"
+						<!-- <a class="left carousel-control" href="#carousel-example-generic"
 							data-slide="prev"> <span class="icon-prev"></span>
 						</a> <a class="right carousel-control"
 							href="#carousel-example-generic" data-slide="next"> <span
 							class="icon-next"></span>
-						</a>
+						</a> -->
 					</div>
 
 				</div>
 				<!-- login div -->
-				<div class="col-lg-4">
+				<div class="col-lg-6">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<strong class="">Login</strong>
@@ -610,7 +615,7 @@ select#secqu, select#soflow-color {
 	<!-- Script to Activate the Carousel -->
 	<script>
 		$('.carousel').carousel({
-			interval : 5000
+			interval : false
 		//changes the speed
 		})
 	</script>

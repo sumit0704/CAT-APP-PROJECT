@@ -43,6 +43,7 @@ public class LoginServlet extends HttpServlet {
 	        		if(lUser.getIs_admin()!=null && lUser.getIs_admin().equals("Y")){
 	        			HttpSession session=request.getSession();  
 	        			session.setAttribute("email",email);
+	        			session.setAttribute("user", lUser);
 	        			request.getRequestDispatcher("/WEB-INF/adminUser.jsp").include(request, response);
 	        			
 	        		}else{

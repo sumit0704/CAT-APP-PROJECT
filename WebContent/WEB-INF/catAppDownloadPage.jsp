@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="com.catapp.entity.User"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
@@ -257,14 +258,13 @@
 
 								<form action="DownloadFileServlet">
 									<div id="file_list" style="display:;">
-										<br></br> <a
-											href="/CAT-APP-PROJECT/resources/Notes/Notes.html">Assay
-											group notes.</a><br> Explain file name components.
+										<br></br> <a target="_blank" href="ftp://FTP_Test:VIBSftpaccess@catappdata.com/">Download
+											Files from FTP- Click Here</a><br>
 									</div>
 									<div id="file_button" style="margin-left: 80px; display: none;">
 										<br></br> <input type="submit" class="btn btn-primary"
 											name="download" style="border-radius: 5px;" value="Download">
-										<input type="submit" class="btn btn-primary" name="json"
+										<input type="submit" class="btn btn-default" name="json"
 											style="border-radius: 5px;" value="Convert to Json">
 									</div>
 								</form>

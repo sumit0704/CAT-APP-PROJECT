@@ -3,6 +3,7 @@ package com.catapp.servlet;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -59,9 +60,9 @@ public class UploadServlet extends HttpServlet {
 		
 		try{
 			lConn= new DBConnection().getConnection();
-			HashMap<Long,String>lPhenoMap =  new ChemData().getNamesofInputs("phenotypes",lConn);
-			HashMap<Long,String>lAssayMap =  new ChemData().getNamesofInputs("assaynames",lConn);
-			HashMap<Long,String>lCellMap  =  new ChemData().getNamesofInputs("celllines",lConn);
+			LinkedHashMap<String,String>lPhenoMap =  new ChemData().getNamesofInputs("phenotypes",lConn);
+			LinkedHashMap<String,String>lAssayMap =  new ChemData().getNamesofInputs("assaynames",lConn);
+			LinkedHashMap<String,String>lCellMap  =  new ChemData().getNamesofInputs("celllines",lConn);
 			HashMap<Long,String>lTimMap   =  new ChemData().getTimePoints();
 			request.setAttribute("pheno", lPhenoMap);
 			request.setAttribute("assay", lAssayMap);

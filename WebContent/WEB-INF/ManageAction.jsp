@@ -23,25 +23,26 @@ Change_password:"${Change_password}"<br></br>
 Password_2: 	"${Password_2}"<br></br>
 		
 
-<sql:setDataSource var="snapshot" driver="com.mysql.jdbc.Driver"
-     url="jdbc:mysql://localhost:3306/catapp"
-     user="root"  password="root"/>
+<sql:setDataSource var="snapshot"
+driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+url="jdbc:sqlserver://IRUSYN1LAP\\SQLEXPRESS;databaseName=CATAPP;integratedSecurity=true" />
+ 
 
 <c:choose>
 	<c:when test="${Authorization == 'Yes_authorizing'}">
 		<sql:update dataSource="${snapshot}" var="count">
-  			update users SET Approved = 'Yes' where User_ID = "${User_ID}";
+  			update users SET approved = 'Y' where User_ID = '${User_ID}';
 		</sql:update>
     </c:when>    
     <c:otherwise> 
 		<sql:update dataSource="${snapshot}" var="count">
-  			update users SET Approved = 'No' where User_ID = "${User_ID}";
+  			update users SET approved = 'N' where User_ID = '${User_ID}';
 		</sql:update>
     </c:otherwise>  
 </c:choose>
 <c:if test="${Change_password == 'Change_password'}">
 	<sql:update dataSource="${snapshot}" var="count">
-  		update users SET Password = "${Password_2}" where User_ID = "${User_ID}";
+  		update users SET Password = "${Password_2}" where User_ID = '${User_ID}';
 	</sql:update>
 </c:if>
 

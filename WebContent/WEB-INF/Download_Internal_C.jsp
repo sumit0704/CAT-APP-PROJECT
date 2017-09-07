@@ -50,9 +50,9 @@ $(document).ready(function(){
 	ORDER BY file_name;
 </sql:query>
 
-
+<br></br>
 	<table id="file-table" class="table  table-bordered table-hover"
-		style="width: auto; margin: auto; text-align: center;">
+		style="width: 20px; margin-left: -20px; text-align: center;">
 		<thead>
 			<tr>
 				<th></th>

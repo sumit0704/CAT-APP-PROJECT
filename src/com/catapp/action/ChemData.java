@@ -73,11 +73,11 @@ public class ChemData {
 	public HashMap<Long,String> getTimePoints(){
 		HashMap<Long,String> lTPMap =new HashMap<Long,String>();
 		lTPMap.put(0l, "---Select One---");
-		lTPMap.put(1l, "15 min");
-		lTPMap.put(2l, "30 min");
-		lTPMap.put(3l, "60 min");
-		lTPMap.put(4l, "90 min");
-		lTPMap.put(5l, "24 hr");
+		lTPMap.put(1l, "15min");
+		lTPMap.put(2l, "30min");
+		lTPMap.put(3l, "60min");
+		lTPMap.put(4l, "90min");
+		lTPMap.put(5l, "24hr");
 	
 		return lTPMap;
 	}
@@ -152,7 +152,7 @@ public class ChemData {
 		PreparedStatement lPstmt 		   = null;
 		ResultSet lRst 			           = null;
 		try{
-			String lBuilder = "select cat_app_id,cas_number,concawe_id From chemical_cas_concawe_mapping";
+			String lBuilder = "select cat_app_id,cas_number,concawe_id,name,category From chemical_cas_concawe_mapping";
 			
 			lPstmt =pConnection.prepareStatement(lBuilder);
 			lRst = lPstmt.executeQuery();
@@ -160,7 +160,14 @@ public class ChemData {
 				if(pFlag==1){
 					lChemicalMap.put(lRst.getString(1), lRst.getString(2));	
 					
-				}else{
+				}
+				
+				else if(pFlag==3){
+					String lValue= lRst.getString(2)+"    ||    "+lRst.getString(4)+"    ||    "+lRst.getString(5);
+					lChemicalMap.put(lRst.getString(2), lValue);
+				}
+				
+			else{
 					lChemicalMap.put(lRst.getString(1), lRst.getString(3));	
 				}
 			}

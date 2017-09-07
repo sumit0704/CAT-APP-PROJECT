@@ -119,7 +119,7 @@ $(document).ready(function() {
     });
 });
 </script>
-	<jsp:include page="headerUserHome.jsp" />
+	
 	<div class="container">
 		<form action="UpdateUserServlet" method="post">
 			<div class="row">
@@ -176,14 +176,14 @@ $(document).ready(function() {
 											
 											<tr>
 											<tr>
-												<td>Supervisor</td>
-												<% String supervisor = ((User)request.getSession().getAttribute("user")).getSupervisorname(); %>
+												<td>Privileges</td>
+												<% String supervisor = ((User)request.getSession().getAttribute("user")).getIs_admin(); %>
 
 												<% if (supervisor==null || supervisor.isEmpty()) { %>
-												<td>...</td>
+												<td>No Admin Privileges</td>
 
 												<% } else { %>
-												<td><%=supervisor.toString() %></td>
+												<td>Admin Privileges</td>
 												<% } %>
 											
 											<tr>
@@ -271,7 +271,7 @@ $(document).ready(function() {
 				</div>
 			</div>
 			<div style="margin-left: 45%">
-				<button type="submit" class="btn btn-primary" id="subProfileChange">Submit</button>
+				<button type="submit" class="btn btn-primary" id="subProfileChange">Change</button>
 			</div>
 		</form>
 	</div>

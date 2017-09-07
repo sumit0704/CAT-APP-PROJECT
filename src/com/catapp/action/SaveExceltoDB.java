@@ -77,7 +77,7 @@ public class SaveExceltoDB {
 				lPstmtForDetail.setDouble(4, row.getCell(3).getNumericCellValue());
 				lPstmtForDetail.setDouble(5, row.getCell(2).getNumericCellValue());
 				lPstmtForDetail.setDouble(6, row.getCell(1).getNumericCellValue());
-				lPstmtForDetail.setNull(7, java.sql.Types.NULL);
+				lPstmtForDetail.setDouble(7, row.getCell(5).getNumericCellValue());
 				lPstmtForDetail.setTimestamp(8,new Timestamp(System.currentTimeMillis()));
 				lPstmtForDetail.setLong(9, 1l);
 				lPstmtForDetail.setNull(10, java.sql.Types.TIMESTAMP);
