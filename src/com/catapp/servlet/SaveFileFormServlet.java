@@ -35,7 +35,7 @@ public class SaveFileFormServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 
-	private final String UPLOAD_DIRECTORY = "C:/Users/ssingh/serverfiles";
+	private final String UPLOAD_DIRECTORY = "C:/Users/CATAPP/serverfiles";
 
 	public static final Logger logger = Logger.getLogger(SaveFileFormServlet.class.toString());
 
@@ -125,7 +125,7 @@ public class SaveFileFormServlet extends HttpServlet {
 						}
 						
 						String modified_file_name = original_name.replaceAll(" ", "-");
-						lUploadPath = "C:\\Users\\ssingh\\serverfiles\\" + lCellLine;	
+						lUploadPath = "C:\\Users\\CATAPP\\serverfiles\\" + lCellLine;	
 						lFileName = lCellLine + "_" + lAssay + "_" + lTimePoint + "_" + 
 								lDilution + "_" + modified_file_name;
 						item.write( new File(lUploadPath + File.separator + lFileName));
@@ -142,7 +142,7 @@ public class SaveFileFormServlet extends HttpServlet {
 				new SaveExceltoDB().saveExcelDataToDb(lCellLine,lAssay,lTimePoint,lPhenotype,lFiletoDelete, lConn);
 				
 			}else{
-				String Path_for_SQL = "C:\\Users\\ssingh\\serverfiles\\" + lCellLine;	
+				String Path_for_SQL = "C:\\Users\\CATAPP\\serverfiles\\" + lCellLine;	
 				String insert_record_str = "INSERT INTO file_info (cell_line_id, assay_type, " +
 						"timepoint, Dilution, description, Original_name, file_name, file_type, file_path) " + 
 						"VALUES ('" + lCellLine + "', '" + lAssay + "', '" + lTimePoint + "', '" + 

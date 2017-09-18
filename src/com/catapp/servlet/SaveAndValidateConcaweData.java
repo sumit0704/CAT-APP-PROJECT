@@ -40,7 +40,7 @@ import com.catapp.entity.User;
 @WebServlet("/SaveAndValidateConcaweData")
 public class SaveAndValidateConcaweData extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final String UPLOAD_DIRECTORY = "C:/Users/ssingh/serverfiles";
+	private final String UPLOAD_DIRECTORY = "C:/Users/CATAPP/serverfiles";
 	public static final Logger logger = Logger.getLogger(SaveAndValidateConcaweData.class.toString());
 	HashMap<String,Long> lAttributes	 		  = new HashMap<String,Long>();
        
@@ -168,7 +168,7 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 						
 					}else{
 						lErrorFlag=1;
-						lErrorList.add("Value at Column "+CellReference.convertNumToColString(i)+" in attribute header row  does not match with attribute list.");
+						lErrorList.add("Value at Column "+CellReference.convertNumToColString(i)+" in attribute header row  does not match with attribute list. Kindly contact admin to add this attribute.");
 						
 					}
 					

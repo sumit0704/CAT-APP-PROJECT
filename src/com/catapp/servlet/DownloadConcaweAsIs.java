@@ -34,7 +34,7 @@ public class DownloadConcaweAsIs extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String [] lFiles					= request.getParameterValues("cas");
-		String lFilePath					="C:\\Users\\ssingh\\serverfiles\\ConcaweFiles";
+		String lFilePath					="C:\\Users\\CATAPP\\serverfiles\\ConcaweFiles";
 		try{
 			if(lFiles.length>0){
 				for(int i=0;i<lFiles.length;i++){

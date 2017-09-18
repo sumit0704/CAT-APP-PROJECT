@@ -7,10 +7,7 @@ function showExcelFiles() {
  }
 
 function getAssayNames(){					// step 1 to 2 (L.D. function)
-	// alert("");
-	if (document.getElementById('raw').checked) 
-	{
-	var Cellline = $('#cellline option:selected').val();
+		var Cellline = $('#cellline option:selected').val();
 	// alert("cellline: " + Cellline);
 
 	if(Cellline == "CM"){
@@ -47,20 +44,21 @@ function getAssayNames(){					// step 1 to 2 (L.D. function)
 			$("#step4").append("<input type='hidden' name='timepoint' value='24hr'>");
 			// alert("hello 6");
 			}
+	
+	
 	$("#step2").show();
 	$("#step4").hide();
 	$("#step5").hide();
 	$("#step6").hide();
-	 }
-
-else if(document.getElementById('processed').checked)
+/*else if(document.getElementById('processed').checked)
 	{
-	$("#step2").show();
+	
 	$("#step4").hide();
 	$("#step5").hide();
 	$("#step6").hide();
+	$("#step2").show();
 	}
-}
+*/}
 
 
 function selectTimePoint(){							// step 3 to 4

@@ -62,14 +62,14 @@ public class LoginServlet extends HttpServlet {
 	        				
 	        			}else{
 	        				
-	        				request.setAttribute("error","Your request is not approved yet.");
-	    		        	request.getRequestDispatcher("/WEB-INF/credentialMismatch.jsp").include(request, response);  
+	        				//request.setAttribute("error","Your request is not approved yet.");
+	    		        	request.getRequestDispatcher("/WEB-INF/index.jsp").include(request, response);  
 	        			}
 	        			
 	        		}
 	        	}else{
-	        		request.setAttribute("error","Invalid Username or Password");
-		        	request.getRequestDispatcher("/WEB-INF/credentialMismatch.jsp").include(request, response);  
+	        		//request.setAttribute("error","Invalid Username or Password");
+		        	request.getRequestDispatcher("/WEB-INF/index.jsp?failure=2").include(request, response);  
 	        	}
 	        	
 	        }catch(Exception e){

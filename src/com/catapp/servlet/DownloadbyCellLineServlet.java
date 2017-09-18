@@ -64,7 +64,7 @@ public class DownloadbyCellLineServlet extends HttpServlet {
 			String lCellLine = request.getParameter("cellLine");
 			String lPhenotype =request.getParameter("phenotype");
 			
-		File lFile = new File ("C:/Users/ssingh/serverfiles/templates/Excel By CellLine.xlsx");
+		File lFile = new File ("C:/Users/CATAPP/serverfiles/templates/Excel By CellLine.xlsx");
 		lConn=new DBConnection().getConnection(); 
 		FileInputStream fis = new FileInputStream(lFile);
 		XSSFWorkbook myWorkBook = new XSSFWorkbook (fis);

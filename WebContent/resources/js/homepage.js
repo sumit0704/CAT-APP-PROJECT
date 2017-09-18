@@ -43,7 +43,7 @@ $( document ).ready(function() {
 		})
 		
 		
-		$('#password').onblur(function() {
+		/*$('#password').onblur(function() {
 			var pswd = $(this).val();
 			
 			if ( pswd.length < 8 ) {
@@ -63,7 +63,7 @@ $( document ).ready(function() {
 			else {
 			    $('#length').removeClass('invalid').addClass('valid');
 			}
-			/*if ( pswd.match(/[A-z]/) ) {
+			if ( pswd.match(/[A-z]/) ) {
 			    $('#letter').removeClass('invalid').addClass('valid');
 			} else {
 			    $('#letter').removeClass('valid').addClass('invalid');
@@ -81,7 +81,7 @@ $( document ).ready(function() {
 			    $('#number').removeClass('invalid').addClass('valid');
 			} else {
 			    $('#number').removeClass('valid').addClass('invalid');
-			}*/
+			}
 			
 		
 		}).focus(function() {
@@ -89,7 +89,7 @@ $( document ).ready(function() {
 		}).blur(function() {
 		    $('#pswd_info').hide();
 		});
-	
+	*/
 	/*
 		fillByMemory()
 			$('button#sign').on('click', function() {
@@ -118,3 +118,6 @@ $( document ).ready(function() {
 
 		
 });
+setTimeout(function() {
+    $('#messagebox').fadeOut('slow');
+}, 1800);

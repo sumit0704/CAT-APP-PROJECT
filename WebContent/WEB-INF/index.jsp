@@ -216,6 +216,31 @@ select#secqu, select#soflow-color {
 			style="font family: Open Sans, Arial, sans-serif; font-size: 20px; color: #FFF;">Category
 			Approaches and Read-across in Regulatory Programmes(Cat-App)</p>
 	</div>
+	
+	<div id="messagebox"> 
+			<c:if test="${param.failure eq 2}">
+				<div class="alert alert-danger">
+					<button href="#" type="button" class="close">
+						<i class="glyphicon glyphicon-remove-circle text-danger"></i>
+					</button>
+					<h4><center>Sorry!</center></h4>
+					<p>
+						<center>We couldn't match the login details entered</center>
+					</p>
+				</div>
+			</c:if>
+			<c:if test="${param.exists eq 1}">
+				<div class="alert alert-danger">
+					<button href="#" type="button" class="close">
+						<i class="glyphicon glyphicon-remove-circle text-danger"></i>
+					</button>
+					<h4><center>Email already exists!</center></h4>
+					<p>
+						<center>A user with the same email id is already present in the system</center>
+					</p>
+				</div>
+			</c:if>
+	</div>
 	<!--
     <div class="address-bar" style="width: 100%;
     
@@ -416,7 +441,7 @@ select#secqu, select#soflow-color {
 								</div>
 								<div class="form-group">
 									<input type="text" id="last_Name" name="last_Name"
-										class="form-control input-lg" placeholder="Last Name *">
+										class="form-control input-lg" placeholder="Last Name *" required="required">
 								</div>
 
 
@@ -428,7 +453,7 @@ select#secqu, select#soflow-color {
 								<div class="form-group">
 									<input type="text" id="phone_number" name="phone_number"
 										maxlength="10" class="form-control input-lg"
-										placeholder="Contact Phone">
+										placeholder="Contact Phone *" required="required">
 								</div>
 
 								<div class="form-group">

@@ -67,7 +67,7 @@ public class DownloadbyCompoundServlet extends HttpServlet {
 			String lCellLine = request.getParameter("cellLines");
 			String lPhenotype =request.getParameter("phenotypes");
 			
-		File lFile = new File ("C:/Users/ssingh/serverfiles/templates/Excel By Compound.xlsx");
+		File lFile = new File ("C:/Users/CATAPP/serverfiles/templates/Excel By Compound.xlsx");
 		lConn=new DBConnection().getConnection(); 
 		FileInputStream fis = new FileInputStream(lFile);
 		XSSFWorkbook myWorkBook = new XSSFWorkbook (fis);

@@ -15,24 +15,36 @@
 
 <title>CAT-APP</title>
 
-<!-- Bootstrap Core CSS -->
+<link rel="shortcut icon"
+	href="/CAT-APP-PROJECT/resources/images/logo2.ico" />
+
+
 <link href="/CAT-APP-PROJECT/resources/css/bootstrap.min.css"
 	rel="stylesheet">
 
-<!-- Custom CSS -->
-<link href="/CAT-APP-PROJECT/resources/css/full-width-pics.css"
+<!-- MetisMenu CSS -->
+<link href="/CAT-APP-PROJECT/resources/css/metisMenu.min.css"
 	rel="stylesheet">
 
-<link href="/CAT-APP-PROJECT/resources/css/circleAnimation.css"
+<!-- Custom CSS -->
+<link href="/CAT-APP-PROJECT/resources/css/sb-admin-2.css"
 	rel="stylesheet">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700"
-	rel="stylesheet" type="text/css">
+
+<!-- Custom Fonts -->
 <link
-	href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic"
+	href="/CAT-APP-PROJECT/resources/css/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
 <style>
+#page-wrapper {
+	/* background: RGBA(24, 161, 196, 0.2); */
+	background: url('/CAT-APP-PROJECT/resources/images/bgLight.jpg') repeat
+		center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+	-o-background-size: cover;
+}
+
 #result {
 	margin-left: 5px;
 }
@@ -82,206 +94,214 @@
 </head>
 
 <body>
-
-	<!-- 
-<script type="text/javascript">
-	$(document).ready(function() {
-	    var today = new Date();
-		 document.getElementById('date').innerHTML = today
-	});
-	
-	
-</script> -->
 	<script src="/CAT-APP-PROJECT/resources/js/jquery.js"></script>
 	<script type="text/javascript">
-$(document).ready(function() {
-    $("#subPassChng").click(function() {
-        var password = $("#repassword").val();
-       
-        $.ajax({
-            url: 'ChangePassFromUserController',
-            type: 'POST',
-            data: {
-            	password: password
-                
-            },
-            success: function(data) {
-            	$('#chgPassword').modal('hide');
-            	$('#passSuccess').append("Password successfully saved");
-            	return false;
-            },
-            failure: function(data) {
-            	$('#chgPassword').modal('hide');
-            	$('#passSuccess').append("Please try again");
-                return false;
-            }
-        })
-    });
-});
-</script>
-	
-	<div class="container">
-		<form action="UpdateUserServlet" method="post">
+		$(document).ready(
+				function() {
+					$("#subPassChng").click(
+							function() {
+								var password = $("#repassword").val();
+
+								$.ajax({
+									url : 'ChangePassFromUserController',
+									type : 'POST',
+									data : {
+										password : password
+
+									},
+									success : function(data) {
+										$('#chgPassword').modal('hide');
+										$('#passSuccess').append(
+												"Password successfully saved");
+										return false;
+									},
+									failure : function(data) {
+										$('#chgPassword').modal('hide');
+										$('#passSuccess').append(
+												"Please try again");
+										return false;
+									}
+								})
+							});
+				});
+	</script>
+	<div id="wrapper">
+		<%
+			String isAdmin = ((User) request.getSession().getAttribute("user")).getIs_admin();
+			if (null == isAdmin || "" == isAdmin.trim()) {
+		%>
+		<jsp:include page="headerUserHome.jsp" />
+		<%
+			}
+			if ("Y".equalsIgnoreCase(isAdmin)) {
+		%>
+		<jsp:include page="headerAdminHome.jsp" />
+		<%
+			}
+		%>
+
+		<div id="page-wrapper">
+
 			<div class="row">
-				<div class="col-md-5  toppad  pull-right col-md-offset-3 ">
-					<br>
-					<div id="date"></div>
+				<div class="col-lg-12">
+					<h1 class="page-header">Update Profile</h1>
 				</div>
-				<div
-					class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<form action="UpdateUserServlet" method="post">
+						<div class="panel panel-default">
 
+							<div class="panel-body">
+								<table class="table table-user-information">
+									<tbody>
+										<tr>
+											<td>First name</td>
+											<td><input type="text" name="firstName"
+												value="<%=((User) request.getSession().getAttribute("user")).getFirst_name().toString()%>" /></td>
+										</tr>
+										<tr>
+											<td>Last name</td>
+											<%
+												String lastName = ((User) request.getSession().getAttribute("user")).getLast_name();
+											%>
 
-					<div class="panel panel-info">
-						<div class="panel-heading">
+											<%
+												if (lastName == null || lastName.isEmpty()) {
+											%>
+											<td><input type="text" name="lastName" value="" /></td>
 
-							<h3 class="panel-title" align="center">Update Profile</h3>
-						</div>
-						<div class="panel-body">
-							<div class="row">
+											<%
+												} else {
+											%>
+											<td><input type="text" name="lastName"
+												value="<%=lastName.toString()%>" /></td>
+											<%
+												}
+											%>
+										
+										<tr>
+										<tr>
+											<td>Institution</td>
+											<%
+												String inst = ((User) request.getSession().getAttribute("user")).getInstitution();
+											%>
 
+											<%
+												if (inst == null || inst.isEmpty()) {
+											%>
+											<td><input type="text" name="instName" value="" /></td>
 
+											<%
+												} else {
+											%>
+											<td><input type="text" name="instName"
+												value="<%=inst.toString()%>" /></td>
+											<%
+												}
+											%>
+										
+										<tr>
+										<tr>
+											<td>Privileges</td>
+											<%
+												String supervisor = ((User) request.getSession().getAttribute("user")).getIs_admin();
+											%>
 
-								<div class=" col-md-12 col-lg-12 ">
-									<table class="table table-user-information">
-										<tbody>
-											<tr>
-												<td>First name</td>
-												<td><input type="text" name="firstName"
-													value="<%=((User)request.getSession().getAttribute("user")).getFirst_name().toString() %>" /></td>
-											</tr>
-											<tr>
-												<td>Last name</td>
-												<% String lastName = ((User)request.getSession().getAttribute("user")).getLast_name(); %>
+											<%
+												if (supervisor == null || supervisor.isEmpty()) {
+											%>
+											<td>No Admin Privileges</td>
 
-												<% if (lastName==null || lastName.isEmpty()) { %>
-												<td><input type="text" name="lastName" value="" /></td>
+											<%
+												} else {
+											%>
+											<td>Admin Privileges</td>
+											<%
+												}
+											%>
+										
+										<tr>
+										<tr>
+											<td>Phone number</td>
+											<%
+												String phNo = ((User) request.getSession().getAttribute("user")).getPhone_number();
+											%>
 
-												<% } else { %>
-												<td><input type="text" name="lastName"
-													value="<%=lastName.toString() %>" /></td>
-												<% } %>
-											
-											<tr>
-											<tr>
-												<td>Institution</td>
-												<% String inst = ((User)request.getSession().getAttribute("user")).getInstitution(); %>
+											<%
+												if (phNo == null || phNo.isEmpty()) {
+											%>
+											<td><input type="text" name="phNo" value="" /></td>
 
-												<% if (inst==null || inst.isEmpty()) { %>
-												<td><input type="text" name="instName" value="" /></td>
+											<%
+												} else {
+											%>
+											<td><input type="text" name="phNo"
+												value="<%=phNo.toString()%>" /></td>
+											<%
+												}
+											%>
+										
+										<tr>
+											<td>Email</td>
+											<%
+												String email = ((User) request.getSession().getAttribute("user")).getEmail().toString();
+											%>
 
-												<% } else { %>
-												<td><input type="text" name="instName"
-													value="<%=inst.toString() %>" /></td>
-												<% } %>
-											
-											<tr>
-											<tr>
-												<td>Privileges</td>
-												<% String supervisor = ((User)request.getSession().getAttribute("user")).getIs_admin(); %>
+											<%
+												if (email == null || email.isEmpty()) {
+											%>
+											<td>...</td>
 
-												<% if (supervisor==null || supervisor.isEmpty()) { %>
-												<td>No Admin Privileges</td>
-
-												<% } else { %>
-												<td>Admin Privileges</td>
-												<% } %>
-											
-											<tr>
-											<tr>
-												<td>Phone number</td>
-												<% String phNo = ((User)request.getSession().getAttribute("user")).getPhone_number(); %>
-
-												<% if (phNo==null || phNo.isEmpty()) { %>
-												<td><input type="text" name="phNo" value="" /></td>
-
-												<% } else { %>
-												<td><input type="text" name="phNo"
-													value="<%=phNo.toString() %>" /></td>
-												<% } %>
-											
-											<tr>
-												<td>Email</td>
-												<% String email = ((User)request.getSession().getAttribute("user")).getEmail().toString(); %>
-
-												<% if (email==null || email.isEmpty()) { %>
-												<td>...</td>
-
-												<% } else { %>
-												<td><%=email %></td>
-												<% } %>
-											</tr>
-											<!-- <tr>
-                        <td >Password</td>
-                        <td><a href="" data-toggle="modal" data-target="#chgPassword" data-whatever="" >Change password</a>
-                        </td>
-                        
-                           
-                      </tr> -->
-
-										</tbody>
-									</table>
-
-
+											<%
+												} else {
+											%>
+											<td><%=email%></td>
+											<%
+												}
+											%>
+										
+									</tbody>
+								</table>
+								<div style="margin-left: 45%">
+									<button type="submit" class="btn btn-primary"
+										id="subProfileChange">Change</button>
 								</div>
-
 							</div>
 						</div>
-
-						<!--             <div class="modal fade" id="chgPassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-  					<div class="modal-dialog" role="document">
-    						
-    					<div class="modal-content">
-      						<div class="modal-header">
-        						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        						<h4 class="" id="exampleModalLabel">Change Password</h4>
-      								</div>
-      								<div class="modal-body">
-        							
-          							<div class="form-group" id="PasswordEnter">
-                    
-                  					  <input type="password" id="password" name="password" class="form-control input-lg" placeholder="Desired Password *" required="required">
-                    					<span id="result"></span>
-				    					</div>
-				    				<span class="hint">Create a strong password with more than 8 characters, lowercase, uppercase and special characters</span>
-				   					 <div class="form-group">
-                    				<input type="password" id="repassword" name="repassword" class="form-control input-lg" placeholder="Re-enter Password *" required="required" onkeyup="checkPass(); return false;">
-				    				<span id="confirmMessage" class="confirmMessage"></span>
-				    					</div>
-          							
-        
-      						</div>
-      						<div class="modal-footer">
-        						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        						<input type="submit" class="btn btn-primary" value="Submit" id="subPassChng"/>
-      						</div>
-      						
-    				</div>
-    				
-  				</div>
-		</div> -->
-
-						<div class="panel-footer">
-							<span id="passSuccess"></span>
-						</div>
-
-
-
-
-					</div>
-				</div>
+				
+				</form>
+				<!-- 	<div class="panel-footer">
+					<span id="passSuccess"></span>
+				</div> -->
 			</div>
-			<div style="margin-left: 45%">
-				<button type="submit" class="btn btn-primary" id="subProfileChange">Change</button>
-			</div>
-		</form>
+		</div>
 	</div>
+
+	
+	</div>
+	
 	<!-- jQuery -->
-	<script src="/CAT-APP-PROJECT/resources/js/jquery.js"></script>
+	<!-- <script src="/CAT-APP-PROJECT/resources/js/jquery.js"></script>
 	<script src="/CAT-APP-PROJECT/resources/js/passwordStrength.js"></script>
+
+	Bootstrap Core JavaScript
+	<script src="/CAT-APP-PROJECT/resources/js/bootstrap.min.js"></script>
+	<script src="/CAT-APP-PROJECT/resources/js/homepage.js"></script> -->
+
+	<script src="/CAT-APP-PROJECT/resources/js/jquery.min.js"></script>
+
+	<script src="/CAT-APP-PROJECT/resources/js/metisMenu.min.js"></script>
+
+
 
 	<!-- Bootstrap Core JavaScript -->
 	<script src="/CAT-APP-PROJECT/resources/js/bootstrap.min.js"></script>
-	<script src="/CAT-APP-PROJECT/resources/js/homepage.js"></script>
+
+	<!-- METISMENU SCRIPTS -->
+	<script src="/CAT-APP-PROJECT/resources/js/jquery.metisMenu.js"></script>
+	<!-- CUSTOM SCRIPTS -->
+	<script src="/CAT-APP-PROJECT/resources/js/sb-admin-2.js"></script>
 
 
 </body>

@@ -68,7 +68,7 @@ public class DownloadFileServlet extends HttpServlet {
 		PreparedStatement lPstmt 			= null;
 		ResultSet lRst					    = null;
 		Connection lConn 					= null;
-		File lLocalFile 					= new File("C:\\Users\\ssingh\\serverfiles\\");
+		File lLocalFile 					= new File("C:\\Users\\CATAPP\\serverfiles\\");
 		String lFolderLoc 					= null;
 		lConn=new DBConnection().getConnection();
 		if(request.getParameter("download")!=null){
@@ -88,7 +88,7 @@ public class DownloadFileServlet extends HttpServlet {
 			return;
 		}*/
 		if(lLocalFile.exists()){
-			lFolderLoc ="C:\\Users\\ssingh\\serverfiles\\";
+			lFolderLoc ="C:\\Users\\CATAPP\\serverfiles\\";
 		}else{
 			// Write code as per the server //
 		}
@@ -343,7 +343,7 @@ public class DownloadFileServlet extends HttpServlet {
 			
 			//////////////////////// Template Read Start //////////////////////////////////
 			
-			XSSFWorkbook lWorkBook = new XSSFWorkbook(new FileInputStream("C:\\Users\\ssingh\\serverfiles\\templates\\Cardiomyocytes.xlsx"));       
+			XSSFWorkbook lWorkBook = new XSSFWorkbook(new FileInputStream("C:\\Users\\CATAPP\\serverfiles\\templates\\Cardiomyocytes.xlsx"));       
 			XSSFFormulaEvaluator.evaluateAllFormulaCells(lWorkBook);
 			lWorkBook.setForceFormulaRecalculation(true);
 	       
