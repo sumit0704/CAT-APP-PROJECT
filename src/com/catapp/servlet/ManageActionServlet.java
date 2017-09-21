@@ -66,7 +66,7 @@ public class ManageActionServlet extends HttpServlet {
 					received_email + "'";
 			ltest=true;
 			
-		}else if(received_Authorization==null || received_Authorization.trim().length()>0 ){
+		}else if(received_Authorization==null || received_Authorization.trim().length()==0 ){
 			update_query = "update users set approved = 'Y'  where email = '" + 
 					received_email + "'";
 			ltest=true;

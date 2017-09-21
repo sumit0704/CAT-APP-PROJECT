@@ -1,13 +1,15 @@
 package com.catapp.servlet;
-import java.io.IOException;  
-import java.io.PrintWriter;  
-	  
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;  
-import javax.servlet.http.HttpServletRequest;  
-import javax.servlet.http.HttpServletResponse;  
-import javax.servlet.http.HttpSession; 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.catapp.entity.User; 
 @WebServlet(value="/BackToHomeServlet")
 public class BackToHomeServlet extends HttpServlet {
 
@@ -26,7 +28,13 @@ public class BackToHomeServlet extends HttpServlet {
 		System.out.println("Session is"+session);
 		try{
 			if(session!=null){
-				request.getServletContext().getRequestDispatcher("/WEB-INF/welcomeUserHome.jsp").forward(request, response);
+				User lUser= (User)session.getAttribute("user");
+				if(lUser.getIs_admin()!=null && lUser.getIs_admin().equals("Y")){
+					request.getServletContext().getRequestDispatcher("/WEB-INF/adminUser.jsp").forward(request, response);	
+				}else{
+					request.getServletContext().getRequestDispatcher("/WEB-INF/welcomeUserHome.jsp").forward(request, response);
+					
+				}
 			}
 		
 		else{
