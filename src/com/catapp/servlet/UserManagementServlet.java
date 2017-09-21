@@ -70,7 +70,7 @@ public class UserManagementServlet extends HttpServlet {
 		
       	HttpSession session=request.getSession();  
 			session.setAttribute("email",email);
-			session.setAttribute("user", lUser);
+			session.setAttribute("edituser", lUser);
 
 		
 		// request.getRequestDispatcher("/WEB-INF/UserManagement.jsp").include(request, response);

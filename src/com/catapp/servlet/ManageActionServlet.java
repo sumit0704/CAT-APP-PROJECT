@@ -90,7 +90,7 @@ public class ManageActionServlet extends HttpServlet {
 				//String lAdminEmailAddress="ssumit61@gmail.com";
 				String lSubject="Cat-App Request Approved";
 				String lBody= " Your request for Cat-App access has been approved. Kindly login using your user name and password.";
-				SendEmail.sendEmail(received_email,lSubject,lBody);
+				//SendEmail.sendEmail(received_email,lSubject,lBody);
 				
 			}
 		} catch (SQLException e) {

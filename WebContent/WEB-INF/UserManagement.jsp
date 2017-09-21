@@ -56,7 +56,7 @@
 
 	<div id="wrapper">
 		<%
-			String isAdmin = ((User) request.getSession().getAttribute("user")).getIs_admin();
+			String isAdmin = ((User) request.getSession().getAttribute("edituser")).getIs_admin();
 			if (null == isAdmin || "" == isAdmin.trim()) {
 		%>
 		<jsp:include page="headerUserHome.jsp" />
@@ -73,20 +73,20 @@
 
 			<%
 				String First_name = smallTools
-						.safeString(((User) request.getSession().getAttribute("user")).getFirst_name());
-				String Last_name = smallTools.safeString(((User) request.getSession().getAttribute("user")).getLast_name());
-				String Email2 = smallTools.safeString(((User) request.getSession().getAttribute("user")).getEmail());
-				String Approved = smallTools.safeString(((User) request.getSession().getAttribute("user")).getApproved());
+						.safeString(((User) request.getSession().getAttribute("edituser")).getFirst_name());
+				String Last_name = smallTools.safeString(((User) request.getSession().getAttribute("edituser")).getLast_name());
+				String Email2 = smallTools.safeString(((User) request.getSession().getAttribute("edituser")).getEmail());
+				String Approved = smallTools.safeString(((User) request.getSession().getAttribute("edituser")).getApproved());
 				String Supervisorname = smallTools
-						.safeString(((User) request.getSession().getAttribute("user")).getSupervisorname());
+						.safeString(((User) request.getSession().getAttribute("edituser")).getSupervisorname());
 				String Phone_number = smallTools
-						.safeString(((User) request.getSession().getAttribute("user")).getPhone_number());
+						.safeString(((User) request.getSession().getAttribute("edituser")).getPhone_number());
 				String Institution = smallTools
-						.safeString(((User) request.getSession().getAttribute("user")).getInstitution());
+						.safeString(((User) request.getSession().getAttribute("edituser")).getInstitution());
 				String Supervisorphone = smallTools
-						.safeString(((User) request.getSession().getAttribute("user")).getSupervisorphone());
+						.safeString(((User) request.getSession().getAttribute("edituser")).getSupervisorphone());
 				String Supervisoremail = smallTools
-						.safeString(((User) request.getSession().getAttribute("user")).getSupervisoremail());
+						.safeString(((User) request.getSession().getAttribute("edituser")).getSupervisoremail());
 			%>
 
 
