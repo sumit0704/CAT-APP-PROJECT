@@ -259,7 +259,6 @@ SELECT * from users;
 					var cell = $(e.target).get(0); // This is the TD you clicked
 					var tr = $(this); // This is the TR you clicked
 					alert($(this).find(".user_id").text());
-
 					$.post("${pageContext.request.contextPath}/UserManagement",
 							function(data) {
 								var win = window.open("http://google.com");
@@ -269,7 +268,6 @@ SELECT * from users;
 									close();
 								}
 							});
-
 					$.post("${pageContext.request.contextPath}/UserManagement",
 							{
 								User_ID : $(this).find(".user_id").text()
@@ -279,7 +277,6 @@ SELECT * from users;
 								$("#test").replaceWith(newdata);
 								nWin();
 							})
-
 				});
 		$('#Search-Data-and-Model').click(function() {
 			$('#result').hide();
@@ -306,33 +303,26 @@ SELECT * from users;
 				compoundName : $('#compoundNamer').text(),
 				submitValue : $('#submission').text(),
 				MolWeight : $('#Molecularweight').text(),
-
 				refDose : $('#Ref_dose').is(":checked"),
 				noel : $('#NOEL').is(":checked"),
 				refConc : $('#Ref_conc').is(":checked"),
-
 				onbd : $('#ONBD').is(":checked"),
 				onbdl : $('#ONBDL').is(":checked"),
-
 				oralSlope : $('#Oral_slope').is(":checked"),
 				ihalUnit : $('#Ihal_unit').is(":checked"),
 				cancPot : $('#Canc_pot').is(":checked"),
-
 				smilee : $('#smiles').text(),
 				CompoundImage : $('#compoundImage').text()
 			}, // end of submitting data.
-
 			function(newdata) { // When search results received.
 				// alert("Search Results Received. " + newdata);
 				// var w = window.open();
 				// $(w.document.body).replaceWith(newdata);
-
 				$('#spinner').hide(), $('#result').show();
 				$('#reset_check').css("display", "block");
 				// $('#resultss').replaceWith(newdata);
 				// $('#just_a_test').replaceWith(newdata);
 				$('#step3').replaceWith(newdata);
-
 				// alert("hello 2345");
 				// $('#just_a_test').dialog();
 				// $('#just_a_test').dialog("open");
@@ -344,7 +334,6 @@ SELECT * from users;
 				// $('#results').dialog( "option", "width", 300 );
 				// alert("hello");
 				// alert($(window).width()*0.8);
-
 				// $(w.document.body).replaceWith(newdata);
 			});
 		}); // end of $('#Search-Data-and-Model').click(function() {}
@@ -372,4 +361,5 @@ SELECT * from users;
 
 
 </body>
+
 </html>

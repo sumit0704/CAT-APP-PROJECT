@@ -1,6 +1,5 @@
 <%@taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 
 <style>
@@ -65,16 +64,19 @@
 		</div>
 
 		<div class="form-group" align="left">
-			<label> Please select a phenoType:</label> <select name="phenotypes" id="phenotypes">
+			<label> Please select a phenoType:</label> <select name="phenotypes" multiple="multiple" id="phenotypes">
 				<option value='0'>---Select One---</option>
 			</select>
 		</div>
 
 		
 		
-		<div class="form-group">
+	<div class="form-group" style="margin-left:-1px;">
 		<input type="submit" class="btn btn-primary"
 		name="download" style="border-radius: 5px;" value="Download">
+	<input type="submit" class="btn btn-default"
+		name="json" style="border-radius: 5px;" value="Download Json">
+		</div>
 		</div>
 	</div>
 	</form>

@@ -1,6 +1,7 @@
-
+<%@page pageEncoding="UTF-8" %>
 <!-- Navigation -->
 <%@ page import="com.catapp.entity.User"%>
+<meta http-equiv="Content-Type" content="text/html; charset= UTF-8">
 
 <nav class="navbar navbar-inverse navbar-static-top" role="navigation"
 	style="margin-bottom: 0">

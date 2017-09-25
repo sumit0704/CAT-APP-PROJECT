@@ -36,6 +36,7 @@ public class Phenotypes extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String lCellLine 		  = 			request.getParameter("lCM");
+		String lAssay 			  =             request.getParameter("lAssay");
 		Connection lConn	   	  = 			null;
 		PreparedStatement lPstmt  = 	        null;
 		ResultSet lRst            = 			null;
@@ -45,8 +46,14 @@ public class Phenotypes extends HttpServlet {
 			StringBuilder lQuery = new StringBuilder(" select a.name,a.tag From phenotypes a join cell_pheno_mapping b ")
 								   .append(" on a.entity_id=b.phenotype_id join celllines c on ")
 			 					   .append(" c.entity_id=b.cellline_id where c.tag=? ");
+			if(lAssay!=null && lAssay.trim().length()>0){
+				lQuery.append(" and b.assay_type=?");
+			}
 			lPstmt=lConn.prepareStatement(lQuery.toString());
 			lPstmt.setString(1, lCellLine);
+			if(lAssay!=null && lAssay.trim().length()>0){
+				lPstmt.setString(2, lAssay);
+			}
 			lRst=lPstmt.executeQuery();
 			StringBuilder lXMLBuilder = new StringBuilder();
 			lXMLBuilder.append("<phenolist>");

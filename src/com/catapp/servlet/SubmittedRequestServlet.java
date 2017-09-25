@@ -163,7 +163,7 @@ public class SubmittedRequestServlet extends HttpServlet{
 					
 				}
 			}
-			String lAdminEmailAddress="sharma.ashima91@gmail.com";
+			String lAdminEmailAddress="ssumit61@gmail.com";
 			String lSubject="New User Request for Cat-App";
 			String lBody= "Dear Admin, A new user "+ lFirstName +" "+ lLastName+" has requested the access for Cat-App Database.";
 			SendEmail.sendEmail(lAdminEmailAddress,lSubject,lBody);

@@ -132,6 +132,10 @@ function selectTimePoint(){							// step 3 to 4
 		}
 		$("#step6").hide();
 	} else if (Cellline == "HEP" || Cellline == "Macro"){
+		$(".all_time_div").hide();	
+		$("#timepoints_48").show();	
+		$("#step4").show();
+		$("#step4").append("<input type='hidden' name='timepoint' value='48hr'>");
 		step4_to_5();
 		}
 	else{step5_to_6();}	
@@ -539,12 +543,16 @@ function matchCasNumbers(){
 function selectphenotypes(){
 	
 	var lCellLine=jQuery("#cellline").val();
+	var lAssaystring=lCellLine+"_"+"assay_select";
+	var lAssay=jQuery("#"+lAssaystring).val();
+	jQuery("#phenotypes").html("");
 	$.ajax({
         type: "GET",
         url: "Phenotypes",
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         data: { 
-            'lCM': lCellLine
+            'lCM': lCellLine,
+            'lAssay': lAssay
           },
           	 success: function (responseText) {
           		/* alert("Test");*/

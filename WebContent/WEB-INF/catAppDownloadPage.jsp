@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@page pageEncoding="ISO-8859-1" %>
 <%@ page import="com.catapp.entity.User"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -8,11 +7,13 @@
 <html>
 <head>
 
-<meta charset="utf-8">
+<!-- <meta charset="UTF-8">
 <meta https-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="">
-<meta name="author" content="">
+<meta name="author" content=""> -->
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
 
 <title>Download</title>
 
@@ -181,14 +182,13 @@
 
 									<div id="cell_line_list" style="color: Gray; margin: 20px;">
 										<input type="checkbox" disabled class="cell_lines" id="CM"
-											name="CM" value="CM"><span id="CM_B">1. iCell
-											Cardiomyocytes<br>
+											name="CM" value="CM"><span id="CM_B">1.iCell®Cardiomyocytes<br>
 										</span> <input type="checkbox" disabled class="cell_lines" id="HEP"
 											name="HEP" value="HEP"><span id="HEP_B">2.
-											iCell Hepatocytes 2.0<br>
+											Hepatocytes 2.0<br>
 										</span> <input type="checkbox" disabled class="cell_lines" id="ENDO"
 											name="ENDO" value="ENDO"><span id="ENDO_B">3.
-											iCell Endothelial Cells<br>
+											iCell®Endothelial Cells<br>
 										</span> <input type="checkbox" disabled class="cell_lines" id="HUV"
 											name="HUV" value="HUV"><span id="HUV_B">4.
 											Human Umbilical Vein Endothelial Cells<br>
@@ -264,8 +264,8 @@
 									<div id="file_button" style="margin-left: 80px; display: none;">
 										<br></br> <input type="submit" class="btn btn-primary"
 											name="download" style="border-radius: 5px;" value="Download">
-										<input type="submit" class="btn btn-default" name="json"
-											style="border-radius: 5px;" value="Convert to Json">
+										<!-- <input type="submit" class="btn btn-default" name="json"
+											style="border-radius: 5px;" value="Convert to Json"> -->
 									</div>
 								</form>
 							</div>

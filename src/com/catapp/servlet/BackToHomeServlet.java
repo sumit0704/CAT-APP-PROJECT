@@ -29,6 +29,7 @@ public class BackToHomeServlet extends HttpServlet {
 		try{
 			if(session!=null){
 				User lUser= (User)session.getAttribute("user");
+				System.out.println("User is Admin------>"+lUser.getIs_admin());
 				if(lUser.getIs_admin()!=null && lUser.getIs_admin().equals("Y")){
 					request.getServletContext().getRequestDispatcher("/WEB-INF/adminUser.jsp").forward(request, response);	
 				}else{

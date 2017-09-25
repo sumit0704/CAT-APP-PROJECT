@@ -126,7 +126,8 @@ data2 {
 		
 			<div class="w3-sidebar w3-bar-block w3-card-2 w3-animate-left"
 				id="leftMenu" >
-				<div id="Column-A" style="min-height: 600px; padding: 9px;">
+				
+				<div id="Column-A" style="min-height: 600px; padding: 3px;">
 					<sql:setDataSource var="snapshot"
 						driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
 						url="jdbc:sqlserver://IRUSYN1LAP\\SQLEXPRESS;databaseName=CATAPP;integratedSecurity=true" />

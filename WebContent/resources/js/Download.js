@@ -698,6 +698,8 @@ function matchCasNumbers(){
 function selectphenotypesForDownload(){
 	
 	var lCellLine=jQuery("#cellLines").val();
+	
+	jQuery("#phenotypes").html("");
 	$.ajax({
         type: "GET",
         url: "Phenotypes",
@@ -719,6 +721,7 @@ function selectphenotypesForDownload(){
 }
 function selectphenotypesForDownloadCell(){
 	var lCellLine=jQuery("#cellLine").val();
+	jQuery("#phenotypes").html("");
 	$.ajax({
         type: "GET",
         url: "Phenotypes",
@@ -736,7 +739,42 @@ function selectphenotypesForDownloadCell(){
 
         }
           
+          
     });
+	selectTimepoint();
+}
+function selectTimepoint(){
+	var lCellLine=jQuery("#cellLine").val();
+	jQuery("#timepoint").children('option[value="1"]').show();
+	jQuery("#timepoint").children('option[value="2"]').show();
+	jQuery("#timepoint").children('option[value="3"]').show();
+	jQuery("#timepoint").children('option[value="4"]').show();
+	jQuery("#timepoint").children('option[value="5"]').show();
+	jQuery("#timepoint").children('option[value="6"]').show();
+	jQuery("#timepoint").children('option[value="7"]').show();
+	if(lCellLine=="CM"){
+		jQuery("#timepoint").children('option[value="1"]').hide();
+		jQuery("#timepoint").children('option[value="2"]').hide();
+		jQuery("#timepoint").children('option[value="3"]').hide();
+		jQuery("#timepoint").children('option[value="6"]').hide();
+		jQuery("#timepoint").children('option[value="7"]').hide();
+		
+	}else if(lCellLine=="HEP"){
+		jQuery("#timepoint").children('option[value="1"]').hide();
+		jQuery("#timepoint").children('option[value="2"]').hide();
+		jQuery("#timepoint").children('option[value="3"]').hide();
+		jQuery("#timepoint").children('option[value="4"]').hide();
+		jQuery("#timepoint").children('option[value="5"]').hide();
+		jQuery("#timepoint").children('option[value="6"]').hide();
+	}else{
+		jQuery("#timepoint").children('option[value="1"]').show();
+		jQuery("#timepoint").children('option[value="2"]').show();
+		jQuery("#timepoint").children('option[value="3"]').show();
+		jQuery("#timepoint").children('option[value="4"]').show();
+		jQuery("#timepoint").children('option[value="5"]').show();
+		jQuery("#timepoint").children('option[value="6"]').show();
+		jQuery("#timepoint").children('option[value="7"]').show();
+	}
 }
 //function closemessageheader(){
 //	jQuery(".alert").hide();

@@ -180,26 +180,9 @@ public class DownloadFileServlet extends HttpServlet {
 							// Get the JSON text.
 							    
 							    response.setHeader("Content-disposition","attachment; filename="+ lFileName+".json");
-								response.setContentType(lFileType);
-								File lJsonFile =new File ("C:/Users/CATAPP/serverfiles/NewJson.txt");
-								lJsonFile.createNewFile();
-								FileWriter lWriter = new FileWriter("C:/Users/CATAPP/serverfiles/NewJson.txt");
-								lWriter.write(json.toJSONString());
-								OutputStream out = response.getOutputStream();
-								File lMyFile = new File("C:/Users/CATAPP/serverfiles/NewJson.txt");
-								// FileReader lReader = new FileReader(lMyFile);
-								FileInputStream in = new FileInputStream(lMyFile);
-								byte[] buffer = new byte[4096];
-								int length;
-								while ((length = in.read(buffer)) > 0){
-									out.write(buffer, 0, length);
-								}
-								in.close();
-								out.flush();
-								lWriter.close();
-								File lToDelete = new File("C:/Users/CATAPP/serverfiles/NewJson.txt");
-								lToDelete.delete();
-								
+							    response.setContentType("text/x-json;charset=UTF-8");
+								String json1 = json.toJSONString();
+								response.getWriter().write(json1);
 						}
 					}
 					 

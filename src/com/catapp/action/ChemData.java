@@ -78,6 +78,8 @@ public class ChemData {
 		lTPMap.put(3l, "60min");
 		lTPMap.put(4l, "90min");
 		lTPMap.put(5l, "24hr");
+		lTPMap.put(6l, "72hr");
+		lTPMap.put(7l, "48hr");
 	
 		return lTPMap;
 	}

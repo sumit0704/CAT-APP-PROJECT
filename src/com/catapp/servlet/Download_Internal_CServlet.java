@@ -49,11 +49,11 @@ public class Download_Internal_CServlet extends HttpServlet {
 				"HEP_CalceinAM", "HEP_LipidTOX", "ENDO_Cyto", "ENDO_CTG", "ENDO_TubForm", 
 				"HUV_Cyto", "HUV_CTG", "HUV_TubForm", 
 				"Neur_Neur", "Neur_CTG", 
-				"Macro_CalceinAM", "Macro_Mito" ));
+				"Macro_CalceinAM", "Macro_Mito","CM_Ca2","CM_Hoechst","CM_Mito","HEP_Hoechst","HEP_Mito","HEP_CalceinCM","HEP_LipidTOX" ));
 		
 		
 		ArrayList<String> selected_assay_1_pheno = new ArrayList<String>();
-		for(int x = 0; x < 66; x = x + 1) {
+		for(int x = 0; x < 74; x = x + 1) {
 	         // System.out.println("cell lines: "+ cell_lines.get(x));
 	         String received_value = request.getParameter(assay_1_pheno.get(x));	// receiving the post value
 	         if (received_value != null){
