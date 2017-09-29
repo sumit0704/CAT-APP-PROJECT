@@ -1,14 +1,14 @@
 var fig_width = 500;
 function magnify() {
 	// alert("hello");
-	fig_width = fig_width * 1.2;
+	fig_width = fig_width * 1.0;
 	$( "#response-curve" ).width(fig_width);
 	// class="img-responsive" 
 	}
 
 function shrink() {
 	// alert("hello");
-	fig_width = fig_width * 0.8;
+	fig_width = fig_width * 1.0;
 	$( "#response-curve" ).width(fig_width);
 	// class="img-responsive" 
 	}

@@ -56,7 +56,18 @@ public class Phenotypes extends HttpServlet {
 			}
 			lRst=lPstmt.executeQuery();
 			StringBuilder lXMLBuilder = new StringBuilder();
-			lXMLBuilder.append("<phenolist>");
+			if(lAssay!=null && lAssay.trim().length()>0){
+				lXMLBuilder.append("<phenolist>");
+				
+			}else{
+				
+				lXMLBuilder.append("<phenolist>");
+				lXMLBuilder.append("<pheno>");
+				lXMLBuilder.append("<name>" + "--Select All--"+"</name>");
+				lXMLBuilder.append("<tag>" + "SAA" +"</tag>");
+				lXMLBuilder.append("</pheno>");
+				
+			}
 			while(lRst.next()){
 				lXMLBuilder.append("<pheno>");
 				lXMLBuilder.append("<name>" + lRst.getString(1)+"</name>");

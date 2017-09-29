@@ -98,11 +98,11 @@ $(document).ready(function()
 			<span id="HEP_CalceinAM_B"> Cell Viability<br></span> <input
 				type="checkbox" disabled class="all_assays" id="HEP_LipidTOX"
 				name="HEP_LipidTOX" value='HEP_LipidTOX'> <span
-				id="HEP_LipidTOX_B"> Lipid Accumulation<br></span> <input
+				id="HEP_LipidTOX_B"> Lipid Accumulation<br></span> <!-- <input
 				type="checkbox" disabled class="all_assays" id="HEP_Seq"
 				name="HEP_Seq" value='HEP_Seq'> <span id="HEP_Seq_B">
 				TompOseq<br>
-			</span> <br>
+			</span>  --><br>
 		</div>
 		<div id="ENDO_assays" class="all_assays"
 			style="display: none; color: Gray; margin-left: 20px;">

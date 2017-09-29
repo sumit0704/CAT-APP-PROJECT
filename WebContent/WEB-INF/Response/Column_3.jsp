@@ -191,9 +191,9 @@ System.out.println("String: " + image_path);
   <div id="menu3" class="tab-pane fade" style="padding: 15px;">
   																					<!-- Assay data div -->
 	<papaya>
-	<sql:setDataSource var="snapshot"
-	driver="com.microsoft.sqlserver.jdbc.SQLServerDriver"
-	url="jdbc:sqlserver://IRUSYN1LAP\\SQLEXPRESS;databaseName=CATAPP;integratedSecurity=true" />
+	<sql:setDataSource var="snapshot" driver="com.mysql.jdbc.Driver"
+     url="jdbc:mysql://localhost:3306/response"
+     user="root"  password="vibscatapp"/>
 	
 	<sql:query dataSource="${snapshot}" var="Assay_data_result">
 		SELECT * from assay_data where (phenotype = '${endpoint_string2}' AND catapp_id = '${chemical}');

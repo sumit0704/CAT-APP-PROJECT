@@ -7,7 +7,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <%@taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 
+<script type="text/javascript">
+$(function() {
+	  var filter = $('#phenotype');
+	  filter.on('change', function() {
+	    if (this.selectedIndex) return; //not `Select All`
+	    filter.find('option:gt(0)').prop('selected', true);
+	    filter.find('option').eq(0).prop('selected', false);
+	  });
+	});
 
+
+
+</script>
 <head>
 <!-- <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /> -->
 <title>CAT-APP Upload</title>
@@ -25,7 +37,7 @@
 		
 		<div class="form-group">
 			<label> Please select a phenoType:</label> <select name="phenotype" multiple="multiple" id="phenotype" onchange='selectTimepoint()'>
-					<option value="0">---Select One---</option>
+					
 				
 			</select>
 		</div>

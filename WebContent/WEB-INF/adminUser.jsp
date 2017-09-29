@@ -118,7 +118,7 @@
 										</form>
 									</span>
 									<span class="text-center">
-										<form action="responseServlet" method="post">
+										<form action="AnalysisPageAction" method="post">
 											<input type="submit" class="btn btn-primary btn-xs"
 												value="Response Curves">
 										</form>

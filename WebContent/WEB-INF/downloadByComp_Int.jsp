@@ -1,6 +1,6 @@
 <%@taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
+<script src="/CAT-APP-PROJECT/resources/js/Download.js"></script>
 
 <style>
 
@@ -9,6 +9,19 @@
   overflow-y: scroll; 
 }
 </style>
+<script type="text/javascript">
+$(function() {
+	  var filter = $('#phenotypes');
+	  filter.on('change', function() {
+	    if (this.selectedIndex) return; //not `Select All`
+	    filter.find('option:gt(0)').prop('selected', true);
+	    filter.find('option').eq(0).prop('selected', false);
+	  });
+	});
+
+
+
+</script>
 <div class="row">
 		<form action="DownloadbyCompoundServlet" method="post">
 	<div class="col-lg-8 col-md-offset-2">
@@ -65,7 +78,7 @@
 
 		<div class="form-group" align="left">
 			<label> Please select a phenoType:</label> <select name="phenotypes" multiple="multiple" id="phenotypes">
-				<option value='0'>---Select One---</option>
+				
 			</select>
 		</div>
 

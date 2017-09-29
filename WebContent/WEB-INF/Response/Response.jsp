@@ -209,10 +209,10 @@ SELECT * from chemical_cas_concawe_mapping;
 			</div>
 
 			<div class="w3-sidebar w3-bar-block w3-card-2 w3-animate-right"
-				style="right: 0;  border-radius: 10px; position: absolute; z-index: 2;"
+				style="right: 0;  border-radius: 5px; position: absolute; z-index: 2;"
 				id="rightMenu">
 				<!-- right menu -->
-				<div id="Column-B" style="padding-left: 9px">
+				<div id="Column-B" style="padding-left: 3px">
 					<br><span style="font-size: 13px; font-weight: bold;">
 							<table id="table_2">
 								<tr>
@@ -277,7 +277,7 @@ SELECT * from chemical_cas_concawe_mapping;
 			</div>
 
 
-			<div id="central_area" style="height: 90vh;  margin-left:22%; margin-right:20%; z-index: 1;">
+			<div id="central_area" style="height: 80vh;  margin-left:22%; margin-right:20%; z-index: 1;">
   	        <button  onclick="openLeftMenu()" id="button-open-left"
   		style="background-color: #3892d3; display: none; position: relative; z-index: 1;">
   		<span class="fa fa-chevron-right"></span> Open left menu</button>
@@ -294,17 +294,12 @@ SELECT * from chemical_cas_concawe_mapping;
   		style="background-color: #3892d3; position: relative; z-index: 1;">
   		<span class="fa fa-chevron-right"></span> Close</button>
   		
-  	<div id="colCenter" style="height: 96%; border-radius: 25px; padding: 9px; 
+  	<div id="colCenter" style="height: 100%; border-radius: 20px; padding: 3px; 
   		z-index: 1; border:5px solid #157fcc;">
   	
-  	
-  	<!--  
-<div style="background-color: #157fcc; width: 100%; height: 50px; position: absolute; top: 94px; 
-	padding: -9px; margin: -9px; border-radius: 15px; z-index: 1; " id="blocking-piece">
-</div>-->
 
-		<div id="inside-C" style=""> 
-				<br></br><br>
+		<div id="inside-C" > 
+				
 				<data2>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Chemical details<br>				
 				&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Assay methods<br>
 				&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Dose response curves<br>
@@ -318,7 +313,6 @@ SELECT * from chemical_cas_concawe_mapping;
 				&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Comparison to commonly known chemicals<br>
 				
 				</data2>
-				<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 			</div><!--  end of id="inside-C" -->
 			</div>
 			<!--  end of id="Column-C" -->

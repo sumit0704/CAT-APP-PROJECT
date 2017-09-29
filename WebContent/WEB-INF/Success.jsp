@@ -114,7 +114,7 @@ a:active {
 		<br>
 
 		<div style="text-align: center;">
-		<c:if test="${param.success eq 1}">
+		
 			<a href="${pageContext.request.contextPath}/UploadServlet">
 			
 				<button type="button" class="btn btn-primary">Upload more

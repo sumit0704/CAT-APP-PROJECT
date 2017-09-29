@@ -1,8 +1,7 @@
-<%@page pageEncoding="UTF-8" %>
+
 <!-- Navigation -->
 <%@ page import="com.catapp.entity.User"%>
 
-<meta http-equiv="Content-Type" content="text/html; charset= UTF-8">
 <nav class="navbar navbar-inverse navbar-static-top" role="navigation"
 	style="margin-bottom: 0">
 	<div class="navbar-header">
@@ -16,7 +15,7 @@
 	<!-- /.navbar-header -->
 
 	<ul class="nav navbar-top-links navbar-right">
-		<li class="dropdown"><a class="dropdown-toggle"
+		<li class="dropdown"><a class="dropdown-toggle navbar-brand"
 			data-toggle="dropdown" href="#"> <% String fName=((User)request.getSession().getAttribute("user")).getFirst_name().toString();%>
 
 				<span>Welcome <%=fName %><span /> <i class="fa fa-caret-down"></i></a>
@@ -27,11 +26,11 @@
 				<li class="divider"></li>
 				<li><a href="LogoutServlet"><i class="fa fa-sign-out fa-fw"></i>
 						Logout</a></li>
-			</ul>
-		<li><a href="BackToHomeServlet"> Home</a></li>
-		<li><a href="redirect?destination=contact"> Contact us</a></li>
-		<li><a href="redirect?destination=about"> About us</a></li>
-		</li>
+			</ul> 
+		<li ><a class="navbar-brand" href="BackToHomeServlet"> Home</a></li>
+		<li ><a class="navbar-brand" href="redirect?destination=contact"> Contact us</a></li>
+		<li ><a class="navbar-brand" href="redirect?destination=about"> About us</a></li>
+		
 	</ul>
 </nav>
 

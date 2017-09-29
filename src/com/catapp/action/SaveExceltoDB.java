@@ -100,9 +100,9 @@ public class SaveExceltoDB {
 			XSSFSheet lControlSheet = myWorkBook.getSheet("Control");
 			
 			String lControlQuery = "INSERT INTO control_readings (header_id,control_tag,"
-					+ " pointone,pointfive,one,ten,fifty,logged_date,logged_by,last_updated_date,"
+					+ " pointone,logged_date,logged_by,last_updated_date,"
 					+ " last_updated_by,is_active,rowstate) "
-		            + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		            + " VALUES(?,?,?,?,?,?,?,?,?)";
 			lPstmt=pConnection.prepareStatement(lControlQuery);
 			
 			for(int i=1;i<=lControlSheet.getLastRowNum();i++){
@@ -110,16 +110,12 @@ public class SaveExceltoDB {
 						lPstmt.setLong(1, lheaderID);
 						lPstmt.setString(2, row.getCell(0).getStringCellValue());
 						lPstmt.setDouble(3, row.getCell(1).getNumericCellValue());
-						lPstmt.setDouble(4, row.getCell(2).getNumericCellValue());
-						lPstmt.setDouble(5, row.getCell(3).getNumericCellValue());
-						lPstmt.setDouble(6, row.getCell(4).getNumericCellValue());
-						lPstmt.setDouble(7, row.getCell(5).getNumericCellValue());
-						lPstmt.setTimestamp(8,new Timestamp(System.currentTimeMillis()));
-						lPstmt.setLong(9, 1l);
-						lPstmt.setNull(10, java.sql.Types.TIMESTAMP);
-						lPstmt.setNull(11, java.sql.Types.BIGINT);
-						lPstmt.setString(12, "Y");
-						lPstmt.setInt(13, 1);
+						lPstmt.setTimestamp(4,new Timestamp(System.currentTimeMillis()));
+						lPstmt.setLong(5, 1l);
+						lPstmt.setNull(6, java.sql.Types.TIMESTAMP);
+						lPstmt.setNull(7, java.sql.Types.BIGINT);
+						lPstmt.setString(8, "Y");
+						lPstmt.setInt(9, 1);
 						lPstmt.addBatch();
 					
 				

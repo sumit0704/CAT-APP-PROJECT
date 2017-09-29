@@ -92,11 +92,13 @@ $(".all_assays").change(function() {
 
 function click_assay_button(){
 	// alert("click_assay_button()");
+	
 	var selected_assay = "";
 	var data_string = '';
 	
 	$('.all_assays > input[type=checkbox]').each(function () {
 		if($(this).prop('checked') == true){
+			
 		   	selected_assay = $(this).prop('name');
 		   	data_string += $(this).prop('name') + "=" + $(this).prop('value') + "&";
 		}
@@ -110,7 +112,8 @@ function click_assay_button(){
 	  type: 'post',
 	  success: function(data) {
 	    // alert(data);
-	    $("#file_list").replaceWith(data);
+		  $("#file_list").html(""); 
+	    $("#file_list").html(data);
 	    $('#assay_button').hide();	    
 	  }
 	});		// end of ajax()
@@ -721,7 +724,7 @@ function selectphenotypesForDownload(){
 }
 function selectphenotypesForDownloadCell(){
 	var lCellLine=jQuery("#cellLine").val();
-	jQuery("#phenotypes").html("");
+	jQuery("#phenotype").html("");
 	$.ajax({
         type: "GET",
         url: "Phenotypes",

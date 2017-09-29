@@ -2,6 +2,7 @@ package com.catapp.action;
 
 public class CatAppConstants {
 	
+	
 	public static final int catapp_chemicals=1;
 	public static final int assay_specific_controls=2;
 	public static final int vehicle=3;
@@ -30,5 +31,10 @@ public class CatAppConstants {
 	public static final String HOME="home";
 	public static final String ABOUT="about";
 	public static final String CONTACT="contact";
+	
+	public static final String downloadTypeAsIS="asIsFiles";
+	public static final String downloadTypeMolecular="byMC";
+	public static final String downloadTypeCarbon="byCN";
+	public static final String attributeCNR="C-nr";
 
 }
