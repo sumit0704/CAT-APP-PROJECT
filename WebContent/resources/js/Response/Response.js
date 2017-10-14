@@ -345,4 +345,218 @@ endpoint_data[7] = "<br><br><br><papaya>" +
 	"and maintenance media were obtained from Cellular Dynamics International (Madison, WI). " +
 	"EarlyTox Cardiotoxicity kits were purchased from Molecular Devices LLC (Sunnyvale, CA). </p>"+
 	"<br><br><br><br><br>";
+function displayChemicalData() {
+	var lSelectedCas=$('input[name=cas]:checked').val();
+	jQuery("#profile-pills").html("");
+	$('input[name=cell]').prop('checked', false);
+	$('input[name=pheno]').prop('checked', false);
+	$('input[name=tp]').prop('checked', false);
 
+	$.ajax({
+        type: "GET",
+        url: "ChemProperties",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        data: { 
+            'cas': lSelectedCas
+          },
+          	 success: function (responseText) {
+          		
+          		/* alert("Test");*/
+        	 var lChem = responseText.getElementsByTagName("chem");
+          		var lHTML="<br><table class='table'><tbody><tr>"+
+                "<td>CatApp ID</td>"+
+       		 "<td>"+lChem[0].childNodes[0].firstChild.nodeValue+"</td></tr>"+
+       		 "<tr class='success'><td>Cas Number</td>"+
+       		 "<td>"+lChem[0].childNodes[1].firstChild.nodeValue+"</td></tr>"+
+       		 "<tr class='danger'><td>Concawe ID</td>"+
+       		 "<td>"+lChem[0].childNodes[2].firstChild.nodeValue+"</td></tr>"+
+       		 "<tr class='info' ><td>Chemical Name</td>"+
+       		 "<td>"+lChem[0].childNodes[3].firstChild.nodeValue+"</td></tr>"+
+       		 "<tr class='warning'><td>Category</td>"+
+       		 "<td>"+lChem[0].childNodes[4].firstChild.nodeValue+"</td></tr>"+
+       		 "<tr><td>EC Number</td>"+
+       		 "<td>"+lChem[0].childNodes[5].firstChild.nodeValue+"</td></tr>"+
+       		 "<tr class='success'><td>Source</td>"+
+       		 "<td>"+lChem[0].childNodes[6].firstChild.nodeValue+"</td></tr></tbody></table>";
+  
+          		
+          		$("#hp").attr("aria-expanded","false");
+          		$("#home-pills").removeClass("tab-pane fade active in");
+          		$("#home").removeClass("active");
+        		$("#home-pills").addClass("tab-pane fade");
+        		var lCellLine = $('input[name=cell]:checked').val();
+        		if(lCellLine==1){
+        			
+        		} else if(lCellLine==2){
+        			
+        		} else if (lCellLine==3){
+        			
+        		}else if (lCellLine==4){
+        			
+        			$("#messages-pills").html(endpoint_data[4])	;
+        		}
+        		$("#profile-pills").html(lHTML);
+        		$("#chem").attr("aria-expanded","true");
+        		$("#profile-pills").removeClass("tab-pane fade");
+        		$("#profile-pills").addClass("tab-pane fade active in");
+        		$("#chempr").addClass("active");
+        		$("#sacl").removeClass("collapsed");
+        		$("#sac").addClass("collapsed");
+        		$("#sac").attr("aria-expanded","false");
+        		$("#sacl").attr("aria-expanded","true");
+        		$("#collapseOne").removeClass("panel-collapse collapse in");
+        		$("#collapseOne").addClass("panel-collapse collapse");
+        		$("#collapseOne").attr("aria-expanded","false");
+        		$("#collapseTwo").removeClass("panel-collapse collapse");
+        		$("#collapseTwo").addClass("panel-collapse collapse in");
+        		$("#collapseTwo").attr("aria-expanded","true");
+        		$("#collapseTwo").attr("style","height: 405px;");
+        		
+        		
+
+        }
+          
+          
+    });
+	
+
+}
+function displayPhenoData(){
+	$("#collapseTwo").removeClass("panel-collapse collapse in");
+	$("#collapseTwo").addClass("panel-collapse collapse");
+	$("#collapseTwo").attr("aria-expanded","false");
+	$("#collapseTwo").attr("style","height: 0px;");
+	$("#collapseThree").removeClass("panel-collapse collapse");
+	$("#collapseThree").addClass("panel-collapse collapse in");
+	$("#collapseThree").attr("aria-expanded","true");
+	$("#collapseThree").attr("style","height: 405px;");
+	
+	
+}
+function displayTimeData(){
+	$("#collapseThree").removeClass("panel-collapse collapse in");
+	$("#collapseThree").addClass("panel-collapse collapse");
+	$("#collapseThree").attr("aria-expanded","false");
+	$("#collapseThree").attr("style","height: 0px;");
+	$("#collapseFour").removeClass("panel-collapse collapse");
+	$("#collapseFour").addClass("panel-collapse collapse in");
+	$("#collapseFour").attr("aria-expanded","true");
+	$("#collapseFour").attr("style","height: 405px;");
+	
+}
+function displayGraph(){
+
+ var lChemical = $('input[name=cas]:checked').val();
+ var lCellLine = $('input[name=cell]:checked').val();
+ var lPhenotype= $('input[name=pheno]:checked').val();
+ var lTimePoint= $('input[name=tp]:checked').val();
+ 
+ $.ajax({
+     type: "GET",
+     url: "GenerateGraph",
+     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+     data: { 
+         'ch': lChemical,
+         'cl': lCellLine,
+         'ph': lPhenotype,
+         'tp': lTimePoint
+       },
+       	 success: function (responseText) {
+       		
+       		var base64_string = responseText;
+       		var img = document.createElement("img");
+       		// added `width` , `height` properties to `img` attributes
+       		img.width = "250px";
+       		img.height = "250px";
+       		img.src = "data:image/png;base64," + base64_string;
+       		$("#home-pills").html(img);
+       		jQuery("#home-pills").children('img').removeAttr('height');
+       		jQuery("#home-pills").children('img').removeAttr('width');
+       		
+       		jQuery("#home-pills").children('img').attr('width','400px');
+       		jQuery("#home-pills").children('img').attr('height','400px');
+       		
+       		$("#hp").attr("aria-expanded","true");
+      		$("#profile-pills").removeClass("tab-pane fade active in");
+      		$("#chempr").removeClass("active");
+    		$("#profile-pills").addClass("tab-pane fade");
+      					
+    	
+    		$("#chem").attr("aria-expanded","false");
+    		$("#home-pills").removeClass("tab-pane fade");
+    		$("#home-pills").addClass("tab-pane fade active in");
+    		$("#home").addClass("active");
+     		
+
+     }
+       
+       
+ });
+	
+}
+function finddoseresponse(){
+	 var lChemical = $('input[name=cas]:checked').val();
+	 var lCellLine = $('input[name=cell]:checked').val();
+	 var lPhenotype= $('input[name=pheno]:checked').val();
+	 var lTimePoint= $('input[name=tp]:checked').val();
+	 
+	 if(lChemical!=undefined && lCellLine!= undefined && lPhenotype!=undefined && lTimePoint!=undefined){
+		 
+		 $.ajax({
+		     type: "GET",
+		     url: "GetAssayData",
+		     contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+		     data: { 
+		         'ch': lChemical,
+		         'cl': lCellLine,
+		         'ph': lPhenotype,
+		         'tp': lTimePoint
+		       },
+		       	 success: function (responseText) {
+		       		
+		       	 	 var lChem = responseText.getElementsByTagName("dose");
+		          		var lHTML="<br><table class='table'><tbody><tr>"+
+		                "<td>1000x:</td>"+
+		       		 "<td>"+lChem[0].childNodes[0].firstChild.nodeValue+"</td></tr>"+
+		       		 "<tr class='success'><td>100x:</td>"+
+		       		 "<td>"+lChem[0].childNodes[1].firstChild.nodeValue+"</td></tr>"+
+		       		 "<tr class='danger'><td>10x:</td>"+
+		       		 "<td>"+lChem[0].childNodes[2].firstChild.nodeValue+"</td></tr>"+
+		       		 "<tr class='info' ><td>1x:</td>"+
+		       		 "<td>"+lChem[0].childNodes[3].firstChild.nodeValue+"</td></tr>"+
+		       		 "<tr class='warning'><td>Point of Departure:</td>"+
+		       		 "<td>"+lChem[0].childNodes[4].firstChild.nodeValue+"</td></tr></tbody></table>";
+		         
+		          		var lCV = responseText.getElementsByTagName("control");
+		          		
+		          		var lValue= lCV[0].childNodes[0].firstChild.nodeValue;
+		          		var lCommaLength=lValue.split(",").length
+		          		var lHTML1 ="<b>Control Values:</b><br> <table><tbody><tr><td>";
+		          		var counter=0;
+		          		for(var i=0;i<lCommaLength;i++){
+		          			if(counter>6){
+		          				counter=0;
+		          				lHTML1=lHTML1+"</tr>";
+		          			}
+		          			if(i==0){
+		          				lHTML1=lHTML1+lValue.split(",")[i]+ ",</td>"
+		          			}else if(i==lCommaLength-1){
+		          				lHTML1=lHTML1+"<td>"+lValue.split(",")[i]+"</td>";
+		          			}
+		          			else{
+		          				lHTML1=lHTML1+"<td>"+lValue.split(",")[i]+ ",</td>";
+		          				counter++;
+		          				
+		          			}
+		          		}
+		          		lHTML1=lHTML1+"<tbody></table>";
+		          		jQuery("#settings-pills").html(lHTML+lHTML1);
+
+		     }
+		       
+		       
+		 });
+		 
+	 }
+	
+}

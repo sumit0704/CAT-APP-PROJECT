@@ -210,33 +210,11 @@
 
 										<div class="form-group" id="step1">
 											<label> Please select a cell line:</label> <select
-												name="cellline" id="cellline" onchange="getAssayNames()">
-												<option value="CM">1. iCell® Cardiomyocytes</option>
-												<option value="HEP">2. iCell® Hepatocytes 2.0</option>
-												<option value="ENDO">3. iCell Endothelial Cells</option>
-												<option value="HUVEC">4. Human Umbilical Vein
-													Endothelial Cells</option>
-												<option value="Neur">5. iCell Neurons</option>
-												<option value="Macro ">6. iCell Macrophages</option>
-												<option value="A375">7. A-375 Skin Melanoma</option>
-												<option value="A549">8. A549 Lung Carcinoma</option>
-												<option value="HepG2">9. HepG2 Hepatocyte Carcinoma
-												</option>
-												<option value="HepaRG">10. HepaRG Hepatocyte
-													Carcinoma</option>
-												<option value="MCF7">11. MCF7 Breast Adenocarcinoma
-												</option>
-												<option value="HT29">12. HT-29 Colon Adenocarcinoma
-												</option>
-												<option value="LN229">13. LN-229 Glioblastoma</option>
-												<option value="HEK10205f">14. HEK10205f Human
-													Epidermal Keratinocytes; Foetal</option>
-												<option value="HLMVEC">15. HLMVEC Human Lung
-													Microvascular Endothelial Cells</option>
-												<option value="HMePC">16. HMePC Human Mammary
-													Epithelial Cell</option>
-												<option value="SH-SY5Y">17. SH-SY5Y Neuroblastoma</option>
-											</select> <a href="#" onclick="getAssayNames()"><span
+												name="cellline" id="cellline" onchange="getAssaysForCellLines()">
+												<c:forEach var="item" items="${cell}">
+												<option value="${item.key}">${item.value}</option>
+												</c:forEach>
+											</select> <a href="#" onclick="getAssaysForCellLines()"><span
 												class="fa fa-chevron-right"></span></a>
 
 											<!--  <button type="submit">submit</button>-->
@@ -248,82 +226,26 @@
 										<div id="step2" style="display: none" class="form-group">
 											<div id="CM_assays" class="all_assays" style="display: none;">
 												<label>Please select an assay name:</label> <select
-													id='CM_assay_select' onchange='selectTimePoint()'>
-													<option value='Ca2'>Ca2+ flux</option>
-													<option value='Hoechst'>Nuclei staining</option>
-													<option value='Mito'>Mitochondrial Integrity</option>
-													<option value='Seq'>TempOseq</option>
-												</select> <a href="#" onclick="selectTimePoint()"><span
+													id='CM_assay_select' onchange='getNextAttribute()'>
+													
+												</select> <a href="#" onclick="getNextAttribute()"><span
 													class="fa fa-chevron-right"></span></a>
 
 											</div>
-											<div id="HEP_assays" class="all_assays form-group"
-												style="display: none;">
-												<label>Please select an assay name:</label> <select
-													id='HEP_assay_select' onchange='selectTimePoint()'>
-													<option value='Hoechst'>Nuclei staining</option>
-													<option value='Mito'>Mitochondrial Integrity</option>
-													<option value='CalceinAM'>Cell Viability</option>
-													<option value='LipidTOX'>Lipid Accumulation</option>
-													<!-- <option value='Seq'>TempOseq</option> -->
-												</select> <a href="#" onclick="selectTimePoint()"><span
-													class="fa fa-chevron-right"></span></a>
-
-											</div>
-											<div id="ENDO_HUV_assays" class="all_assays form-group"
-												style="display: none; float: left;">
-												<label>Please select an assay name:</label> <select
-													id='ENDO_HUV_assay_select' onchange='selectTimePoint()'>
-													<option value='Cyto'>Cyto</option>
-													<option value='CTG'>ATP Content</option>
-													<option value='TubForm'>Tube Formation</option>
-													<option value='Seq'>TempOseq</option>
-												</select> <a href="#" onclick="selectTimePoint()"><span
-													class="fa fa-chevron-right"></span></a>
-
-											</div>
-											<div id="Neur_assays" class="all_assays form-group"
-												style="display: none; float: left;">
-												<label>Please select an assay name:</label> <select
-													id='Neur_assay_select' onchange='selectTimePoint()'>
-													<option value='Neur'>Neurons</option>
-													<option value='CTG'>ATP Content</option>
-													<option value='Seq'>TempOseq</option>
-												</select> <a href="#" onclick="selectTimePoint()"><span
-													class="fa fa-chevron-right"></span></a>
-
-											</div>
-											<div id="Macro_assays" class="all_assays form-group"
-												style="display: none; float: left;">
-												<label>Please select an assay name:</label> <select
-													id='Macro_assay_select' onchange='selectTimePoint()'>
-													<option value='Hoechst'>Nuclei staining</option>
-													<option value='Mito'>Mitochondrial Integrity</option>
-													<option value='CalceinAM'>Cell Viability</option>
-													<option value='Phag'>Phagocytosis</option>
-													<option value='Cyto'>Cytokines</option>
-													<option value='MacroOut'>Macroite Outgrowth</option>
-													<option value='Seq'>TempOseq</option>
-												</select> <a href="#" onclick="selectTimePoint()"><span
-													class="fa fa-chevron-right"></span></a>
-
-											</div>
-											<div id="England_assays" class="all_assays form-group"
-												style="display: none; float: left;">
-												<label>Please select an assay name:</label> <select
-													id='England_assay_select' onchange='selectTimePoint()'>
-													<option value='CMFDA'>Cell membrane integrity</option>
-													<option value='ROS'>Reactive Oxygen Species</option>
-													<option value='CASP'>Apoptosis</option>
-													<option value='PROT'>Protein synthesis inhibition</option>
-													<option value='ATP'>ATP Quantitation Assay</option>
-												</select> <a href="#" onclick="selectTimePoint()"><span
-													class="fa fa-chevron-right"></span></a>
-
-											</div>
+											
 										</div>
+										
+										<div id="step3" style="display: none" class="form-group">
+											<div id="Ph_div" class="all_assays" style="display: none;">
+												<label>Please select a Phenotype:</label> <select
+													id='phenotype' onchange='getTimePoints()'>
+													
+												</select> <a href="#" onclick="getTimePoints()"><span
+													class="fa fa-chevron-right"></span></a>
 
-
+											</div>
+											
+										</div>
 
 
 										<div id="step4" class="form-group" style="display: none;">
@@ -331,65 +253,13 @@
 
 												<label>Please select a time point:</label> <select
 													id="timepoints_4_select" onchange="step4_to_5()">
-													<option value="90min">90 minutes</option>
-													<option value="24hr">24 hours</option>
+													
 												</select> <a href="#" onclick="step4_to_5()"><span
 													class="fa fa-chevron-right"></span></a>
 
 											</div>
-											<div id="timepoints_2" class="all_time_div" style="display:;">
-
-												<label>Please select a time point:</label> <select
-													id="timepoints_2_select" onchange="step4_to_5()">
-													<option value="90min">90 minutes</option>
-													<option value="24hr">24 hours</option>
-												</select> <a href="#" onclick="step4_to_5()"><span
-													class="fa fa-chevron-right"></span></a>
-
-											</div>
-											<div id="timepoints_0" class="all_time_div"
-												style="color: LightSteelBlue; display:;">
-												<label>Time point not applicable</label> <select>
-													<option>N/A</option>
-													<option>N/A</option>
-												</select> <a href="#"><span class="fa fa-chevron-right"
-													style="color: LightSteelBlue;"></span></a>
-
-											</div>
-											<div id="timepoints_18" class="all_time_div"
-												style="color: LightSteelBlue; display:;">
-												<label style="color: LightSteelBlue;">Time point: 18
-													hours</label> <a href="#"><span class="fa fa-chevron-right"
-													style="color: LightSteelBlue;"></span></a>
-
-											</div>
-											<div id="timepoints_24" class="all_time_div"
-												style="color: LightSteelBlue; display:;">
-												<label style="color: LightSteelBlue;">Time point: 24
-													hours</label> <a href="#"><span class="fa fa-chevron-right"
-													style="color: LightSteelBlue;"></span></a>
-
-											</div>
-											<div id="timepoints_72" class="all_time_div"
-												style="color: LightSteelBlue; display:;">
-												<label style="color: LightSteelBlue;">Time point: 72
-													hours</label> <a href="#"><span class="fa fa-chevron-right"
-													style="color: LightSteelBlue;"></span></a>
-
-											</div>
-											<div id="timepoints_48" class="all_time_div"
-												style="color: LightSteelBlue; display:;">
-												<label style="color: LightSteelBlue;">Time point: 48
-													hours</label> <a href="#"><span class="fa fa-chevron-right"
-													style="color: LightSteelBlue;"></span></a>
-
-											</div>
+											
 										</div>
-										<!-- end of step4 -->
-										<!-- end of step4 -->
-
-
-
 										<div id="step5" class="form-group"
 											style="display: none; float: left;">
 											<div class="form-group" id="dilution_1"
@@ -420,20 +290,16 @@
 
 										<div id="step6" class="form-group" style="display: none;">
 											<div>
-												<label id="desc">Description:</label>
-												<textarea id="ta" class="form-control" name="desc" rows="3"></textarea>
-												<select
-													id='phenotypes' name ='phenotypes'>
-													<option value='0'>---Select One---</option>
-													
-												</select> 
+												<label id="description" >Description (Required short description of file content)</label>
+												<textarea id="ta" class="form-control" name="desc" rows="3" required="required"></textarea>
+												
 												
 											</div>
 											<br></br>
 											<div>
 												<label>Please Choose a file to upload:</label> <input
 													type="file" id="uploadfile" name="file" size="40"
-													onclick="validateFile()"> </input> <span
+													onclick="validateFile()" required="required"> </input> <span
 													class="pull-center">
 													<div style="padding-top: 20px;">
 														<button type="submit" name="sequencesave"
@@ -505,6 +371,7 @@
 
 
 	<script src="/CAT-APP-PROJECT/resources/js/Uploadjs.js"></script>
+	
 	<!-- jQuery -->
 	<script src="/CAT-APP-PROJECT/resources/js/jquery.min.js"></script>
 

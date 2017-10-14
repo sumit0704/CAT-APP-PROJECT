@@ -98,6 +98,36 @@
 		}
 
 	}
+	
+	function filterchemMolecule() 
+	{
+
+		var input = jQuery("#chemSearchMolecule").val();
+		var lListSize = jQuery(".chemical").length
+		for (var i = 0; i < lListSize; i++) {
+			if (jQuery(".chemical")[i].innerHTML.indexOf(input) > -1) {
+				document.getElementsByClassName("chemical")[i].style.display = "";
+			} else {
+				document.getElementsByClassName("chemical")[i].style.display = "none";
+			}
+		}
+	}
+	
+		
+		
+	function filterChemCarbon() 
+	{
+
+		var input = jQuery("#chemSearchCarbon").val();
+		var lListSize = jQuery(".chemical").length
+		for (var i = 0; i < lListSize; i++) {
+			if (jQuery(".chemical")[i].innerHTML.indexOf(input) > -1) {
+				document.getElementsByClassName("chemical")[i].style.display = "";
+			} else {
+				document.getElementsByClassName("chemical")[i].style.display = "none";
+			}
+		}
+	}
 </script>
 </head>
 
@@ -222,12 +252,36 @@
 									</select>
 
 									<div class="form-group">
-										<label> Please select one or more chemicals:</label> <select
+										<%-- <label> Please select one or more chemicals:</label> 
+										
+										<select
 											 name="chemicalSelect" id="chemicalSelect" multiple="multiple">
 											<c:forEach var="item" items="${casnumber}">
 												<option value="${item.key}">${item.value}</option>
 											</c:forEach>
-										</select>
+										</select> --%>
+										<br>
+										<label> Please select a cas number:</label> <input type="text"
+											class="form-control" id="chemSearchMolecule" onkeyup="filterchemMolecule()"
+											placeholder="Search Cas Number..." />
+										<div class=" scrollerdiv pre-scrollable">
+											<table class="table table-hover,table-fixed">
+												<thead style="display: block; border-color: #e67e22;">
+													<tr>
+														<th>Cas Number || Name || Category</th>
+													</tr>
+												</thead>
+												<c:forEach var="item" items="${casnumber}">
+													<tr class="chemical">
+														<td><input type="radio" name="cas" id="casMolecule"
+															value=<c:out value="${item.key}"/>> &nbsp;<c:out
+																	value="${item.value}" /></td>
+													</tr>
+
+
+												</c:forEach>
+											</table>
+										</div>
 									</div>
 
 
@@ -235,65 +289,85 @@
 
 								<div class="col-lg-4 col-md-offset-3" id="downloadByCarbon"
 									class="form-group" style="display: none;">
-									
+
 									<label> Please select a carbon number:</label> <select
 										name="carbonSelect" id="carbonSelect">
-										
-											<option value="<5"><5</option>
-											<option value="5.0">5</option>
-											<option value="6.0">6</option>
-											<option value="7.0">7</option>
-											<option value="8.0">8</option>
-											<option value="9.0">9</option>
-											<option value="10.0">10</option>
-							
-											<option value="11.0">11</option>
-											<option value="12.0">12</option>
-											<option value="13.0">13</option>
-											<option value="14.0">14</option>
-											<option value="15.0">15</option>
-											<option value="16.0">16</option>
-											<option value="17.0">17</option>
-											<option value="18.0">18</option>
-											<option value="19.0">19</option>
-											<option value="20.0">20</option>
-											<option value="21.0">21</option>
-											<option value="22.0">22</option>
-											<option value="23.0">23</option>
-											<option value="24.0">24</option>
-											<option value="25.0">25</option>
-											<option value="26.0">26</option>
-											<option value="27.0">27</option>
-											<option value="28.0">28</option>
-											<option value="29.0">29</option>
-											<option value="30.0">30</option>
-											<option value="31.0">31</option>
-											
-										
+
+										<option value="<5"><5</option>
+										<option value="5.0">5</option>
+										<option value="6.0">6</option>
+										<option value="7.0">7</option>
+										<option value="8.0">8</option>
+										<option value="9.0">9</option>
+										<option value="10.0">10</option>
+
+										<option value="11.0">11</option>
+										<option value="12.0">12</option>
+										<option value="13.0">13</option>
+										<option value="14.0">14</option>
+										<option value="15.0">15</option>
+										<option value="16.0">16</option>
+										<option value="17.0">17</option>
+										<option value="18.0">18</option>
+										<option value="19.0">19</option>
+										<option value="20.0">20</option>
+										<option value="21.0">21</option>
+										<option value="22.0">22</option>
+										<option value="23.0">23</option>
+										<option value="24.0">24</option>
+										<option value="25.0">25</option>
+										<option value="26.0">26</option>
+										<option value="27.0">27</option>
+										<option value="28.0">28</option>
+										<option value="29.0">29</option>
+										<option value="30.0">30</option>
+										<option value="31.0">31</option>
+
+
 									</select>
-									
+										<br></br>
 									<div class="form-group">
-										<label> Please select one or more chemicals:</label> <select
-											 name="chemicalSelectCarbon" id="chemicalSelectCarbon" multiple="multiple">
+										<%-- <label> Please select one or more chemicals:</label> <select
+											name="chemicalSelectCarbon" id="chemicalSelectCarbon"
+											multiple="multiple">
 											<c:forEach var="item" items="${casnumber}">
 												<option value="${item.key}">${item.value}</option>
 											</c:forEach>
-										</select>
+										</select> --%>
+										
+										<label> Please select a cas number:</label> <input type="text"
+											class="form-control" id="chemSearchCarbon" onkeyup="filterChemCarbon()"
+											placeholder="Search Cas Number..." />
+										<div class=" scrollerdiv pre-scrollable">
+											<table class="table table-hover,table-fixed">
+												<thead style="display: block; border-color: #e67e22;">
+													<tr>
+														<th>Cas Number || Name || Category</th>
+													</tr>
+												</thead>
+												<c:forEach var="item" items="${casnumber}">
+													<tr class="chemical">
+														<td><input type="radio" name="cas" id="casCarbon"
+															value=<c:out value="${item.key}"/>> &nbsp;<c:out
+																	value="${item.value}" /></td>
+													</tr>
+
+
+												</c:forEach>
+											</table>
+										</div>
 									</div>
-									
+
+								</div>
+								<div class="row">
+									<div id="button-box" class="col-lg-4 col-md-offset-3"
+										style="padding-top: 20px; display: none;">
+										<button type="submit" name="sequencesave" id="sequencesave"
+											class="btn btn-primary">Download</button>
+
 									</div>
-							<div class="row">
-							<div  id="button-box"  class="col-lg-4 col-md-offset-3" style="padding-top: 20px; display: none;">
-								<button type="submit" name="sequencesave" id="sequencesave"
-									class="btn btn-primary">Download</button>
-
-							</div>
-							</div>
-							<div class="row">
-								&nbsp;
-							</div>
-
-
+								</div>
+								<div class="row">&nbsp;</div>
 						</form>
 					</div>
 				</div>

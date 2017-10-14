@@ -12,12 +12,17 @@ function click_cell_line_title(){
 	// alert("click_cell_line_title()-2");
 	$("#assay_head").hide();
 	$("#assay_list").hide();
-	
-	$("#file_button").hide();
+	if(jQuery("#Assays_A").html()=="."){
+		
+	}else{
+		
+		$("#Assays_A").html(".");
+	}
+	/*$("#file_button").hide();
 	$("#file_list").hide();
 	$("#file_list").replaceWith("...");
 	$("#file_list").append("...");
-	$("#file_list").replaceWith("data");
+	$("#file_list").replaceWith("data");*/
 	
 	
 	// alert("click_cell_line_title()-3");
@@ -36,9 +41,13 @@ $(".cell_lines").change(function() {
 
 function click_cell_line_button(){
 	// alert("click_cell_line_button()");
+	
 	$('#cell_line_list').hide();
 	$('#cell_line_title').hide;
-
+	
+	
+	$("#assay_head").hide();
+	$("#assay_list").hide();
 	
 	var selected_celllines = [];
 	var data_string = '';
@@ -51,15 +60,14 @@ function click_cell_line_button(){
 		}
 	});
 	
-	// alert("data_string: ++");
-	// data_string = "CM=CM&HEP=HEP"
 	$.ajax({
+	  type: "POST",
 	  url: "Download_InternalServlet",
 	  data: data_string,
 	  type: 'post',
 	  success: function(data) {
 	    // alert(data);
-	    $("#Assays_A").replaceWith(data);
+	    $("#Assays_A").html(data);
 	    
 		$("#assay_head").show();
 		$("#assay_list").show();
@@ -711,7 +719,7 @@ function selectphenotypesForDownload(){
             'lCM': lCellLine
           },
           	 success: function (responseText) {
-          		/* alert("Test");*/
+          		
         	var lPhenolist = responseText.getElementsByTagName("pheno");
         	for(var i=0;i<lPhenolist.length;i++){
         		$("#phenotypes").append(new Option(
@@ -735,6 +743,7 @@ function selectphenotypesForDownloadCell(){
           	 success: function (responseText) {
           		/* alert("Test");*/
         	var lPhenolist = responseText.getElementsByTagName("pheno");
+        	$("#phenotype option[value='--Select--']").remove()
         	for(var i=0;i<lPhenolist.length;i++){
         		$("#phenotype").append(new Option(
         				lPhenolist[i].childNodes[0].firstChild.nodeValue, lPhenolist[i].childNodes[1].firstChild.nodeValue));

@@ -12,19 +12,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import com.catapp.connection.DBConnection;
 
 /**
- * Servlet implementation class Phenotypes
+ * Servlet implementation class AssayNames
  */
-@WebServlet("/Phenotypes")
-public class Phenotypes extends HttpServlet {
+@WebServlet("/AssayNames")
+public class AssayNames extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	public static final Logger logger = Logger.getLogger(AssayNames.class.toString());
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Phenotypes() {
+    public AssayNames() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,54 +37,7 @@ public class Phenotypes extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String lCellLine 		  = 			request.getParameter("lCM");
-		String lAssay 			  =             request.getParameter("lAssay");
-		Connection lConn	   	  = 			null;
-		PreparedStatement lPstmt  = 	        null;
-		ResultSet lRst            = 			null;
-		
-		try{
-			lConn=new DBConnection().getConnection();
-			StringBuilder lQuery = new StringBuilder(" select d.name,d.tag from celllines a join assaynames b on ")
-								   .append(" a.entity_id=b.cellline_id join assayphenomapping ")
-			 					   .append(" c on c.assay_id=b.entity_id join phenotypes d on d.entity_id=c.pheno_id where a.tag=? ");
-			if(lAssay!=null && lAssay.trim().length()>0){
-				lQuery.append("  and b.tag=? ");
-			}
-			lPstmt=lConn.prepareStatement(lQuery.toString());
-			lPstmt.setString(1, lCellLine);
-			if(lAssay!=null && lAssay.trim().length()>0){
-				lPstmt.setString(2, lAssay);
-			}
-			lRst=lPstmt.executeQuery();
-			StringBuilder lXMLBuilder = new StringBuilder();
-			if(lAssay!=null && lAssay.trim().length()>0){
-				lXMLBuilder.append("<phenolist>");
-				
-			}else{
-				
-				lXMLBuilder.append("<phenolist>");
-				lXMLBuilder.append("<pheno>");
-				lXMLBuilder.append("<name>" + "--Select All--"+"</name>");
-				lXMLBuilder.append("<tag>" + "SAA" +"</tag>");
-				lXMLBuilder.append("</pheno>");
-				
-			}
-			while(lRst.next()){
-				lXMLBuilder.append("<pheno>");
-				lXMLBuilder.append("<name>" + lRst.getString(1)+"</name>");
-				lXMLBuilder.append("<tag>" + lRst.getString(2) +"</tag>");
-				lXMLBuilder.append("</pheno>");
-				
-			}
- 			lXMLBuilder.append("</phenolist>");
-			response.setContentType("text/xml");
-			response.setHeader("Cache-Control", "no-cache");
-			
-			response.getWriter().write(lXMLBuilder.toString());
-		}catch(SQLException e){
-			
-		}
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -89,7 +45,51 @@ public class Phenotypes extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+
+		// TODO Auto-generated method stub
+		String lCellLine 		  = 			request.getParameter("lCM");
+		Connection lConn	   	  = 			null;
+		PreparedStatement lPstmt  = 	        null;
+		ResultSet lRst            = 			null;
+		
+		try{
+			lConn=new DBConnection().getConnection();
+			StringBuilder lQuery = new StringBuilder(" select a.name,a.tag From assaynames a join celllines b on ")
+								   .append("  a.cellline_id=b.entity_id where b.tag=?  ");
+			 					  
+			
+			lPstmt=lConn.prepareStatement(lQuery.toString());
+			lPstmt.setString(1, lCellLine);
+			
+			lRst=lPstmt.executeQuery();
+			StringBuilder lXMLBuilder = new StringBuilder();
+			lXMLBuilder.append("<assaylist>");
+				
+			while(lRst.next()){
+				lXMLBuilder.append("<assay>");
+				lXMLBuilder.append("<name>" + lRst.getString(1)+"</name>");
+				lXMLBuilder.append("<tag>" + lRst.getString(2) +"</tag>");
+				lXMLBuilder.append("</assay>");
+				
+			}
+ 			lXMLBuilder.append("</assaylist>");
+			response.setContentType("text/xml");
+			response.setHeader("Cache-Control", "no-cache");
+			
+			response.getWriter().write(lXMLBuilder.toString());
+		}catch(SQLException e){
+			logger.error("Error Occured while getting assay names",e);
+		}
+		finally{
+			try{
+				if(lConn!=null){
+					lConn.close();
+				}
+			}catch(Exception e1){
+				logger.error("Error Occured while closing connection",e1);
+			}
+		}
+	
 	}
 
 }

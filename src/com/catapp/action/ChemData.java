@@ -185,6 +185,8 @@ public class ChemData {
 		}
 		return lChemicalMap;
 	}
+	
+	
 
 	public HashMap<String, String> getMolecularClasses(Connection pConnection) {
 		HashMap<String, String> lMoleculeMap = new HashMap<String, String>();

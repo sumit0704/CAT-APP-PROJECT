@@ -70,6 +70,7 @@ $(function() {
 		
 		<div class="form-group" align="left">
 			<label> Please select a cellLine:</label> <select name="cellLines" id="cellLines" onchange='selectphenotypesForDownload()'>
+				<option value="--Select--">--Select--</option>
 				<c:forEach var="item" items="${cell}">
 					<option value="${item.key}">${item.value}</option>
 				</c:forEach>
@@ -78,6 +79,7 @@ $(function() {
 
 		<div class="form-group" align="left">
 			<label> Please select a phenoType:</label> <select name="phenotypes" multiple="multiple" id="phenotypes">
+				
 				
 			</select>
 		</div>

@@ -89,8 +89,8 @@ public class ManageActionServlet extends HttpServlet {
 			if(ltest){
 				//String lAdminEmailAddress="ssumit61@gmail.com";
 				String lSubject="Cat-App Request Approved";
-				String lBody= " Your request for Cat-App access has been approved. Kindly login using your user name and password.";
-				//SendEmail.sendEmail(received_email,lSubject,lBody);
+			    String lBody= " Your request for Cat-App access has been approved and here is the link to the website.\n"+"https://catappdata.com/"+" \n Use your user name(email) and password to access the data.";
+			    SendEmail.sendEmail(received_email,lSubject,lBody);
 				
 			}
 		} catch (SQLException e) {
@@ -128,5 +128,6 @@ public class ManageActionServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	
 
 }

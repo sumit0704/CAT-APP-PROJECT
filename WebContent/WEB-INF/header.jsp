@@ -17,8 +17,11 @@
 	<ul class="nav navbar-top-links navbar-right">
 		<li class="dropdown"><a class="dropdown-toggle navbar-brand"
 			data-toggle="dropdown" href="#"> <% String fName=((User)request.getSession().getAttribute("user")).getFirst_name().toString();%>
+<%-- 				<% String lName=((User)request.getSession().getAttribute("user")).getLast_name()().toString();%>
+ --%>
 
-				<span>Welcome <%=fName %><span /> <i class="fa fa-caret-down"></i></a>
+				<span>Welcome <%=fName %> <span /> <i
+					class="fa fa-caret-down"></i></a>
 			<ul class="dropdown-menu dropdown-user">
 				<li><a href="UserDisplayController"><i
 						class="fa fa-user fa-fw"></i> User Profile</a></li>
@@ -26,11 +29,13 @@
 				<li class="divider"></li>
 				<li><a href="LogoutServlet"><i class="fa fa-sign-out fa-fw"></i>
 						Logout</a></li>
-			</ul> 
-		<li ><a class="navbar-brand" href="BackToHomeServlet"> Home</a></li>
-		<li ><a class="navbar-brand" href="redirect?destination=contact"> Contact us</a></li>
-		<li ><a class="navbar-brand" href="redirect?destination=about"> About us</a></li>
-		
+			</ul>
+		<li><a class="navbar-brand" href="BackToHomeServlet"> Home</a></li>
+		<li><a class="navbar-brand" href="redirect?destination=contact">
+				Contact us</a></li>
+		<li><a class="navbar-brand" href="redirect?destination=about">
+				About us</a></li>
+
 	</ul>
 </nav>
 

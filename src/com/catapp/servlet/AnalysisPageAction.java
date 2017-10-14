@@ -1,5 +1,6 @@
 package com.catapp.servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.HashMap;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.FileUtils;
 
 import com.catapp.action.ChemData;
 import com.catapp.connection.DBConnection;
@@ -37,16 +40,33 @@ public class AnalysisPageAction extends HttpServlet {
 		try{
 			if(session!=null){
 				lConn=new DBConnection().getConnection();
-				HashMap<String,String>lChemicalMap=new ChemData().getChemicalNames(lConn);
+				HashMap<String,String>lChemicalMap=new ChemData().getCasNames(lConn, 3L);
+				//HashMap<String,String>lChemicalPropertyMap=new ChemData().getChemicalProperties(lConn);
 				request.setAttribute("chemicals", lChemicalMap);
 				LinkedHashMap<String,String>lPhenoMap =  new ChemData().getNamesofInputs("phenotypes",lConn);
 				LinkedHashMap<String,String>lAssayMap =  new ChemData().getNamesofInputs("assaynames",lConn);
 				LinkedHashMap<String,String>lCellMap  =  new ChemData().getNamesofInputs("celllines",lConn);
+				HashMap<Long,String>lTimMap   =  new ChemData().getTimePoints();
+				lTimMap.remove(0l);
+				request.setAttribute("time", lTimMap);
+
 				request.setAttribute("pheno", lPhenoMap);
+				//request.setAttribute("cp", lChemicalPropertyMap);
 				request.setAttribute("assay", lAssayMap);
 				request.setAttribute("cell", lCellMap);
 				
+				
+			/*	File lFile1 = new File("C:\\Users\\ssingh\\Desktop\\Cardio_Total_Cell_24h\\Figs\\generated_graph.png");
+				if(lFile1.exists()){
+					lFile1.delete();
+				}
+				File lFile = new File("C:\\Users\\ssingh\\Desktop\\Cardio_Total_Cell_24h\\no_data.png");
+				File lFile2 = new File("C:\\Users\\ssingh\\Desktop\\Cardio_Total_Cell_24h\\Figs\\generated_graph.png");
+				FileUtils.copyFile(lFile, lFile2);*/
 				request.getServletContext().getRequestDispatcher("/WEB-INF/analysisPage.jsp").forward(request, response);
+				
+			
+			
 			}
 		
 		else{

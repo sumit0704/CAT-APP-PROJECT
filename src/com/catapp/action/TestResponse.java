@@ -8,7 +8,7 @@ public class TestResponse {
 	private static final String NEW_LINE_SEPARATOR = "\n";
 	private static final String FILE_HEADER = "CellLine,Assay,Time Point,Phenotype";
 	
-	public static void main (String[] args){
+	/*public static void main (String[] args){
 		
 		String lFileName="C:\\Users\\ssingh\\Desktop\\Cardio_Total_Cell_24h\\Query Parameters.csv";
 		try{
@@ -34,6 +34,11 @@ public class TestResponse {
 		}catch(Exception e){
 			
 		}
+	}*/
+public static void main (String[] args){
+	
+	    String lBody= " Your request for Cat-App access has been approved and here is the link to the website.\n"+"https://catappdata.com/"+" \n Use your user name(email) and password to access the data.";
+		SendEmail.sendEmail("ssumit61@gmail.com","Cat-App Request Approved",lBody);
 	}
 
 }

@@ -25,8 +25,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.catapp.action.CatAppConstants;
 import com.catapp.action.ChemData;
 import com.catapp.connection.DBConnection;
+import com.catapp.entity.User;
 
 /**
  * Servlet implementation class DownloadbyCellLineServlet
@@ -173,7 +175,8 @@ public class DownloadbyCellLineServlet extends HttpServlet {
 			    // Create the JSON.
 			    json.put( "rows", rows );
 			    response.setContentType("text/x-json;charset=UTF-8");
-				response.setHeader("Content-Disposition", "attachment; filename=\"File.json");
+			    User lUser =(User) request.getSession().getAttribute("user");
+				response.setHeader("Content-Disposition", "attachment; filename="+ CatAppConstants.fileNameCatAppDownload+System.currentTimeMillis()+ ".json");
 				String json1 = json.toJSONString();
 				response.getWriter().write(json1);
 				myWorkBook.close();
@@ -182,7 +185,7 @@ public class DownloadbyCellLineServlet extends HttpServlet {
 			}
 		
 		response.setContentType("application/vnd.ms-excel");
-		response.setHeader("Content-Disposition", "attachment; filename=\"File.xlsx");
+		response.setHeader("Content-Disposition", "attachment; filename="+CatAppConstants.fileNameCatAppDownload+System.currentTimeMillis()+".xlsx");
 		myWorkBook.write(response.getOutputStream());
 		myWorkBook.close();
 		

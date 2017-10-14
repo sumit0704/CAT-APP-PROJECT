@@ -36,5 +36,9 @@ public class CatAppConstants {
 	public static final String downloadTypeMolecular="byMC";
 	public static final String downloadTypeCarbon="byCN";
 	public static final String attributeCNR="C-nr";
+	public static final String fileNameCatAppDownload="CatAppData_download_";
+	public static final String fileNameAnalyticalDownload="Analytical_download_";
+
+	
 
 }

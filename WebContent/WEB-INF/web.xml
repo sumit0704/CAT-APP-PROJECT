@@ -65,14 +65,12 @@
     <servlet-class>com.catapp.servlet.SuccessServlet</servlet-class>
     <enabled>true</enabled>
   </servlet>
-  
   <servlet>
     <display-name>DownloadConcaweAsIs</display-name>
     <servlet-name>DownloadConcaweAsIs</servlet-name>
     <servlet-class>com.catapp.servlet.DownloadConcaweAsIs</servlet-class>
     <enabled>true</enabled>
   </servlet>
-  
   <servlet>
     <display-name>Download_InternalServlet</display-name>
     <servlet-name>Download_InternalServlet</servlet-name>

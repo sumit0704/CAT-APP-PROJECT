@@ -139,6 +139,9 @@
 								name="fileRadio" id="byCell" value="byCell"
 								onchange="displayDownloadForm()">Download by cellline
 							</label>
+							
+							<a target="_blank" class="radio-inline" href="ftp://FTP_Test:VIBSftpaccess@catappdata.com/">Download
+											Files from FTP- Click Here</a>
 						</div>
 						
 						<div class="row" id="downloadByAsIsFiles" class="form-group"
@@ -181,59 +184,15 @@
 									</h4>
 
 									<div id="cell_line_list" style="color: Gray; margin: 20px;">
-										<input type="checkbox" disabled class="cell_lines" id="CM"
-											name="CM" value="CM"><span id="CM_B">1.iCell®Cardiomyocytes<br>
-										</span> <input type="checkbox" disabled class="cell_lines" id="HEP"
-											name="HEP" value="HEP"><span id="HEP_B">2.
-											Hepatocytes 2.0<br>
-										</span> <input type="checkbox" disabled class="cell_lines" id="ENDO"
-											name="ENDO" value="ENDO"><span id="ENDO_B">3.
-											iCell®Endothelial Cells<br>
-										</span> <input type="checkbox" disabled class="cell_lines" id="HUV"
-											name="HUV" value="HUV"><span id="HUV_B">4.
-											Human Umbilical Vein Endothelial Cells<br>
-										</span> <input type="checkbox" disabled class="cell_lines" id="Neur"
-											name="Neur" value="Neur"><span id="Neur_B">5.
-											iCell Neurons<br>
-										</span> <input type="checkbox" disabled class="cell_lines" id="Macro"
-											name="Macro" value="Macro"><span id="Macro_B">6.
-											iCell Macrophages<br>
-										</span> <input type="checkbox" disabled class="cell_lines" id="A375"
-											name="A375" value="A375"><span id="A375_B">7.
-											A-375 Skin Melanoma<br>
-										</span> <input type="checkbox" disabled class="cell_lines" id="A549"
-											name="A549" value="A549"><span id="A549_B">8.
-											A549 Lung Carcinoma<br>
-										</span> <input type="checkbox" disabled class="cell_lines" id="HepG2"
-											name="HepG2" value="HepG2"><span id="HepG2_B">9.
-											HepG2 Hepatocyte Carcinoma<br>
-										</span> <input type="checkbox" disabled class="cell_lines"
-											id="HepaRG" name="HepaRG" value="HepaRG"><span
-											id="HepaRG_B">10. HepaRG Hepatocyte Carcinoma<br>
-										</span> <input type="checkbox" disabled class="cell_lines" id="MCF7"
-											name="MCF7" value="MCF7"><span id="MCF7_B">11.
-											MCF7 Breast Adenocarcinoma<br>
-										</span> <input type="checkbox" disabled class="cell_lines" id="HT29"
-											name="HT29" value="HT29"><span id="HT29_B">12.
-											HT-29 Colon Adenocarcinoma<br>
-										</span> <input type="checkbox" disabled class="cell_lines" id="LN229"
-											name="LN229" value="LN229"><span id="LN229_B">13.
-											LN-229 Glioblastoma<br>
-										</span> <input type="checkbox" disabled class="cell_lines"
-											id="HEK10205f" name="HEK10205f" value="HEK10205f"><span
-											id="HEK10205f_B">14. HEK10205f Human Epidermal
-											Keratinocytes; Foetal<br>
-										</span> <input type="checkbox" disabled class="cell_lines"
-											id="HLMVEC" name="HLMVEC" value="HLMVEC"><span
-											id="HLMVEC_B">15. HLMVEC Human Lung Microvascular
-											Endothelial Cells<br>
-										</span> <input type="checkbox" disabled class="cell_lines" id="HMePC"
-											name="HMePC" value="HMePC"><span id="HMePC_B">16.
-											HMePC Human Mammary Epithelial Cell<br>
-										</span> <input type="checkbox" disabled class="cell_lines"
-											id="SH-SY5Y" name="SH-SY5Y" value="SH-SY5Y"><span
-											id="SH-SY5Y_B">17. SH-SY5Y Neuroblastoma<br>
-										</span>
+									    <c:forEach var="item" items="${cell}">
+									    
+									    <input type="checkbox" disabled class="cell_lines" id=<c:out value="${item.key}"/>
+											name=<c:out value="${item.key}"/> value=<c:out value="${item.key}"/>>
+										<span id=<c:out value="${item.key}_B"/>><c:out value="${item.value}"/><br>
+										</span> 
+									    </c:forEach>
+										
+									
 									</div>
 								</div>
 								<!-- end of the cell line selection -->
@@ -242,9 +201,9 @@
 								<div id="Assays_A" style="display:; margin-left: 40px;">.</div>
 								<!-- end of div for assays. -->
 
-								<div id="Phenotypes_A" style="display:; margin-left: 40px;">..
+								<!-- <div id="Phenotypes_A" style="display:; margin-left: 40px;">..
 
-								</div>
+								</div> -->
 								<!-- end of div for Phenotypes. -->
 
 
@@ -257,10 +216,10 @@
 							<div id="file_display" class="col-md-6">
 
 								<form action="DownloadFileServlet">
-									<div id="file_list" style="display:;">
+									<!-- <div id="file_list" style="display:;">
 										<br></br> <a target="_blank" href="ftp://FTP_Test:VIBSftpaccess@catappdata.com/">Download
 											Files from FTP- Click Here</a><br>
-									</div>
+									</div> -->
 									<div id="file_button" style="margin-left: 80px; display: none;">
 										<br></br> <input type="submit" class="btn btn-primary"
 											name="download" style="border-radius: 5px;" value="Download">
