@@ -17,17 +17,17 @@ import com.catapp.action.ChemData;
 import com.catapp.connection.DBConnection;
 
 /**
- * Servlet implementation class ViewFiles
+ * Servlet implementation class ViewFilesForDownload
  */
-@WebServlet(name = "ViewFilesServlet", urlPatterns = { "/ViewFilesServlet" })
-public class ViewFiles extends HttpServlet {
+@WebServlet("/ViewFilesForDownload")
+public class ViewFilesForDownload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(ViewFiles.class);
+	private static final Logger LOGGER = Logger.getLogger(ViewFilesForDownload.class);
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ViewFiles() {
+    public ViewFilesForDownload() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -45,6 +45,8 @@ public class ViewFiles extends HttpServlet {
 		
 
 		try{
+			String lDownloadType=request.getParameter("lDT");
+			 
 			lConn = new DBConnection().getConnection();
 			if(request.getParameter("lCM")!=null && request.getParameter("lCM").trim().length()>0 ){
 				lSelectedCM= request.getParameter("lCM").toString().split(",");
@@ -72,29 +74,46 @@ public class ViewFiles extends HttpServlet {
 				}
 			}
 			
-			String [] lPlateDesign	=	null;
-			if(request.getParameter("lPD")!=null && request.getParameter("lPD").trim().length()>0){
-				lPlateDesign= request.getParameter("lPD").toString().split(",");
+			String [] lTimePoint	=	null;
+			if(request.getParameter("lTP")!=null && request.getParameter("lTP").trim().length()>0){
+				lTimePoint= request.getParameter("lTP").toString().split(",");
 				if(lQueryfilter!=null && lQueryfilter.trim().length()>0) {
-					lQueryfilter =lQueryfilter + " and plate_id in (" + new ChemData().generateQForparameter(lPlateDesign.length)+")";
+					lQueryfilter =lQueryfilter + " and timepoint in (" + new ChemData().generateQForparameter(lTimePoint.length)+")";
 				}else{
-					lQueryfilter = " and plate_id in (" +new ChemData().generateQForparameter(lPlateDesign.length)+")";
+					lQueryfilter = " and timepoint in (" +new ChemData().generateQForparameter(lTimePoint.length)+")";
+				}
+				
+			}
+
+			String [] lDilution	=	null;
+			if(request.getParameter("lDil")!=null && request.getParameter("lDil").trim().length()>0){
+				lDilution= request.getParameter("lDil").toString().split(",");
+				if(lQueryfilter!=null && lQueryfilter.trim().length()>0) {
+					lQueryfilter =lQueryfilter + " and dilution in (" + new ChemData().generateQForparameter(lDilution.length)+")";
+				}else{
+					lQueryfilter = " and dilution in (" +new ChemData().generateQForparameter(lDilution.length)+")";
 				}
 				
 			}
 			
 			
-			StringBuilder lBuilder = new StringBuilder ("select * From file_info where rowstate!=-1 ");
+			StringBuilder lBuilder = new StringBuilder ("select entity_id, cell_line_id,assay_type,dilution,timepoint,file_name,phenotype_id From file_info where file_category= " +lDownloadType);
 				lPst = lConn.prepareStatement(lBuilder.toString()+lQueryfilter);
 				
 				int lParameterStartCount =1;
 				int lLoopOverCount =1;
+				String lTestString="";
 				if(lSelectedCM!=null && lSelectedCM.length>0){
 					for(int j=0;j<lSelectedCM.length;j++){
 						if(lLoopOverCount ==0){
-							lPst.setLong(lParameterStartCount, Long.parseLong(lSelectedCM[0]));
+							lPst.setString(lParameterStartCount,lSelectedCM[0]);
 						}else{
-							lPst.setLong(j+1, Long.parseLong(lSelectedCM[j]));
+							if(lTestString.trim().length()>0){
+								lTestString=lTestString+","+lSelectedCM[j];
+							}else{
+								lTestString=lSelectedCM[j];
+							}
+							lPst.setString(j+1, lSelectedCM[j]);
 						}
 						lLoopOverCount++;
 					}
@@ -105,9 +124,14 @@ public class ViewFiles extends HttpServlet {
 					for(int j=0;j<lAssayName.length;j++){
 						
 						if(lLoopOverCount==0){
-							lPst.setLong(lParameterStartCount, Long.parseLong(lAssayName[0]));
+							lPst.setString(lParameterStartCount, lAssayName[0]);
 						}else{
-							lPst.setLong(lLoopOverCount, Long.parseLong(lAssayName[j]));
+							if(lTestString.trim().length()>0){
+								lTestString=lTestString+","+lAssayName[j];
+							}else{
+								lTestString=lAssayName[j];
+							}
+							lPst.setString(lLoopOverCount, lAssayName[j]);
 						}
 						lLoopOverCount++;
 					}
@@ -118,59 +142,85 @@ public class ViewFiles extends HttpServlet {
 					for(int j=0;j<lPhenoType.length;j++){
 						
 						if(lLoopOverCount==0){
-							lPst.setLong(lParameterStartCount, Long.parseLong(lPhenoType[0]));
+							lPst.setString(lParameterStartCount,lPhenoType[0]);
 						}else{
-							lPst.setLong(lLoopOverCount, Long.parseLong(lPhenoType[j]));
+							if(lTestString.trim().length()>0){
+								lTestString=lTestString+","+lPhenoType[j];
+							}else{
+								lTestString=lPhenoType[j];
+							}
+							lPst.setString(lLoopOverCount,lPhenoType[j]);
 						}
 						lLoopOverCount++;
 					}
 					
 				}
-				if(lPlateDesign!=null && lPlateDesign.length>0){
+				if(lTimePoint!=null && lTimePoint.length>0){
 
-					for(int j=0;j<lPlateDesign.length;j++){
+					for(int j=0;j<lTimePoint.length;j++){
 						
 						if(lLoopOverCount==0){
-							lPst.setLong(lParameterStartCount, Long.parseLong(lPlateDesign[0]));
+							lPst.setString(lParameterStartCount, lTimePoint[0]);
 						}else{
-							lPst.setLong(lLoopOverCount, Long.parseLong(lPlateDesign[j]));
+							if(lTestString.trim().length()>0){
+								lTestString=lTestString+","+lTimePoint[j];
+							}else{
+								lTestString=lTimePoint[j];
+							}
+							lPst.setString(lLoopOverCount, lTimePoint[j]);
 						}
 						lLoopOverCount++;
 					}
 					
 				}
+				if(lDilution!=null && lDilution.length>0){
 
+					for(int j=0;j<lDilution.length;j++){
+						
+						if(lLoopOverCount==0){
+							
+							lPst.setString(lParameterStartCount, lDilution[0]);
+						}else{
+							if(lTestString.trim().length()>0){
+								lTestString=lTestString+","+lDilution[j];
+							}else{
+								lTestString=lDilution[j];
+							}
+							lPst.setString(lLoopOverCount, lDilution[j]);
+						}
+						lLoopOverCount++;
+					}
+					
+				}
+				
 				lRst = lPst.executeQuery();
 		
 			StringBuilder lXMLBuilder = new StringBuilder();
 			lXMLBuilder.append("<filelist>");
 			
 			while(lRst.next()){
-				
 				lXMLBuilder.append("<file>");
-				lXMLBuilder.append("<type>" + lRst.getString("file_type")+"</type>");
-				lXMLBuilder.append("<filepath>" + lRst.getString("entity_id") +"</filepath>");
-				lXMLBuilder.append("<filename>" + lRst.getString("file_name")+"."+lRst.getString("file_type")+"</filename>");
-				lXMLBuilder.append("<uploadtime>" + lRst.getString("logged_date")+"</uploadtime>");
-				if(lRst.getString("description")!=null && lRst.getString("description").trim().length()>0){
-					lXMLBuilder.append("<desc>" + lRst.getString("description") +"</desc>");
-					
+				lXMLBuilder.append("<entity_id>" + lRst.getString("entity_id")+"</entity_id>");
+				lXMLBuilder.append("<cell>" + lRst.getString("cell_line_id")+"</cell>");
+				if(lDownloadType.equals("3")){
+					lXMLBuilder.append("<filename>" + lRst.getString("file_name")+"</filename>");
+				
 				}else{
-					lXMLBuilder.append("<desc>"+"N/A"+"</desc>");
+					
+					lXMLBuilder.append("<assay>" + lRst.getString("assay_type") +"</assay>");
+					if(lDownloadType.equals("1")){
+						lXMLBuilder.append("<dilution>" + lRst.getString("dilution") +"</dilution>");
+						
+					}else if(lDownloadType.equals("2")){
+						lXMLBuilder.append("<Phenotype>" + lRst.getString("phenotype_id") +"</Phenotype>");
+					}
+					lXMLBuilder.append("<timepoint>" + lRst.getString("timepoint") +"</timepoint>");
+					lXMLBuilder.append("<filename>" + lRst.getString("file_name")+"</filename>");
+					
 				}
+				
 				lXMLBuilder.append("</file>");
-				/*HashMap<String,String>lMap = new HashMap<String,String>();
-				lMap.put(lRst.getString("file_name"), lRst.getString("file_path"));
-				if(lRst.getString("file_type")!=null 
-						&& lRst.getString("file_type").equals("xls") ){
-					pFileListXls.add(lMap);
-					
-				}else if (lRst.getString("file_type")!=null 
-						&& lRst.getString("file_type").equals("img")){
-					pFileListImg.add(lMap);
-				}else{
-					pFileListFlat.add(lMap);
-				}*/
+				
 			}
 			
 			lXMLBuilder.append("</filelist>");
@@ -199,3 +249,4 @@ public class ViewFiles extends HttpServlet {
 	}*/
 
 }
+

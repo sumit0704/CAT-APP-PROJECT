@@ -35,7 +35,7 @@ $(document).ready(function(){
 
 	<sql:query dataSource="${snapshot_C}" var="result_C">
 	SELECT
-  		entity_id, file_name, cell_line_id, assay_type, Dilution  
+  		entity_id, file_name, cell_line_id, assay_type, Dilution,timepoint 
 	FROM
   		file_info 
 	WHERE 
@@ -59,6 +59,7 @@ $(document).ready(function(){
 				<th>Cell Line</th>
 				<th>Assay</th>
 				<th>Dilution</th>
+				<th>Time Point</th>
 				<th>File Name</th>
 
 			</tr>
@@ -95,6 +96,7 @@ $(document).ready(function(){
 					<td>${row.cell_line_id}</td>
 					<td>${row.assay_type}</td>
 					<td>${row.Dilution}</td>
+					<td>${row.timepoint}</td>
 					<td>${row.file_name}</td>
 				</tr>
 				<c:set var="i" scope="session" value="${i +1}" />

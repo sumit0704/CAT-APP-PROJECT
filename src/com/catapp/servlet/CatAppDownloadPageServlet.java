@@ -41,7 +41,7 @@ public class CatAppDownloadPageServlet extends HttpServlet {
 			LinkedHashMap <String,String>lCellMap  =  new ChemData().getNamesofInputs("celllines",lConn);
 			HashMap<Long,String>lTimMap   =  new ChemData().getTimePoints();
 			System.out.println("lPhenoMap"+lPhenoMap.size()+"lAssayMap::"+lAssayMap.size()+
-					"lCellMap::"+lCellMap.size()+"lTimMap::"+lTimMap.size());
+					"lCellMap::"+lCellMap.size()+"lTimMap::"+lTimMap.size() +"lChemicalMap::"+lChemicalMap.size());
 			request.setAttribute("chemicals", lChemicalMap);
 			request.setAttribute("pheno", lPhenoMap);
 			request.setAttribute("assay", lAssayMap);
@@ -49,7 +49,7 @@ public class CatAppDownloadPageServlet extends HttpServlet {
 			request.setAttribute("time", lTimMap);
 			HttpSession session=request.getSession(false);
 			if(session!=null){
-			request.getRequestDispatcher("/WEB-INF/catAppDownloadPage.jsp").include(request, response);
+				getServletContext().getRequestDispatcher("/WEB-INF/catAppDownloadPage.jsp").forward(request, response);
 				}
 			else{
 				request.setAttribute("error","Current session is lost. Please log in");

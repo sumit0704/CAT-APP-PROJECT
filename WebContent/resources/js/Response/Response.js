@@ -345,13 +345,20 @@ endpoint_data[7] = "<br><br><br><papaya>" +
 	"and maintenance media were obtained from Cellular Dynamics International (Madison, WI). " +
 	"EarlyTox Cardiotoxicity kits were purchased from Molecular Devices LLC (Sunnyvale, CA). </p>"+
 	"<br><br><br><br><br>";
+
 function displayChemicalData() {
 	var lSelectedCas=$('input[name=cas]:checked').val();
 	jQuery("#profile-pills").html("");
-	$('input[name=cell]').prop('checked', false);
+	/*$('input[name=cell]').prop('checked', false);
 	$('input[name=pheno]').prop('checked', false);
-	$('input[name=tp]').prop('checked', false);
+	$('input[name=tp]').prop('checked', false);*/
 
+	 var lChemical = $('input[name=cas]:checked').val();
+	 var lCellLine = $('input[name=cell]:checked').val();
+	 var lPhenotype= $('input[name=pheno]:checked').val();
+	 var lTimePoint= $('input[name=tp]:checked').val();
+	 
+	
 	$.ajax({
         type: "GET",
         url: "ChemProperties",
@@ -385,7 +392,7 @@ function displayChemicalData() {
           		$("#home").removeClass("active");
         		$("#home-pills").addClass("tab-pane fade");
         		var lCellLine = $('input[name=cell]:checked').val();
-        		if(lCellLine==1){
+        		/*if(lCellLine==1){
         			
         		} else if(lCellLine==2){
         			
@@ -394,7 +401,7 @@ function displayChemicalData() {
         		}else if (lCellLine==4){
         			
         			$("#messages-pills").html(endpoint_data[4])	;
-        		}
+        		}*/
         		$("#profile-pills").html(lHTML);
         		$("#chem").attr("aria-expanded","true");
         		$("#profile-pills").removeClass("tab-pane fade");
@@ -404,13 +411,16 @@ function displayChemicalData() {
         		$("#sac").addClass("collapsed");
         		$("#sac").attr("aria-expanded","false");
         		$("#sacl").attr("aria-expanded","true");
-        		$("#collapseOne").removeClass("panel-collapse collapse in");
-        		$("#collapseOne").addClass("panel-collapse collapse");
-        		$("#collapseOne").attr("aria-expanded","false");
-        		$("#collapseTwo").removeClass("panel-collapse collapse");
-        		$("#collapseTwo").addClass("panel-collapse collapse in");
-        		$("#collapseTwo").attr("aria-expanded","true");
-        		$("#collapseTwo").attr("style","height: 405px;");
+        		if(lCellLine==undefined && lPhenotype==undefined && lTimePoint== undefined ){
+        			
+        			$("#collapseOne").removeClass("panel-collapse collapse in");
+        			$("#collapseOne").addClass("panel-collapse collapse");
+        			$("#collapseOne").attr("aria-expanded","false");
+        			$("#collapseTwo").removeClass("panel-collapse collapse");
+        			$("#collapseTwo").addClass("panel-collapse collapse in");
+        			$("#collapseTwo").attr("aria-expanded","true");
+        			$("#collapseTwo").attr("style","height: 405px;");
+        		}
         		
         		
 
@@ -418,6 +428,10 @@ function displayChemicalData() {
           
           
     });
+	 if(lCellLine!=undefined && lPhenotype!=undefined && lTimePoint!= undefined ){
+		 displayGraph();
+		
+	 }
 	
 
 }
@@ -431,6 +445,34 @@ function displayPhenoData(){
 	$("#collapseThree").attr("aria-expanded","true");
 	$("#collapseThree").attr("style","height: 405px;");
 	
+	var lCellLine=$('input[name=cell]:checked').val();
+	jQuery("#phenotable").html("");
+	$.ajax({
+        type: "GET",
+        url: "Phenotypes",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        data: { 
+            'lCM': lCellLine
+          },
+          	 success: function (responseText) {
+          		/* alert("Test");*/
+        	var lPhenolist = responseText.getElementsByTagName("pheno");
+        	$("#phenotable").append("<tbody>");
+        	for(var i=1;i<lPhenolist.length;i++){
+        		
+        		
+        		$("#phenotable").append("<tr class='cell'>"+
+        				"<td><input type='radio' name='pheno' id='pheno'"+
+    					"onclick='displayTimeData()' value= "+lPhenolist[i].childNodes[1].firstChild.nodeValue+">&nbsp;"+lPhenolist[i].childNodes[0].firstChild.nodeValue+"</td></tr>"
+    			);
+        	}
+        	$("#phenotable").append("</tbody>");
+
+        }
+          
+          
+    });
+	
 	
 }
 function displayTimeData(){
@@ -442,6 +484,36 @@ function displayTimeData(){
 	$("#collapseFour").addClass("panel-collapse collapse in");
 	$("#collapseFour").attr("aria-expanded","true");
 	$("#collapseFour").attr("style","height: 405px;");
+	
+	var lCellLine=$('input[name=cell]:checked').val();
+	
+	var lPhenoType = $('input[name=tp]:checked').val();
+		
+		jQuery("#timepointtable").html("");
+    	
+		
+		$.ajax({
+        type: "POST",
+        url: "TimePoint",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        data: { 
+            'lCM': lCellLine,
+            'lPhenotype': lPhenoType
+          },
+          	 success: function (responseText) {
+          		
+            	var lPhenolist = responseText.getElementsByTagName("tp");
+            	$("#timepointtable").append("<tbody>");
+            	for(var i=0;i<lPhenolist.length;i++){
+            		
+            		$("#timepointtable").append("<tr class='cell'>"+
+            				"<td><input type='radio' name='tp' id='tp'"+
+        					"onclick='displayGraph()' value= "+lPhenolist[i].childNodes[1].firstChild.nodeValue+">&nbsp;"+lPhenolist[i].childNodes[0].firstChild.nodeValue+"</td></tr>");
+            	}
+            	$("#timepointtable").append("</tbody>");
+        }
+          
+    });
 	
 }
 function displayGraph(){
@@ -469,12 +541,23 @@ function displayGraph(){
        		img.width = "250px";
        		img.height = "250px";
        		img.src = "data:image/png;base64," + base64_string;
-       		$("#home-pills").html(img);
-       		jQuery("#home-pills").children('img').removeAttr('height');
-       		jQuery("#home-pills").children('img').removeAttr('width');
+       	    var lCheckResponse=	"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";
        		
-       		jQuery("#home-pills").children('img').attr('width','400px');
-       		jQuery("#home-pills").children('img').attr('height','400px');
+       	    if(responseText==lCheckResponse){
+       	     $("#button-div").hide();
+       	    }else{
+       	    	$("#button-div").show();
+       	    }
+       		var lButton = "<a href=data:image/;base64,"+ base64_string+" download='graph.png' class='btn btn-primary'>Download Image</a>"    
+       		
+       		
+       	    $("#button-div").html(lButton);
+       		$("#img-div").html(img);
+       		jQuery("#img-div").children('img').removeAttr('height');
+       		jQuery("#img-div").children('img').removeAttr('width');
+       		
+       		jQuery("#img-div").children('img').attr('width','400px');
+       		jQuery("#img-div").children('img').attr('height','400px');
        		
        		$("#hp").attr("aria-expanded","true");
       		$("#profile-pills").removeClass("tab-pane fade active in");
@@ -534,7 +617,7 @@ function finddoseresponse(){
 		          		var lHTML1 ="<b>Control Values:</b><br> <table><tbody><tr><td>";
 		          		var counter=0;
 		          		for(var i=0;i<lCommaLength;i++){
-		          			if(counter>6){
+		          			if(counter>12){
 		          				counter=0;
 		          				lHTML1=lHTML1+"</tr>";
 		          			}

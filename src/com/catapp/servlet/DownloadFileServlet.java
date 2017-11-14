@@ -65,34 +65,14 @@ public class DownloadFileServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		String [] lFiles					= request.getParameterValues("optradio");
 		
-		String lButtonClick					= null;
+		
 		PreparedStatement lPstmt 			= null;
 		ResultSet lRst					    = null;
 		Connection lConn 					= null;
-		File lLocalFile 					= new File("C:\\Users\\CATAPP\\serverfiles\\");
+		
 		String lFolderLoc 					= null;
 		lConn=new DBConnection().getConnection();
-		if(request.getParameter("download")!=null){
-			lButtonClick="Download";
-		}else if(request.getParameter("json")!=null){
-			lButtonClick="json";
-		}
-		/*if(lButtonClick!=null && lButtonClick=="raw"){
-			
-		}else{
-			String lFrontEndParameters = request.getParameter("cellline");
-			Long lCellLine = Long.valueOf(lFrontEndParameters.split("-")[0]);
-			Long lAssayType= Long.valueOf(lFrontEndParameters.split("-")[1]);
-			Integer lTimePoint =4;
-			Long lPhenotype= Long.valueOf(lFrontEndParameters.split("-")[2]);
-			startCustomCode(response,lCellLine,lAssayType,lTimePoint,lPhenotype,lConn);
-			return;
-		}*/
-		if(lLocalFile.exists()){
-			lFolderLoc ="C:\\Users\\CATAPP\\serverfiles\\";
-		}else{
-			// Write code as per the server //
-		}
+		
 		try{
 			if(lFiles.length>0){
 				
@@ -101,7 +81,6 @@ public class DownloadFileServlet extends HttpServlet {
 						lParameter.add(Long.parseLong(lFiles[i]));
 					
 				}
-				
 				
 				StringBuilder lBuild = new StringBuilder("select * From file_info where entity_id in (");
 									   lBuild.append(new ChemData().generateQForparameter(lParameter.size()));
@@ -119,19 +98,21 @@ public class DownloadFileServlet extends HttpServlet {
 				ArrayList<String>lFileFromServer = new ArrayList<String>();
 				String lFileName ="";
 				String lFileType ="";
+				
 				while(lRst.next()){
 					 lFileName = lRst.getString("file_name");
-					//lFileName ="test";
-					lFileType = lRst.getString("file_type");
-					String lCellLine = lRst.getString("cell_line_id");
-					//String lPlate =lRst.getString("plate_id");
-					lFileFromServer.add(lFolderLoc+lCellLine+"\\"+lFileName);
+					 lFolderLoc = lRst.getString("file_path");
+					 
+					 lFileType = lRst.getString("file_type");
+					 if(lRst.getString("file_category").equals("2") || lRst.getString("file_category").equals("3") ){
+						 lFileName=lFileName.split(".xlsx")[0];
+					 }
+					 lFileFromServer.add(lFolderLoc+"/"+lFileName);
 				}
 				
 				if(lFileFromServer.size()>0 && lFileFromServer.size()==1){
-					
-					if(lButtonClick!=null && lButtonClick=="Download"){
-						response.setHeader("Content-disposition","attachment; filename="+ lFileName);
+				
+						response.setHeader("Content-disposition","attachment; filename="+ lFileName+"."+lFileType);
 						response.setContentType(lFileType);
 						
 						OutputStream out = response.getOutputStream();
@@ -146,48 +127,8 @@ public class DownloadFileServlet extends HttpServlet {
 						in.close();
 						out.flush();
 						
-					}else{
-						if(lFileType.equals("xls") ||  lFileType.equals("xlsx")){
-							FileInputStream inp = new FileInputStream( lFileFromServer.get(0) );
-							Workbook workbook =WorkbookFactory.create(inp);
-
-							// Get the first Sheet.
-							Sheet sheet = workbook.getSheetAt( 0 );
-
-							JSONObject json = new JSONObject();
-
-						    // Iterate through the rows.
-						    JSONArray rows = new JSONArray();
-						    for ( Iterator<Row> rowsIT = sheet.rowIterator(); rowsIT.hasNext(); )
-						    {
-						        Row row = rowsIT.next();
-						        JSONObject jRow = new JSONObject();
-
-						        // Iterate through the cells.
-						        JSONArray cells = new JSONArray();
-						        for ( Iterator<Cell> cellsIT = row.cellIterator(); cellsIT.hasNext(); )
-						        {
-						            Cell cell = cellsIT.next();
-						            cells.add( cell.getStringCellValue() );
-						        }
-						        jRow.put( "cell", cells );
-						        rows.add( jRow );
-						    }
-
-						    // Create the JSON.
-						    json.put( "rows", rows );
-							    workbook.close();
-
-							// Get the JSON text.
-							    
-							    response.setHeader("Content-disposition","attachment; filename="+ lFileName+".json");
-							    response.setContentType("text/x-json;charset=UTF-8");
-								String json1 = json.toJSONString();
-								response.getWriter().write(json1);
-						}
-					}
-					 
 					
+				
 				}else{
 					 ArrayList<File>files = new ArrayList<File>();
 					for(int i=0;i<lFileFromServer.size();i++){

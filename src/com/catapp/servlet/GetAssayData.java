@@ -1,6 +1,7 @@
 package com.catapp.servlet;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
@@ -63,17 +64,27 @@ public class GetAssayData extends HttpServlet {
 			StringBuilder lXMLBuilder = new StringBuilder();
 			lXMLBuilder.append("<doseresponse>");
 			while(lRst.next()){
+				BigDecimal a = new BigDecimal(lRst.getString(2));
+				BigDecimal roundOff = a.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+				BigDecimal a1 = new BigDecimal(lRst.getString(3));
+				BigDecimal roundOff1 = a1.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+				BigDecimal a2 = new BigDecimal(lRst.getString(4));
+				BigDecimal roundOff2 = a2.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+				BigDecimal a3 = new BigDecimal(lRst.getString(5));
+				BigDecimal roundOff3 = a3.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+				BigDecimal a4 = new BigDecimal(lRst.getString(6));
+				BigDecimal roundOff4 = a4.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 				lXMLBuilder.append("<dose>");
-				lXMLBuilder.append("<thousandx>" + lRst.getString(2)+"</thousandx>");
-				lXMLBuilder.append("<hunderedx>" + lRst.getString(3)+"</hunderedx>");
-				lXMLBuilder.append("<tenx>"    +   lRst.getString(4)+"</tenx>");
-				lXMLBuilder.append("<onex>" + lRst.getString(5)+"</onex>");
-				lXMLBuilder.append("<pod>" + lRst.getString(6)+"</pod>");
+				lXMLBuilder.append("<thousandx>" + roundOff+"</thousandx>");
+				lXMLBuilder.append("<hunderedx>" + roundOff1 +"</hunderedx>");
+				lXMLBuilder.append("<tenx>"    +   roundOff2+"</tenx>");
+				lXMLBuilder.append("<onex>" + roundOff3+"</onex>");
+				lXMLBuilder.append("<pod>" + roundOff4+"</pod>");
 				lXMLBuilder.append("</dose>");
 			}
 			lPst.clearParameters();
 			lRst=null;
-			StringBuilder lQuery1= new StringBuilder("select b.control_tag,b.pointone From processed_readings_header a ");
+			StringBuilder lQuery1= new StringBuilder("select b.control_tag,b.value1,b.value2,b.value3,b.value4,b.value5,b.value6 From processed_readings_header a ");
 			lQuery1.append(" join control_readings b on a.entity_id=b.header_id");
 			lQuery1.append(" where a.cellline=? and a.timepoint=? and a.phenotype=? ");
 			lPst=lConn.prepareStatement(lQuery1.toString());
@@ -84,10 +95,61 @@ public class GetAssayData extends HttpServlet {
 			lRst = lPst.executeQuery();
 			String lValues= null;
 			while(lRst.next()){
+				String lValue1=lRst.getString(2);
+				String lValue2=lRst.getString(3);
+				String lValue3=lRst.getString(4);
+				String lValue4=lRst.getString(5);
+				String lValue5=lRst.getString(6);
+				String lValue6=lRst.getString(7);
+				
+				BigDecimal roundOff1=null;
+				BigDecimal roundOff2=null;
+				BigDecimal roundOff3=null;
+				BigDecimal roundOff4=null;
+				BigDecimal roundOff5=null;
+				BigDecimal roundOff6=null;
+				BigDecimal a1 = new BigDecimal(lValue1);
+				roundOff1 = a1.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+				
+				BigDecimal a2 = new BigDecimal(lValue2);
+				roundOff2 = a2.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+				
+				BigDecimal a3 = new BigDecimal(lValue3);
+				roundOff3 = a3.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+				
+				BigDecimal a4 = new BigDecimal(lValue4);
+				 roundOff4 = a4.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+				 if(lValue5!=null){
+					 
+					 BigDecimal a5 = new BigDecimal(lValue5);
+					 roundOff5 = a5.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+				 }
+				 if(lValue6!=null){
+					 
+					 BigDecimal a6 = new BigDecimal(lValue6);
+					 roundOff6 = a6.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+				 }
+				
+				
 				if(lValues==null){
-					lValues=lRst.getString(2);
+					if(roundOff1!=null){
+						lValues=roundOff1+","+roundOff2+","+roundOff3+","+roundOff4;
+						if(roundOff5!=null){
+							lValues=lValues+","+roundOff5;
+						}else if(roundOff6!=null){
+							lValues=lValues+","+roundOff6;
+						}
+						
+					}
+					
 				}else{
-					lValues=lValues+","+lRst.getString(2);
+					
+					lValues=lValues+","+roundOff1+","+roundOff2+","+roundOff3+","+roundOff4;
+					if(roundOff5!=null){
+						lValues=lValues+","+roundOff5;
+					}else if(roundOff6!=null){
+						lValues=lValues+","+roundOff6;
+					}
 				}
 				
 			}

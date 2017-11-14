@@ -44,7 +44,7 @@ body {
 			<div class="row">
 				<div class="col-lg-8 col-sm-offset-2">
 					<div class="panel panel-default">
-						<div class="panel-heading text-center">Security Questions</div>
+						<div class="panel-heading text-center">Security Questions( <font color="red">*<i>Answers are case-sensitive</i>*</font> )</div>
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-lg-8 col-sm-offset-2">
@@ -53,12 +53,14 @@ body {
 
 
 										<div class="form-group">
-
-											<select name="sec1" id="secqu" class="form-control">
-												<c:forEach var="sec1" items="${secqu}">
-													<option value="${sec1.key}">${sec1.value}</option>
-												</c:forEach>
-											</select>
+										
+										  <label>Question 1: </label>
+										  
+										  <c:set var="qu1" value="${qu1}"  />
+											<input type="hidden" class="form-control no-border" id="first" name="first" value="<c:out value="${qu1}"/>">
+											<c:out value="${qu1}"/>
+											
+											
 
 										</div>
 										<div class="form-group">
@@ -67,12 +69,11 @@ body {
 										</div>
 
 										<div class="form-group">
+											<label>Question 2: </label>
+											<input type="hidden" class="form-control no-border" id="second" name="second" value="<c:out value="${qu2}"/>">
+											 <c:set var="qu2" value="${qu2}"  />
 
-											<select name="sec2" id="secqu" class="form-control">
-												<c:forEach var="sec2" items="${secqu}">
-													<option value="${sec2.key}">${sec2.value}</option>
-												</c:forEach>
-											</select>
+											<c:out value="${qu2}"/>
 
 										</div>
 										<div class="form-group">
@@ -80,18 +81,19 @@ body {
 												class="form-control input-lg" placeholder="Answer2">
 										</div>
 										<div class="form-group">
+										<label>Question 3: </label>
+										<input type="hidden" class="form-control no-border" id="third" name="third" value="<c:out value="${qu3}"/>">
+											<c:set var="qu3" value="${qu3}"  />
 
-											<select name="sec3" id="secqu" class="form-control">
-												<c:forEach var="sec3" items="${secqu}">
-													<option value="${sec3.key}">${sec3.value}</option>
-												</c:forEach>
-											</select>
+											<c:out value="${qu3}"/>
 
 										</div>
 										<div class="form-group">
 											<input type="text" name="ans3" id="ans3"
 												class="form-control input-lg" placeholder="Answer3">
 										</div>
+										
+										
 
 										<div class="row">
 											<div class="col-xs-6 col-sm-6 col-md-6">
@@ -141,6 +143,58 @@ body {
 
 						</fieldset>
 					</form>
+				</div>
+			</div>
+		</c:if>
+		<c:if test="${param.page eq 3}">
+			<div class="row" style="margin-top: 20px">
+				<div
+					class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+					
+					<div class="alert alert-warning" role="alert">
+					<h2 align="center">Contact Admin</h2>
+  				Dear User,security questions and answers are not set for this profile. Please contact admin to request new password.
+  				<div class="button-div">
+				<center><a href="LoadDataForHome" class="btn btn-info" role="button">Back</a></center>
+				</div>
+					</div>
+							
+							
+							
+				</div>
+			</div>
+		</c:if>
+		
+		<c:if test="${param.page eq 4}">
+			<div class="row" style="margin-top: 20px">
+			<div
+					class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+				<div class="alert alert-danger" role="alert">
+				 Email id is not registered with us. To register click on request access link on our &nbsp; &nbsp; &nbsp; &nbsp; home page.
+				<br>
+				<br>
+				
+				<div class="button-div">
+				<center><a href="LoadDataForHome" class="btn btn-info" role="button">Back</a></center>
+				</div>
+				</div>
+				</div>
+			</div>
+		</c:if>
+		
+		<c:if test="${param.page eq 5}">
+			<div class="row" style="margin-top: 20px">
+			<div
+					class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+				<div class="alert alert-danger" role="alert">
+				 One or more answers of security questions are incorrect. Please try again.
+				<br>
+				<br>
+				
+				<div class="button-div">
+				<center><a href="LoadDataForHome" class="btn btn-info" role="button">Back</a></center>
+				</div>
+				</div>
 				</div>
 			</div>
 		</c:if>

@@ -33,6 +33,9 @@ public class ForgotPasswordServlet extends HttpServlet {
 			String lAns1					= null;
 			String lAns2					= null;
 			String lAns3					= null;
+			String lQues1					= null;
+			String lQues2					= null;
+			String lQues3					= null;
 			PreparedStatement lPstmt        = null;
 			ResultSet lRst					= null;
 			
@@ -53,14 +56,42 @@ public class ForgotPasswordServlet extends HttpServlet {
 					if(request.getParameter("ans3")!=null){
 						lAns3 = request.getParameter("ans3");
 					}
+					if(request.getParameter("first")!=null){
+						lQues1 = request.getParameter("first");
+					}
+					
+					if(request.getParameter("second")!=null){
+						lQues2 = request.getParameter("second");
+					}
+					if(request.getParameter("third")!=null){
+						lQues3 = request.getParameter("third");
+					}
 					HashMap<Long,String>lAnswerMap =new HashMap<Long,String>();
 					lAnswerMap.put(1L, lAns1);
 					lAnswerMap.put(2L, lAns2);
 					lAnswerMap.put(3L, lAns3);
-					boolean lFlag =pAuthenticateAnswers(lAnswerMap, lUser.getEntityId(),
+					
+					
+					HashMap<String,String>pMap =pAuthenticateAnswers(lAnswerMap, lUser.getEntityId(),
 							lConn);
-					LOGGER.debug("lFlag::"+lFlag);
-					if(lFlag){
+					int lCount=0;
+					if(pMap.get(lQues1)!=null){
+						if(pMap.get(lQues1).equals(lAns1)){
+							lCount++;
+						}
+					}
+					if(pMap.get(lQues2)!=null){
+						if(pMap.get(lQues2).equals(lAns2)){
+							lCount++;
+						}
+					}
+					if(pMap.get(lQues3)!=null){
+						if(pMap.get(lQues3).equals(lAns3)){
+							lCount++;
+						}
+					}
+					//LOGGER.debug("lFlag::"+lFlag);
+					if(lCount==3){
 						request.getRequestDispatcher("/WEB-INF/ForPassPage.jsp?page=2").include(request, response);
 					}else{
 						LOGGER.info("One or more answers didn't match the desired answers.");
@@ -70,7 +101,7 @@ public class ForgotPasswordServlet extends HttpServlet {
 						out.println("<script type=\"text/javascript\">");  
 						out.println("alert('One or more answers didn't match the desired answers.');");  
 						out.println("</script>");
-						request.getRequestDispatcher("/WEB-INF/index.jsp").include(request, response);
+						request.getRequestDispatcher("/WEB-INF/ForPassPage.jsp?page=5").include(request, response);
 						return;
 						/*out.close(); */ 
 					}
@@ -148,31 +179,25 @@ public class ForgotPasswordServlet extends HttpServlet {
 			}
 			return lFlag;
 		}
-		public static boolean pAuthenticateAnswers(HashMap<Long,String> pAnswers,Long pUserId,Connection pConn){
+		public HashMap<String,String>  pAuthenticateAnswers(HashMap<Long,String> pAnswers,Long pUserId,Connection pConn){
 			
 			LOGGER.debug("Start of pAuthenticateAnswers::"+ pUserId);
 			PreparedStatement lPstmnt = null;
 			ResultSet		  lRst	  = null;
-			boolean lFlag			  = false;
+			
+			HashMap<String,String>pMap = new HashMap<String,String>();
 			try{
-				StringBuilder lBuilder = new StringBuilder("select question_id,answer from security_questions_answers where user_id=? and rowstate!=-1 and is_active='Y'");
+				StringBuilder lBuilder = new StringBuilder("select b.security_question,a.answer from security_questions_answers a join security_questions b");
+										 lBuilder.append("  on a.question_id=b.entity_id where a.user_id=? and a.rowstate!=-1 and a.is_active='Y'");
+				
 				lPstmnt =pConn.prepareStatement(lBuilder.toString());
 				lPstmnt.setLong(1, pUserId);
 				lRst=lPstmnt.executeQuery();
-				int lAnsCount=0;
+				
 				while(lRst.next()){
-					lFlag=true;
-					LOGGER.debug(" answer from user::"+pAnswers.get(lRst.getLong(1))+"ans in db::"+lRst.getString(2));
-					if(pAnswers.get(lRst.getLong(1)).equals(lRst.getString(2))){
-						LOGGER.info("match");
-						lAnsCount++;
-					}
+					pMap.put(lRst.getString(1), lRst.getString(2));
 				}
-				if(lAnsCount==3){
-					lFlag=true;
-				}else{
-					lFlag=false;
-				}
+				
 			}catch (Exception e){
 				LOGGER.error("Error Occured while authenticating email",e);
 			}finally{
@@ -184,8 +209,8 @@ public class ForgotPasswordServlet extends HttpServlet {
 					LOGGER.error("Error Occured while closing pstmnt",p);
 				}
 			}
-			LOGGER.info("End of method pAuthenticateAnswers:: iFlag::"+lFlag);
+		//	LOGGER.info("End of method pAuthenticateAnswers:: iFlag::"+lFlag);
 
-			return lFlag;
+			return pMap;
 		}
 }  

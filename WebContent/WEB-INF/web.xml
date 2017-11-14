@@ -12,6 +12,12 @@
     <enabled>true</enabled>
   </servlet>
   <servlet>
+    <display-name>CatAppDownloadPageServlet</display-name>
+    <servlet-name>CatAppDownloadPageServlet</servlet-name>
+    <servlet-class>com.catapp.servlet.CatAppDownloadPageServlet</servlet-class>
+    <enabled>true</enabled>
+  </servlet>
+  <servlet>
     <display-name>UploadServlet</display-name>
     <servlet-name>UploadServlet</servlet-name>
     <servlet-class>com.catapp.servlet.UploadServlet</servlet-class>
@@ -154,6 +160,10 @@
   <servlet-mapping>
     <servlet-name>responseServlet</servlet-name>
     <url-pattern>/Response/Response</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CatAppDownloadPageServlet</servlet-name>
+    <url-pattern>/catAppDownloadPage</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ManageActionServlet</servlet-name>

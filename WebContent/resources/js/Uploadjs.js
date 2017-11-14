@@ -1,15 +1,18 @@
-function step4_to_5(){		// step 4 to step 5
+function step4_to_5()
+{		// step 4 to step 5
 	
- if (document.getElementById('processed').checked) 
+ if (document.getElementById('pod').checked) 
 	{
 		
 		$("#description").hide();
 		$("#ta").hide();
+		document.getElementById("ta").required = false;
 		
 	}	
  else{
 		$("#description").show();
 		$("#ta").show();
+		$("#step5").show();
  }
  $("#step6").show();
 
@@ -53,6 +56,9 @@ setTimeout(function() {
 function getAssaysForCellLines(){
 	
 	
+	if (document.getElementById('pod').checked || document.getElementById('raw').checked) 
+	{
+		
 	$("#CM_assays").hide();
 	$("#step2").hide();
 	$("#CM_assay_select").html("");
@@ -90,6 +96,7 @@ function getAssaysForCellLines(){
         }
           
     });
+	}
 	
 }
 function getNextAttribute(){
@@ -126,7 +133,7 @@ function getNextAttribute(){
     });
 	}
 	
-		if (document.getElementById('processed').checked){
+		if (document.getElementById('pod').checked){
 			$("#step3").hide();
 			$("#Ph_div").hide();
 			$("#phenotype").html("");

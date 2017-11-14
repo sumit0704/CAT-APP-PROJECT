@@ -3,11 +3,10 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="com.catapp.entity.User"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
 <%@taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 
-<script type="text/javascript">
+
+<!-- <script type="text/javascript">
 	$(function() {
 		var filter = $('#phenotype');
 		filter.on('change', function() {
@@ -18,16 +17,16 @@
 		});
 	});
 </script>
-<head>
+<head> -->
 <!-- <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /> -->
-<title>CAT-APP Upload</title>
+
 
 <div class="row">
 	<form action="DownloadbyCellLineServlet" method="post">
 		<div class="col-lg-6 col-md-offset-2">
 			<div class="form-group">
 				<label> Please select a cellLine:</label> <select name="cellLine"
-					id="cellLine" onclick='selectphenotypesForDownloadCell()'>
+					id="cellLine" onchange='selectphenotypesForDownloadCell()'>
 					<option value="--Select--">--Select--</option>
 					<c:forEach var="item" items="${cell}">
 						<option value="${item.key}">${item.value}</option>
@@ -46,9 +45,7 @@
 			<div class="form-group">
 				<label> Please select a time-point:</label> <select name="timepoint"
 					id="timepoint">
-					<c:forEach var="item" items="${time}">
-						<option value="${item.key}">${item.value}</option>
-					</c:forEach>
+					
 				</select>
 			</div>
 
@@ -60,5 +57,4 @@
 		</div>
 	</form>
 </div>
-</body>
-</html>
+

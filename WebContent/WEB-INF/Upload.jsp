@@ -50,6 +50,13 @@
 	height: 300px; /* or any value */
 	overflow-y: auto;
 }
+.mandatory:after { 
+    color: #d00;
+    content: "*";
+    position: absolute;
+    margin-left: 8px;
+    top:7px;
+}
 </style>
 
 
@@ -71,7 +78,7 @@
 									});
 						});
 						function stepJump() {
-							
+
 							document.getElementById('step2').style.display = "none";
 							document.getElementById('step3').style.display = "none";
 							document.getElementById('step4').style.display = "none";
@@ -93,11 +100,14 @@
 						function displaySearchForm() {
 
 							if (document.getElementById('raw').checked) {
-								jQuery("#step5").show();
+
 								document.getElementById('step1').style.display = "block";
+
 								document.getElementById('step2').style.display = "none";
+								document.getElementById('step3').style.display = "none";
 								document.getElementById('step4').style.display = "none";
 								document.getElementById('step5').style.display = "none";
+								document.getElementById('arrow').style.visibility = "visible";
 								document.getElementById('step6').style.display = "none";
 								jQuery("#phenotypes").hide();
 								document.getElementById('desc').innerHTML = "Description:";
@@ -106,11 +116,13 @@
 										.getElementById('cellline');
 								element.value = "CM";
 
-							} else if (document.getElementById('processed').checked) {
+							} else if (document.getElementById('pod').checked) {
 
 								document.getElementById('step1').style.display = "block";
+
 								document.getElementById('step2').style.display = "none";
 								document.getElementById('step4').style.display = "none";
+								document.getElementById('arrow').style.visibility = "visible";
 								jQuery("#step5").hide();
 								//document.getElementById('step5').style.display = "none";
 								document.getElementById('step6').style.display = "none";
@@ -123,13 +135,36 @@
 
 							}
 
+							else if (document.getElementById('processed').checked) {
+
+								 document.getElementById('step1').style.display = "block";
+								document.getElementById('step2').style.display = "none";
+								document.getElementById('step3').style.display = "none";
+								document.getElementById('step4').style.display = "none";
+								document.getElementById('step5').style.display = "none";
+								document.getElementById('step6').style.display = "block";
+								
+								$("#description").show();
+								$("#ta").show();
+								
+								
+								document.getElementById('arrow').style.visibility = "hidden";
+								document.getElementById('desc').innerHTML = "Description:";
+								
+
+								var element = document
+										.getElementById('cellline');
+								element.value = "CM"; 
+
+								
+							}
+
 						}
-						function openFile(strFilePath)
-				        {
-						var objExcel;
-						objExcel = new ActiveXObject("Excel.Application");
-						objExcel.Visible = true;
-						objExcel.Workbooks.Open(strLocation, false, false);
+						function openFile(strFilePath) {
+							var objExcel;
+							objExcel = new ActiveXObject("Excel.Application");
+							objExcel.Visible = true;
+							objExcel.Workbooks.Open(strLocation, false, false);
 						}
 					</script>
 </head>
@@ -183,23 +218,43 @@
 				</div>
 				<div>failure</div>
 			</c:if>
+			
+			<div id="messagebox"> 
+			<c:if test="${param.exists eq 1}">
+				<div class="alert alert-danger">
+					<button href="#" type="button" class="close">
+						<i class="glyphicon glyphicon-remove-circle text-danger"></i>
+					</button>
+					<h4><center>Upload Failed</center></h4>
+					<p>
+						<center>A file is already present for this combination.</center>
+					</p>
+				</div>
+			</c:if>
+			
+	</div>
 
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Upload Files in CAT-APP</h1>
+					<h1 class="page-header">Upload Files in CAT-APP </h1>
+					<h6>(<font color="red">*</font> fields are mandatory)</h6>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
 			<!-- /.row -->
+			
 			<div class="row">
 				<div class="col-lg-12">
 					<form role="form" action="SaveFileFormServlet" method="post"
 						class="registration-form" enctype="multipart/form-data">
 						<div class="panel panel-default">
 							<div class="panel-heading" id="selectFileTypeDiv">
-								Select File Type <label class="radio-inline"> <input
-									type="radio" name="fileRadio" id="raw" value="raw"
-									onchange="displaySearchForm()">Raw Data </label> <label
+								Select File Type &nbsp &nbsp <label class="radio-inline">
+									<input type="radio" name="fileRadio" id="raw" value="raw"
+									onchange="displaySearchForm()">Raw Data 
+								</label> <label class="radio-inline"> <input type="radio"
+									name="fileRadio" id="pod" value="pod"
+									onchange="displaySearchForm()">POD Data</label> <label
 									class="radio-inline"> <input type="radio"
 									name="fileRadio" id="processed" value="processed"
 									onchange="displaySearchForm()">Processed Data</label>
@@ -207,15 +262,16 @@
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-lg-6">
-
 										<div class="form-group" id="step1">
 											<label> Please select a cell line:</label> <select
-												name="cellline" id="cellline" onchange="getAssaysForCellLines()">
+												name="cellline" id="cellline"
+												onchange="getAssaysForCellLines()" required="required">
 												<c:forEach var="item" items="${cell}">
-												<option value="${item.key}">${item.value}</option>
+													<option value="${item.key}">${item.value}</option>
 												</c:forEach>
-											</select> <a href="#" onclick="getAssaysForCellLines()"><span
-												class="fa fa-chevron-right"></span></a>
+											</select> <a href="#" onclick="getAssaysForCellLines()" id="arrow">
+												<span class="fa fa-chevron-right"></span>
+											</a>
 
 											<!--  <button type="submit">submit</button>-->
 										</div>
@@ -226,25 +282,26 @@
 										<div id="step2" style="display: none" class="form-group">
 											<div id="CM_assays" class="all_assays" style="display: none;">
 												<label>Please select an assay name:</label> <select
-													id='CM_assay_select' onchange='getNextAttribute()'>
-													
+													id='CM_assay_select' name="assay"
+													onchange='getNextAttribute()'>
+
 												</select> <a href="#" onclick="getNextAttribute()"><span
 													class="fa fa-chevron-right"></span></a>
 
 											</div>
-											
+
 										</div>
-										
+
 										<div id="step3" style="display: none" class="form-group">
 											<div id="Ph_div" class="all_assays" style="display: none;">
 												<label>Please select a Phenotype:</label> <select
-													id='phenotype' onchange='getTimePoints()'>
-													
+													id='phenotype' name='phenotype' onchange='getTimePoints()'>
+
 												</select> <a href="#" onclick="getTimePoints()"><span
 													class="fa fa-chevron-right"></span></a>
 
 											</div>
-											
+
 										</div>
 
 
@@ -252,13 +309,14 @@
 											<div id="timepoints_4" class="all_time_div" style="display:;">
 
 												<label>Please select a time point:</label> <select
-													id="timepoints_4_select" onchange="step4_to_5()">
-													
+													id="timepoints_4_select" name="timepoints_4_select"
+													onchange="step4_to_5()">
+
 												</select> <a href="#" onclick="step4_to_5()"><span
 													class="fa fa-chevron-right"></span></a>
 
 											</div>
-											
+
 										</div>
 										<div id="step5" class="form-group"
 											style="display: none; float: left;">
@@ -290,14 +348,16 @@
 
 										<div id="step6" class="form-group" style="display: none;">
 											<div>
-												<label id="description" >Description (Required short description of file content)</label>
-												<textarea id="ta" class="form-control" name="desc" rows="3" required="required"></textarea>
-												
-												
+												<label id="description">Description (Required short
+													description of file content)<font color="red">*</font>:</label>
+												<textarea id="ta" class="form-control" name="desc" rows="3"
+													required="required"></textarea>
+
+
 											</div>
 											<br></br>
 											<div>
-												<label>Please Choose a file to upload:</label> <input
+												<label>Please Choose a file to upload<font color="red">*</font>:</label> <input
 													type="file" id="uploadfile" name="file" size="40"
 													onclick="validateFile()" required="required"> </input> <span
 													class="pull-center">
@@ -311,9 +371,6 @@
 
 
 										</div>
-										
-										
-									
 					</form>
 				</div>
 			</div>
@@ -371,7 +428,7 @@
 
 
 	<script src="/CAT-APP-PROJECT/resources/js/Uploadjs.js"></script>
-	
+
 	<!-- jQuery -->
 	<script src="/CAT-APP-PROJECT/resources/js/jquery.min.js"></script>
 

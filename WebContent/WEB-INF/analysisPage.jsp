@@ -164,7 +164,7 @@
 											<div class="panel-heading">
 												<h4 class="panel-title">
 													<a data-toggle="collapse" data-parent="#accordion"
-														href="#collapseTwo" id="sacl">Select a cell line</a>
+														href="#collapseTwo" id="sacl">Select a cell line</a><span class="glyphicon glyphicon-pushpin"></span>
 
 												</h4>
 											</div>
@@ -201,17 +201,8 @@
 												<div class="panel-body">
 													<div class=" scrollerdiv pre-scrollable">
 
-														<table class="table table-hover,table-fixed">
+														<table id="phenotable" class="table table-hover,table-fixed">
 
-															<c:forEach var="item" items="${pheno}">
-																<tr class="cell">
-																	<td><input type="radio" name="pheno" id="pheno"
-																		onclick="displayTimeData()" value=<c:out value="${item.key}"/>> &nbsp; <c:out
-																				value="${item.value}" /></td>
-																</tr>
-
-																</li>
-															</c:forEach>
 														</table>
 													</div>
 												</div>
@@ -227,17 +218,8 @@
 											<div id="collapseFour" class="panel-collapse collapse">
 												<div class="panel-body">
 													<div class=" scrollerdiv pre-scrollable">
-														<table class="table table-hover,table-fixed">
+														<table id="timepointtable" class="table table-hover,table-fixed">
 
-															<c:forEach var="item" items="${time}">
-																<tr class="cell">
-																	<td><input type="radio" name="tp" id="tp"
-																	onclick="displayGraph()"	value=<c:out value="${item.key}"/>> &nbsp; <c:out
-																				value="${item.value}" /></td>
-																</tr>
-
-																</li>
-															</c:forEach>
 														</table>
 													</div>
 												</div>
@@ -272,7 +254,11 @@
 									</ul>
 									<div class="tab-content">
 										<div class="tab-pane fade in active test" id="home-pills">
-											
+										<div id="img-div">
+										</div>
+										<div id="button-div">
+									   
+										</div>
 										</div>
 										<div class="tab-pane fade" id="profile-pills">
 										

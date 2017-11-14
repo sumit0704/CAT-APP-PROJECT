@@ -3,6 +3,7 @@ package com.catapp.servlet;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -127,17 +128,33 @@ public class DownloadbyCellLineServlet extends HttpServlet {
 			XSSFCell lCatAppId=lRow.createCell(3);
 			lCatAppId.setCellValue(lRst.getString("cat_app_id"));
 			
+			BigDecimal a = new BigDecimal(lRst.getString("point_of_departure"));
+			BigDecimal roundOff = a.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+			
 			XSSFCell lPODCell=lRow.createCell(4);
-			lPODCell.setCellValue(lRst.getString("point_of_departure"));
+			lPODCell.setCellValue(roundOff.doubleValue());
+			
+			BigDecimal a1 = new BigDecimal(lRst.getString("thousandx"));
+			BigDecimal roundOff1 = a1.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 			
 			XSSFCell l1000XCell=lRow.createCell(5);
-			l1000XCell.setCellValue(lRst.getString("thousandx"));
+			l1000XCell.setCellValue(roundOff1.doubleValue());
+			
+			BigDecimal a2 = new BigDecimal(lRst.getString("hunderedx"));
+			BigDecimal roundOff2 = a2.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 			XSSFCell l100XCell=lRow.createCell(6);
-			l100XCell.setCellValue(lRst.getString("hunderedx"));
+			l100XCell.setCellValue(roundOff2.doubleValue());
+			
+			BigDecimal a3 = new BigDecimal(lRst.getString("tenx"));
+			BigDecimal roundOff3 = a3.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 			XSSFCell l10XCell=lRow.createCell(7);
-			l10XCell.setCellValue(lRst.getString("tenx"));
+			l10XCell.setCellValue(roundOff3.doubleValue());
+			
+			BigDecimal a4 = new BigDecimal(lRst.getString("onex"));
+			BigDecimal roundOff4 = a4.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+			
 			XSSFCell l1XCell=lRow.createCell(8);
-			l1XCell.setCellValue(lRst.getString("onex"));
+			l1XCell.setCellValue(roundOff4.doubleValue());
 			i++;
 		}
 		XSSFRow lRow1 =mySheet.getRow(1);

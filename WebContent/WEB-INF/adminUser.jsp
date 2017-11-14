@@ -181,10 +181,8 @@
 							</a>
 						</div>
 					</div>
-
-				</div>
-
-				<div class="col-lg-5 col-md-2"  style="margin-left:-15px">
+					<br><br><br><br><br><br><br><br><br>
+						<div class="col-lg-5 col-md-6 ">
 						<div class="panel panel-red">
 							<div class="panel-heading">
 								<div class="row">
@@ -200,23 +198,18 @@
 							<a href="#">
 								<div class="panel-footer">
 
-
-
-
 									<span class="pull-left">
-										<form action="AdminServlet" method="post">
-											<button type="submit" class="btn btn-red btn-xs">User Management</button>
+										<form action="" method="post">
+											<button type="submit" class="btn btn-red btn-xs">Usage Logs</button>
 										</form>
 									</span> <span class="pull-right">
-										<form action="UploadServlet" method="post">
-											<input type="submit" class="btn btn-red btn-xs"
-												value="Usage Reports">
+										<form action="" method="post">
+											<button type="submit" class="btn btn-red btn-xs">Modify Tables</button>
 										</form>
 									</span>
 									<span class="text-center">
-										<form action="responseServlet" method="post">
-											<input type="submit" class="btn btn-red btn-xs"
-												value="Modify tables">
+										<form action="AdminServlet" method="post">
+											<button type="submit" class="btn btn-red btn-xs">User Management</button>
 										</form>
 									</span>
 									<div class="clearfix"></div>
@@ -226,6 +219,10 @@
 							</a>
 						</div>
 					</div>
+
+				</div>
+
+			
 
 
 

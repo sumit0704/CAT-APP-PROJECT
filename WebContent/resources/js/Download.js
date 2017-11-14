@@ -1,10 +1,9 @@
-function should_alert(){
+function should_alert() {
 	alert("hh");
 	// ${pageContext.request.contextPath}
 }
 
-
-function click_cell_line_title(){
+function click_cell_line_title() {
 	$("#file_table").hide();
 	// alert("click_cell_line_title(): ${pageContext.request.contextPath}");
 	$('#cell_line_list').show();
@@ -12,782 +11,793 @@ function click_cell_line_title(){
 	// alert("click_cell_line_title()-2");
 	$("#assay_head").hide();
 	$("#assay_list").hide();
-	if(jQuery("#Assays_A").html()=="."){
-		
-	}else{
-		
+	if (jQuery("#Assays_A").html() == ".") {
+
+	} else {
+
 		$("#Assays_A").html(".");
 	}
-	/*$("#file_button").hide();
-	$("#file_list").hide();
-	$("#file_list").replaceWith("...");
-	$("#file_list").append("...");
-	$("#file_list").replaceWith("data");*/
-	
-	
+	/*
+	 * $("#file_button").hide(); $("#file_list").hide();
+	 * $("#file_list").replaceWith("..."); $("#file_list").append("...");
+	 * $("#file_list").replaceWith("data");
+	 */
+
 	// alert("click_cell_line_title()-3");
 }
 
-
-
 $(".cell_lines").change(function() {
-    if(this.checked) {
-        // alert("cell lines selected.");
-        $('#cell_line_button').show();
-    }
+	if (this.checked) {
+		// alert("cell lines selected.");
+		$('#cell_line_button').show();
+	}
 });
 
-
-
-function click_cell_line_button(){
-	// alert("click_cell_line_button()");
-	
-	$('#cell_line_list').hide();
-	$('#cell_line_title').hide;
-	
-	
-	$("#assay_head").hide();
-	$("#assay_list").hide();
+function click_cell_line_button() {
 	
 	var selected_celllines = [];
 	var data_string = '';
 	var i = 0;
-	$('#cell_line_list > input[type=checkbox]').each(function () {
-		if($(this).prop('checked') == true){
-			selected_celllines[$(this).prop('name')] = $(this).prop('value');
-		   	// alert("CM26: " + $(this).prop('value'));
-		   	data_string += $(this).prop('name') + "=" + $(this).prop('value') + "&";
-		}
-	});
 	
-	$.ajax({
-	  type: "POST",
-	  url: "Download_InternalServlet",
-	  data: data_string,
-	  type: 'post',
-	  success: function(data) {
-	    // alert(data);
-	    $("#Assays_A").html(data);
-	    
-		$("#assay_head").show();
-		$("#assay_list").show();
-		$('#cell_line_button').hide();
-	  }
-	});
+	if(document.getElementById('processed').checked){
+		
 	
+		var lCellLines="";
+		var lDownloadType="3";
+		jQuery('.test > input[type=checkbox]').each(
+				function() {
+					if ($(this).prop('checked') == true) {
+						if(lCellLines.length==0){
+							lCellLines=$(this).prop('value');
+						}else{
+							lCellLines=lCellLines+","+$(this).prop('value');
+						}
+						
+					}
+				});
+	
+	
+		$.ajax({
+			  url: "ViewFilesForDownload",
+			  data : {
+					'lCM' : lCellLines,
+					'lDT' : lDownloadType
+					
+				},
+			  type: 'get',
+			  success: function(data) {
+					var lfileList = data.getElementsByTagName("file");
+
+					var lTableBody;
+					lTableBody = '<br>' + '<table class="table"><thead><tr class="success"><th>Select</th><th>CellLine</th><th>FileName</th></tr></thead><tbody>'
+						
+					
+					for (var i = 0; i < lfileList.length; i++) {
+						
+						var lEntityId = lfileList[i].childNodes[0].firstChild.nodeValue
+						var lCellLine = lfileList[i].childNodes[1].firstChild.nodeValue;
+						var lFileName=    lfileList[i].childNodes[2].firstChild.nodeValue;
+						
+						
+
+						lTableBody = lTableBody
+								+ '<tr class="active"'
+								+ '>'
+								+ '<td>'
+								+ '<input type="checkbox" name="optradio"  id ='
+								+  lEntityId + '  value=' + lEntityId + '>'
+								+ '</td>' + '<td>' + lCellLine + '</td>'
+								+ '<td>' + lFileName + '</td>'
+								+ '</tr>';
+					}
+					lTableBody=lTableBody+'</tbody></table>';
+					var lButtonHTML='<input type="submit" class="btn btn-primary" align="center" style="margin-bottom: 10px;margin-left:15px" name="download"'
+						+'value="Download">';
+					jQuery("#tablediv").html("");
+					jQuery("#tablediv").append(lTableBody);
+					jQuery("#right-pane").show();
+					jQuery("#up-pane").show();
+					jQuery("#button-div").html(lButtonHTML);
+					jQuery("#button-div").show();
+				}
+			});		// end of ajax()
+	
+	
+	
+	}else{
+	jQuery('.test > input[type=checkbox]').each(
+			function() {
+				if ($(this).prop('checked') == true) {
+					selected_celllines[$(this).prop('name')] = $(this).prop(
+							'value');
+					// alert("CM26: " + $(this).prop('value'));
+					data_string += $(this).prop('name') + "="
+							+ $(this).prop('value') + "&";
+				}
+			});
+	
+	$
+			.ajax({
+				type : "POST",
+				url : "Download_InternalServlet",
+				data : data_string,
+				type : 'post',
+				
+				success : function(responseXml) 
+				 {
+					 $("#assayDiv").html($(responseXml).find("assayData").html());
+					// $('#tableDiv').show();
+				  }
+			});
+	
+	$("#collapseOne").removeClass("panel-collapse collapse in");
+	$("#collapseOne").addClass("panel-collapse collapse");
+	$("#collapseOne").attr("aria-expanded","false");
+	$("#collapseOne").attr("style","height: 0px;");
+	$("#collapseTwo").removeClass("panel-collapse collapse");
+	$("#collapseTwo").addClass("panel-collapse collapse in");
+	$("#collapseTwo").attr("aria-expanded","true");
+	$("#collapseTwo").attr("style","height: 195px;");
+	}
+
 	// alert("click_cell_line_button()-2");
-}	// end of show_hide_cell_lines(){}
+} // end of show_hide_cell_lines(){}
 
-
-function click_assay_title(){
+function click_assay_title() {
 	$("#assay_list").show();
 	$("#assay_button").hide();
-	
+
 	$("#pheno_head").hide();
 	$("#pheno_list").hide();
 	$("#file_list").hide();
 	$("#file_button").hide();
 }
 
-
 $(".all_assays").change(function() {
-    if(this.checked) {
-        // alert("cell lines selected.");
-        $('#assay_button').show();
-    }
+	if (this.checked) {
+		// alert("cell lines selected.");
+		$('#assay_button').show();
+	}
 });
 
+function click_assay_button() {
 
-function click_assay_button(){
-	// alert("click_assay_button()");
+	var lCellLines="";
+	var lAssays="";
 	
-	var selected_assay = "";
-	var data_string = '';
+	$("#collapseTwo").removeClass("panel-collapse collapse in");
+	$("#collapseTwo").addClass("panel-collapse collapse");
+	$("#collapseTwo").attr("aria-expanded","false");
+	$("#collapseTwo").attr("style","height: 0px;");
 	
-	$('.all_assays > input[type=checkbox]').each(function () {
-		if($(this).prop('checked') == true){
-			
-		   	selected_assay = $(this).prop('name');
-		   	data_string += $(this).prop('name') + "=" + $(this).prop('value') + "&";
-		}
-	});
-	
-	// alert("data_string: " + data_string);
-	// data_string = "CM=CM&HEP=HEP"
-	$.ajax({
-	  url: "Download_Internal_CServlet",
-	  data: data_string,
-	  type: 'post',
-	  success: function(data) {
-	    // alert(data);
-		  $("#file_list").html(""); 
-	    $("#file_list").html(data);
-	    $('#assay_button').hide();	    
-	  }
-	});		// end of ajax()
-	
-	// alert("Hello, Sir.");
-	
+	if (document.getElementById('raw').checked) {
+		$("#collapseFour").removeClass("panel-collapse collapse");
+		$("#collapseFour").addClass("panel-collapse collapse in");
+		$("#collapseFour").attr("aria-expanded","true");
+		$("#collapseFour").attr("style","height: 195px;");
+		jQuery("#static").show();
+		jQuery("#static1").show();
+		
+	}else if(document.getElementById('pod').checked){
+		$("#collapseThree").removeClass("panel-collapse collapse");
+		$("#collapseThree").addClass("panel-collapse collapse in");
+		$("#collapseThree").attr("aria-expanded","true");
+		$("#collapseThree").attr("style","height: 195px;");
+		
+		var selected_assay = "";
+		var data_string = '';
+		
+		jQuery('.test > input[type=checkbox]').each(
+				function() {
+					if ($(this).prop('checked') == true) {
+						if(lCellLines.length==0){
+							lCellLines=$(this).prop('value');
+						}else{
+							lCellLines=lCellLines+","+$(this).prop('value');
+						}
+						
+					}
+				});
+		jQuery('.all_assays > input[type=checkbox]').each(
+				function() {
+					if ($(this).prop('checked') == true) {
+						if(lAssays.length==0){
+							lAssays=$(this).prop('value');
+						}else{
+							lAssays=lAssays+","+$(this).prop('value');
+						}
+					}
+				});
+		
+		
+		
+		// data_string = "CM=CM&HEP=HEP"
+		$.ajax({
+
+			url : "Download_Internal_CServlet",
+			data: {"cellNames": lCellLines, "assayLines": lAssays},
+			type : 'post',
+		
+			success : function(responseXml) 
+			 {
+				 $("#phenoDiv").html($(responseXml).find("phenoData").html());
+				// $('#tableDiv').show();
+			  }
+		}); // end of ajax()
+		
+		
+	}
+
 }
 
 
+function click_pheno_button() {
 
+	/*var selected_pheno = "";
+	var data_string = '';*/
+	
+	
+	
+	
+	/*$('.all_phenos > input[type=checkbox]').each(
+			function() {
+				if ($(this).prop('checked') == true) {
+
+					selected_pheno = $(this).prop('name');
+					data_string += $(this).prop('name') + "="
+							+ $(this).prop('value') + "&";
+				}
+			});*/
+	//alert("hello")
+	/*jQuery('.test > input[type=checkbox]').each(
+			function() {
+				if ($(this).prop('checked') == true) {
+					if(lCellLines.length==0){
+						lCellLines=$(this).prop('value');
+					}else{
+						lCellLines=lCellLines+","+$(this).prop('value');
+					}
+					
+				}
+			});
+	jQuery('.all_assays > input[type=checkbox]').each(
+			function() {
+				if ($(this).prop('checked') == true) {
+					if(lAssays.length==0){
+						lAssays=$(this).prop('value');
+					}else{
+						lAssays=lAssays+","+$(this).prop('value');
+					}
+				}
+			});
+
+	$.ajax({
+
+		url : "TimePoint_CatApp",
+		data : data_string,
+		type : 'post',
+	
+		success : function(responseXml) 
+		 {
+			 $("#timeDiv").html($(responseXml).find("timeData").html());
+			// $('#tableDiv').show();
+		  }
+	});*/ // end of ajax()
+	var lCellLines="";
+	var lAssays="";
+	jQuery('.test > input[type=checkbox]').each(
+			function() {
+				if ($(this).prop('checked') == true) {
+					if(lCellLines.length==0){
+						lCellLines=$(this).prop('value');
+					}else{
+						lCellLines=lCellLines+","+$(this).prop('value');
+					}
+					
+				}
+			});
+	jQuery('.all_assays > input[type=checkbox]').each(
+			function() {
+				if ($(this).prop('checked') == true) {
+					if(lAssays.length==0){
+						lAssays=$(this).prop('value');
+					}else{
+						lAssays=lAssays+","+$(this).prop('value');
+					}
+				}
+			});
+	$.ajax({
+
+		url : "TimePoint_CatApp",
+		type : 'post',
+		data: { 
+            'lCM': lCellLines,
+            'lAssay': lAssays
+          },
+	
+		success : function(responseXml) 
+		 {
+			 $("#timeDiv").html($(responseXml).find("timeData").html());
+			// $('#tableDiv').show();
+		  }
+	});
+	
+	$("#collapseThree").removeClass("panel-collapse collapse in");
+	$("#collapseThree").addClass("panel-collapse collapse");
+	$("#collapseThree").attr("aria-expanded","false");
+	$("#collapseThree").attr("style","height: 0px;");
+	
+		$("#collapseFive").removeClass("panel-collapse collapse");
+		$("#collapseFive").addClass("panel-collapse collapse in");
+		$("#collapseFive").attr("aria-expanded","true");
+		$("#collapseFive").attr("style","height: 195px;");
+	
+}
+
+function click_dil_button(){
+	var lCellLines="";
+	var lAssays="";
+	jQuery('.test > input[type=checkbox]').each(
+			function() {
+				if ($(this).prop('checked') == true) {
+					if(lCellLines.length==0){
+						lCellLines=$(this).prop('value');
+					}else{
+						lCellLines=lCellLines+","+$(this).prop('value');
+					}
+					
+				}
+			});
+	jQuery('.all_assays > input[type=checkbox]').each(
+			function() {
+				if ($(this).prop('checked') == true) {
+					if(lAssays.length==0){
+						lAssays=$(this).prop('value');
+					}else{
+						lAssays=lAssays+","+$(this).prop('value');
+					}
+				}
+			});
+	$.ajax({
+
+		url : "TimePoint_CatApp",
+		type : 'post',
+		data: { 
+            'lCM': lCellLines,
+            'lAssay': lAssays
+          },
+	
+		success : function(responseXml) 
+		 {
+			 $("#timeDiv").html($(responseXml).find("timeData").html());
+			// $('#tableDiv').show();
+		  }
+	});
+	
+	
+	$("#collapseFour").removeClass("panel-collapse collapse in");
+	$("#collapseFour").addClass("panel-collapse collapse");
+	$("#collapseFour").attr("aria-expanded","false");
+	$("#collapseFour").attr("style","height: 0px;");
+	
+		$("#collapseFive").removeClass("panel-collapse collapse");
+		$("#collapseFive").addClass("panel-collapse collapse in");
+		$("#collapseFive").attr("aria-expanded","true");
+		$("#collapseFive").attr("style","height: 195px;");
+	
+	
+}
 
 // ================================= LD coded above =======================
 
+function searchFiles() {
+	var lCellLines = "";
+	var lCount = 0;
+	$.each($("input[name='celllines']:checked"), function() {
+		if (lCount == 0) {
+			lCellLines = $(this).val();
+		} else {
+			lCellLines = lCellLines + "," + $(this).val();
 
-
-
-
-
-
-
-
-
-
-
-
-function searchFiles(){
-	var lCellLines="";
-	var lCount=0;
-	$. each($("input[name='celllines']:checked"), function(){
-		if(lCount==0){
-			lCellLines= $(this).val();
-		}else{
-			lCellLines=lCellLines+","+$(this).val();
-			
 		}
 		lCount++
 	});
-		
-	var lCount1=0;
-	var lAssayNames="";
-	$. each($("input[name='assaynames']:checked"), function(){
-		if(lCount1==0){
-			lAssayNames=$(this).val();
-		}else{
-			lAssayNames=lAssayNames+","+$(this).val();
-			
+
+	var lCount1 = 0;
+	var lAssayNames = "";
+	$.each($("input[name='assaynames']:checked"), function() {
+		if (lCount1 == 0) {
+			lAssayNames = $(this).val();
+		} else {
+			lAssayNames = lAssayNames + "," + $(this).val();
+
 		}
 		lCount1++;
 	});
-	
-	var lCount2=0;
-	var lPhenoTypes="";
-		$. each($("input[name='phenotypes']:checked"), function(){
-			if(lCount2==0){
-				lPhenoTypes=$(this).val();
 
-			}else{
-				
-				lPhenoTypes=lPhenoTypes+","+$(this).val();
-			}
-			
-			
-			lCount2++;
-		});
-		
-		var lCount3=0;
-			
-	var lPlate="";
-			$. each($("input[name='pd']:checked"), function(){
-				if(lCount3==0){
-					lPlate = $(this).val();
-				}else{
-					lPlate=lPlate+","+$(this).val();
-				}
-				lCount3++;
-			});
+	var lCount2 = 0;
+	var lPhenoTypes = "";
+	$.each($("input[name='phenotypes']:checked"), function() {
+		if (lCount2 == 0) {
+			lPhenoTypes = $(this).val();
 
-    
-			$.ajax({
-		        type: "GET",
-		        url: "ViewFilesServlet",
-		        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		        data: { 
-		            'lCM': lCellLines, 
-		            'lAN': lAssayNames,
-		            'lPT': lPhenoTypes,
-		            'lPD': lPlate
-		          },
-		        //data: {"lCM": lCellLines, "lAN": lAssayNames, "lPT": lPhenoTypes, "lPD": lPlate},
-		        success: function (responseText) {
-		        	var lfileList = responseText.getElementsByTagName("file");
-		        	
-		        	
-		        	var lTableBody;
-		        	lTableBody ='<br>'+'<form action="DownloadFileServlet">'+'<table class="table" style="width: 70%;">'
-		        				+'<thead> <tr>'
-						  		+ '<th>Select</th>'
-						  		+ '<th>File Name</th>'
-						  		+ '<th>Uploaded Date</th>'
-						  		+ '<th>Description</th></thead><tbody>';
-		        	
-		        	var lPagination;
-		        	var lLoopCount=0;
-		        	var lFileExists=0;
-		        	for(var i=0;i<lfileList.length;i++){
-		        		lFileExists=1;
-		        		lLoopCount=lLoopCount+1;
-		        		var lFileName=lfileList[i].childNodes[2].firstChild.nodeValue;
-		        		var lFilePath=lfileList[i].childNodes[1].firstChild.nodeValue;
-		        		var lUploadTime=lfileList[i].childNodes[3].firstChild.nodeValue;
-		        		var lDescription=lfileList[i].childNodes[4].firstChild.nodeValue;
-		        		var lClassStyle;
-		        		var lTrId;
-		        		if(lfileList[i].childNodes[0].firstChild.nodeValue == "xls" || lfileList[i].childNodes[0].firstChild.nodeValue == "xlsx" ){
-		        			lClassStyle="success";
-		        			lTrId="xls";
-		        		}else if(lfileList[i].childNodes[0].firstChild.nodeValue == "pdf"){
-		        			lClassStyle="danger";
-		        			lTrId="pdf";
-		        		}else if(lfileList[i].childNodes[0].firstChild.nodeValue == "jpeg"){
-		        			lClassStyle="warning";
-		        			lTrId="img";
-		        		}else{
-		        			lClassStyle="active";
-		        		}
-		        			
-		        			lTableBody=lTableBody+'<tr class='+lClassStyle+'>'
-		        								 +'<td>'
-		        								 + '<input type="checkbox" name="optradio"  id ='
-		     		        					 + lFilePath
-		     		        					 + '  value='+lFilePath+ '>'
-		    		        					 +'</td>'
-		    		        					 +'<td>'
-		    		        					 +lFileName+'</td>'
-		    		        					 +'<td>'
-		    		        					 +lUploadTime+'</td>'
-		    		        					 +'<td>'
-		    		        					 +lDescription+'</td>'+'</tr>';
-		        		}
-		        	lPagination=(lLoopCount)%10;
-		        	
-		        	/// Loop for pagination ///
-		        	
-		        	/*var lPageHTML ='<ul class="pager">'
-		        					+ '<li><a href="#">Next</a></li>'
-		        					+ '<li><a href="#">Previous</a></li>';
-		        					+'</ul>'*/;
-		        	/*for(var i=1;i<=lPagination;i++){
-		        		lPageHTML=lPageHTML+'<li><a href="#"> '+i+ '</a></li>'	;
-		        	}*/
-		        	if(lFileExists==1){
-		        		
-		        		if(lLoopCount>8){
-		        			lTableBody=lTableBody+'<tr class="pager">'+'<td><a href="#">Next</a>&nbsp;&nbsp;<a href="#">Previous</a></td></tr>';
-		        		}
-		        		lTableBody=lTableBody+'<tr id="button">'+'<td><input type="submit" class="btn btn-lg btn-success btn-block" name="download" style="border-radius: 5px;" value="Download"></td>';
-		        		lTableBody=lTableBody+'<td><input type="submit" class="btn btn-lg btn-success btn-block" name="json" style="border-radius: 5px;" value="Convert to JSON"></td>'+'</tr>';
-		        		lTableBody=lTableBody+'</tbody>'+'</table>'+'</form>';
-		        		lTableBody=lTableBody+'</tbody>'+'</table>'+'</form>';
-		        		
-		        		jQuery("#allFiles").html(lTableBody);
-		        		
-		        	}else{
-		        		lTableBody=lTableBody+'<br><br>'+'<tr class="info">'+'<td></td><td></td><td><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No Files Exists!!<b></td><td></td>'+'</tr>';
-		        		lTableBody=lTableBody+'</tbody>'+'</table>'+'</form>';
-		        		jQuery("#allFiles").html(lTableBody);
-		        	}				
-		        	//jQuery("#pagination").html(lPageHTML);
-		        	
-		        }
-		          
-		    });
-			
+		} else {
+
+			lPhenoTypes = lPhenoTypes + "," + $(this).val();
 		}
 
+		lCount2++;
+	});
 
+	var lCount3 = 0;
 
-function downloadfiles(){
-	
-	var lSelectedCheckBox="";
-	var lCount=0;
-	$. each($("input[name='optradio']:checked"), function(){
-		if(lCount==0){
-			lSelectedCheckBox= $(this).val();
-		}else{
-			lSelectedCheckBox=lSelectedCheckBox+","+$(this).val();
+	var lPlate = "";
+	$.each($("input[name='pd']:checked"), function() {
+		if (lCount3 == 0) {
+			lPlate = $(this).val();
+		} else {
+			lPlate = lPlate + "," + $(this).val();
+		}
+		lCount3++;
+	});
+
+	$
+			.ajax({
+				type : "GET",
+				url : "ViewFilesServlet",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				data : {
+					'lCM' : lCellLines,
+					'lAN' : lAssayNames,
+					'lPT' : lPhenoTypes,
+					'lPD' : lPlate
+				},
+				// data: {"lCM": lCellLines, "lAN": lAssayNames, "lPT":
+				// lPhenoTypes, "lPD": lPlate},
+				success : function(responseText) {
+					var lfileList = responseText.getElementsByTagName("file");
+
+					var lTableBody;
+					lTableBody = '<br>' + '<table class="table table-hover"><thead><tr><th>Select</th><th>Cell Line</th><th>Assay Type</th>'
+							+ '<th>Dilution</th><th>TimePoint</th><th>FileName</th></tr><tbody>';
+					
 			
+					for (var i = 0; i < lfileList.length; i++) {
+						
+						var lEntityId = lfileList[i].childNodes[0].firstChild.nodeValue
+						var lCellLine = lfileList[i].childNodes[1].firstChild.nodeValue;
+						var lAssay =    lfileList[i].childNodes[2].firstChild.nodeValue;
+						var lDilution = lfileList[i].childNodes[3].firstChild.nodeValue;
+						var lTimePoint = lfileList[i].childNodes[4].firstChild.nodeValue;
+						var lFileName = lfileList[i].childNodes[5].firstChild.nodeValue;
+						
+						/*var lClassStyle;
+						var lTrId;
+						if (lfileList[i].childNodes[0].firstChild.nodeValue == "xls"
+								|| lfileList[i].childNodes[0].firstChild.nodeValue == "xlsx") {
+							lClassStyle = "success";
+							lTrId = "xls";
+						} else if (lfileList[i].childNodes[0].firstChild.nodeValue == "pdf") {
+							lClassStyle = "danger";
+							lTrId = "pdf";
+						} else if (lfileList[i].childNodes[0].firstChild.nodeValue == "jpeg") {
+							lClassStyle = "warning";
+							lTrId = "img";
+						} else {
+							lClassStyle = "active";
+						}*/
+
+						lTableBody = lTableBody
+								+ '<tr'
+								+ '>'
+								+ '<td>'
+								+ '<input type="checkbox" name="optradio"  id ='
+								+ lEntityId + '  value=' + lEntityId + '>'
+								+ '</td>' + '<td>' + lCellLine + '</td>'
+								+ '<td>' + lAssay + '</td>'
+								+ '<td>' + lDilution + '</td>'
+								+ '<td>' + lTimePoint + '</td>'
+								+ '<td>' + lFileName + '</td>'
+								+ '</tr>';
+					}
+					
+					
+
+				}
+
+			});
+
+}
+
+function downloadfiles() {
+
+	var lSelectedCheckBox = "";
+	var lCount = 0;
+	$.each($("input[name='optradio']:checked"), function() {
+		if (lCount == 0) {
+			lSelectedCheckBox = $(this).val();
+		} else {
+			lSelectedCheckBox = lSelectedCheckBox + "," + $(this).val();
+
 		}
 		lCount++
 	});
-	if(lSelectedCheckBox.length>0){
-		
-	}else{
+	if (lSelectedCheckBox.length > 0) {
+
+	} else {
 		alert("Please select any file to download.");
 	}
 	alert("lSelectedCheckBox: " + lSelectedCheckBox);
 	$.ajax({
-        type: "GET",
-        url: "DownloadFileServlet",
-        dataType: 'text',
-        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-        data: { 
-            'lSelectedBox': lSelectedCheckBox, 
-            
-          },
-        //data: {"lCM": lCellLines, "lAN": lAssayNames, "lPT": lPhenoTypes, "lPD": lPlate},
-        success: function (responseText) {
-        	
-        	window.location.href = responseText
-        }
-    });
-	
-}
+ 		type : "GET",
+		url : "DownloadFileServlet",
+		dataType : 'text',
+		contentType : 'application/x-www-form-urlencoded; charset=UTF-8',
+		data : {
+			'lSelectedBox' : lSelectedCheckBox,
 
-function showExcelFiles() {
-    jQuery("#pdf").hide();
- }
+		},
+		// data: {"lCM": lCellLines, "lAN": lAssayNames, "lPT": lPhenoTypes,
+		// "lPD": lPlate},
+		success : function(responseText) {
 
-
-function backRefresh(){
-	
-	assay.options[1].hidden=false;
-	assay.options[1].hidden=false;
-	assay.options[2].hidden=false;
-	assay.options[3].hidden=false;
-	assay.options[4].hidden=false;
-	assay.options[5].hidden=false;
-	assay.options[6].hidden=false;
-	assay.options[7].hidden=false;
-	assay.options[9].hidden=false;
-	assay.options[10].hidden=false;
-	assay.options[11].hidden=false;
-	assay.options[12].hidden=false;
-	assay.options[13].hidden=false;
-	assay.options[14].hidden=false;
-	assay.options[15].hidden=false;
-	jQuery("#assay").val(0);
-	jQuery("#assays").prop('disabled',true);	
-}
-
-
-
-function backRefreshTime(){
-	tp.options[1].hidden=false;
-	tp.options[2].hidden=false;
-	tp.options[3].hidden=false;
-	tp.options[4].hidden=false;
-	jQuery("#tp").val(0);
-	jQuery("#times").prop('disabled',true);
-}
-	
-
-
-
-function refreshphenotype(){
-	
-    ph.options[1].hidden=false;
-	ph.options[2].hidden=false;
-	ph.options[3].hidden=false;
-	ph.options[4].hidden=false;
-	ph.options[5].hidden=false;
-	ph.options[6].hidden=false;
-	ph.options[7].hidden=false;
-	ph.options[8].hidden=false;
-	ph.options[9].hidden=false;
-	ph.options[10].hidden=false;
-	ph.options[11].hidden=false;
-	ph.options[12].hidden=false;
-	ph.options[13].hidden=false;
-	ph.options[14].hidden=false;
-	ph.options[15].hidden=false;
-	ph.options[16].hidden=false;
-	ph.options[17].hidden=false;
-	ph.options[18].hidden=false;
-	ph.options[19].hidden=false;
-	ph.options[20].hidden=false;
-	ph.options[21].hidden=false;
-	ph.options[22].hidden=false;
-	ph.options[23].hidden=false;
-	ph.options[24].hidden=false;
-	ph.options[25].hidden=false;
-	ph.options[26].hidden=false;
-	ph.options[27].hidden=false;
-	ph.options[28].hidden=false;
-	jQuery("#ph").val(0);
-	jQuery("#pheno").prop('disabled',true);
-}
-
-
-
-
-// ====================================================================
-
-
-function getAssaysForDownload(){
-	var lCellLinesArray=[];
-	
-	$. each($("input[name='celllines']:checked"), function(){
-		lCellLinesArray.push($(this).val());
-	});
-	jQuery("#AssayHead").children().eq(0).hide();
-	jQuery("#AssayHead").children().eq(1).hide();
-	jQuery("#AssayHead").children().eq(2).hide();
-	jQuery("#AssayHead").children().eq(3).hide();
-	jQuery("#AssayHead").children().eq(4).hide();
-	jQuery("#AssayHead").children().eq(5).hide();
-	jQuery("#AssayHead").children().eq(6).hide();
-	jQuery("#AssayHead").children().eq(7).hide();
-	jQuery("#AssayHead").children().eq(8).hide();
-	jQuery("#AssayHead").children().eq(9).hide();
-	jQuery("#AssayHead").children().eq(10).hide();
-	jQuery("#AssayHead").children().eq(11).hide();
-	jQuery("#AssayHead").children().eq(12).hide();
-	jQuery("#AssayHead").children().eq(13).hide();
-	jQuery("#AssayHead").children().eq(14).hide();
-	jQuery("#AssayHead").children().eq(15).hide();
-	if(lCellLinesArray==0){
-		jQuery("#AssayHead").children().eq(0).show();
-		jQuery("#AssayHead").children().eq(1).show();
-		jQuery("#AssayHead").children().eq(2).show();
-		jQuery("#AssayHead").children().eq(3).show();
-		jQuery("#AssayHead").children().eq(4).show();
-		jQuery("#AssayHead").children().eq(5).show();
-		jQuery("#AssayHead").children().eq(6).show();
-		jQuery("#AssayHead").children().eq(7).show();
-		jQuery("#AssayHead").children().eq(8).show();
-		jQuery("#AssayHead").children().eq(9).show();
-		jQuery("#AssayHead").children().eq(10).show();
-		jQuery("#AssayHead").children().eq(11).show();
-		jQuery("#AssayHead").children().eq(12).show();
-		jQuery("#AssayHead").children().eq(13).show();
-		jQuery("#AssayHead").children().eq(14).show();
-		jQuery("#AssayHead").children().eq(15).show();
-		
-	}
-	
-	for(var i=0;i<lCellLinesArray.length;i++){
-		var lCellLines=lCellLinesArray[i];
-		if(lCellLines==2){
-			jQuery("#AssayHead").children().eq(0).show();
-			jQuery("#AssayHead").children().eq(1).show();
-			jQuery("#AssayHead").children().eq(2).show();
-		
-			
-		} else if (lCellLines==1){
-			
-			jQuery("#AssayHead").children().eq(9).show();
-			jQuery("#AssayHead").children().eq(10).show();
-			jQuery("#AssayHead").children().eq(2).show();
-			jQuery("#AssayHead").children().eq(3).show();
-			jQuery("#AssayHead").children().eq(4).show();
-			
-			
+			window.location.href = responseText
 		}
-		else if (lCellLines==3 ){
-			
-			jQuery("#AssayHead").children().eq(2).show();
-			jQuery("#AssayHead").children().eq(3).show();
-			jQuery("#AssayHead").children().eq(9).show();
-			jQuery("#AssayHead").children().eq(10).show();
-			
-			
-		}
-		else if (lCellLines==4 ){
-
-			jQuery("#AssayHead").children().eq(2).show();
-			jQuery("#AssayHead").children().eq(3).show();
-			jQuery("#AssayHead").children().eq(9).show();
-			jQuery("#AssayHead").children().eq(10).show();
-					
-				}
-		else if (lCellLines==5 ){
-		
-			
-			jQuery("#AssayHead").children().eq(2).show();
-			jQuery("#AssayHead").children().eq(3).show();
-			jQuery("#AssayHead").children().eq(12).show();
-			jQuery("#AssayHead").children().eq(13).show();
-			jQuery("#AssayHead").children().eq(14).show();
-			jQuery("#AssayHead").children().eq(15).show();
-			
-			
-					
-				}
-		else if (lCellLines>6 || lCellLines<17 ){
-
-			
-			jQuery("#AssayHead").children().eq(4).show();
-			jQuery("#AssayHead").children().eq(5).show();
-			jQuery("#AssayHead").children().eq(6).show();
-			jQuery("#AssayHead").children().eq(7).show();
-			jQuery("#AssayHead").children().eq(8).show();
-			
-		}else{
-			jQuery("#AssayHead").children().eq(1).show();
-			jQuery("#AssayHead").children().eq(2).show();
-			jQuery("#AssayHead").children().eq(3).show();
-			jQuery("#AssayHead").children().eq(4).show();
-			jQuery("#AssayHead").children().eq(5).show();
-			jQuery("#AssayHead").children().eq(6).show();
-			jQuery("#AssayHead").children().eq(7).show();
-			jQuery("#AssayHead").children().eq(8).show();
-			jQuery("#AssayHead").children().eq(9).show();
-			jQuery("#AssayHead").children().eq(10).show();
-			jQuery("#AssayHead").children().eq(11).show();
-			jQuery("#AssayHead").children().eq(12).show();
-			jQuery("#AssayHead").children().eq(13).show();
-			jQuery("#AssayHead").children().eq(14).show();
-			jQuery("#AssayHead").children().eq(15).show();
-			
-		}
-	}
-	
-}
-function getPhenotypes(){
-	var lPhenotypesArray=[];
-	
-	$. each($("input[name='assaynames']:checked"), function(){
-		lPhenotypesArray.push($(this).val());
-	});
-	jQuery("#phenohead").children().eq(0).hide();
-	jQuery("#phenohead").children().eq(1).hide();
-	jQuery("#phenohead").children().eq(2).hide();
-	jQuery("#phenohead").children().eq(3).hide();
-	jQuery("#phenohead").children().eq(4).hide();
-	jQuery("#phenohead").children().eq(5).hide();
-	jQuery("#phenohead").children().eq(6).hide();
-	jQuery("#phenohead").children().eq(7).hide();
-	jQuery("#phenohead").children().eq(8).hide();
-	jQuery("#phenohead").children().eq(9).hide();
-	jQuery("#phenohead").children().eq(10).hide();
-	jQuery("#phenohead").children().eq(11).hide();
-	jQuery("#phenohead").children().eq(12).hide();
-	jQuery("#phenohead").children().eq(13).hide();
-	jQuery("#phenohead").children().eq(14).hide();
-	jQuery("#phenohead").children().eq(15).hide();
-	jQuery("#phenohead").children().eq(16).hide();
-	jQuery("#phenohead").children().eq(17).hide();
-	jQuery("#phenohead").children().eq(18).hide();
-	jQuery("#phenohead").children().eq(19).hide();
-	jQuery("#phenohead").children().eq(20).hide();
-	jQuery("#phenohead").children().eq(21).hide();
-	jQuery("#phenohead").children().eq(22).hide();
-	jQuery("#phenohead").children().eq(23).hide();
-	jQuery("#phenohead").children().eq(24).hide();
-	jQuery("#phenohead").children().eq(25).hide();
-	jQuery("#phenohead").children().eq(26).hide();
-	jQuery("#phenohead").children().eq(27).hide();
-	jQuery("#phenohead").children().eq(28).hide();
-	
-	if(lPhenotypesArray==0){
-		jQuery("#phenohead").children().eq(0).show();
-		jQuery("#phenohead").children().eq(1).show();
-		jQuery("#phenohead").children().eq(2).show();
-		jQuery("#phenohead").children().eq(3).show();
-		jQuery("#phenohead").children().eq(4).show();
-		jQuery("#phenohead").children().eq(5).show();
-		jQuery("#phenohead").children().eq(6).show();
-		jQuery("#phenohead").children().eq(7).show();
-		jQuery("#phenohead").children().eq(8).show();
-		jQuery("#phenohead").children().eq(9).show();
-		jQuery("#phenohead").children().eq(10).show();
-		jQuery("#phenohead").children().eq(11).show();
-		jQuery("#phenohead").children().eq(12).show();
-		jQuery("#phenohead").children().eq(13).show();
-		jQuery("#phenohead").children().eq(14).show();
-		jQuery("#phenohead").children().eq(15).show();
-		jQuery("#phenohead").children().eq(16).show();
-		jQuery("#phenohead").children().eq(17).show();
-		jQuery("#phenohead").children().eq(18).show();
-		jQuery("#phenohead").children().eq(19).show();
-		jQuery("#phenohead").children().eq(20).show();
-		jQuery("#phenohead").children().eq(21).show();
-		jQuery("#phenohead").children().eq(22).show();
-		jQuery("#phenohead").children().eq(23).show();
-		jQuery("#phenohead").children().eq(24).show();
-		jQuery("#phenohead").children().eq(25).show();
-		jQuery("#phenohead").children().eq(26).show();
-		jQuery("#phenohead").children().eq(27).show();
-		jQuery("#phenohead").children().eq(28).show();
-		
-	}
-	
-for(var i=0;i<lPhenotypesArray.length;i++){
-	var lAssay=lPhenotypesArray[i];
-	if(lAssay==1){
-		jQuery("#phenohead").children().eq(1).show();
-		jQuery("#phenohead").children().eq(2).show();
-		jQuery("#phenohead").children().eq(3).show();
-		jQuery("#phenohead").children().eq(4).show();
-		jQuery("#phenohead").children().eq(5).show();
-		jQuery("#phenohead").children().eq(6).show();
-		jQuery("#phenohead").children().eq(7).show();
-		jQuery("#phenohead").children().eq(8).show();
-	
-		
-	}else if(lAssay==2){
-		jQuery("#phenohead").children().eq(8).show();
-		jQuery("#phenohead").children().eq(9).show();
-		jQuery("#phenohead").children().eq(28).show();
-		
-		
-	}else if(lAssay==3){
-		jQuery("#phenohead").children().eq(10).show();
-		jQuery("#phenohead").children().eq(11).show();
-		jQuery("#phenohead").children().eq(12).show();
-		
-	}else if(lAssay==6){
-		jQuery("#phenohead").children().eq(27).show();
-		jQuery("#phenohead").children().eq(28).show();
-		
-		
-	}
-	
-	else if(lAssay==9){
-		jQuery("#phenohead").children().eq(13).show();
-
-	
-		
-	}else if(lAssay==10){
-		jQuery("#phenohead").children().eq(14).show();
-	
-		
-	}else if(lAssay==11){
-		jQuery("#phenohead").children().eq(15).show();
-		jQuery("#phenohead").children().eq(16).show();
-		jQuery("#phenohead").children().eq(17).show();
-		jQuery("#phenohead").children().eq(18).show();
-		
-		
-	}else if(lAssay==12){
-		jQuery("#phenohead").children().eq(19).show();
-		jQuery("#phenohead").children().eq(20).show();
-		jQuery("#phenohead").children().eq(21).show();
-		jQuery("#phenohead").children().eq(22).show();
-	}else if(lAssay==13){
-		jQuery("#phenohead").children().eq(23).show();
-		
-	}else if(lAssay==14){
-		jQuery("#phenohead").children().eq(24).show();
-		jQuery("#phenohead").children().eq(26).show();
-		
-	}else if(lAssay==15){
-		jQuery("#phenohead").children().eq(25).show();
-		jQuery("#phenohead").children().eq(27).show();
-		
-	}
-   
-	}
-	
-	
-}
-function matchCasNumbers(){
-	
-	var lCATAPPID1;
-	var lCATAPPID2;
-	var lCount1=0;
-	$. each($("input[name='concawe']:checked"), function(){
-		if(lCount1==0){
-			lCATAPPID1=$(this).val();
-		}else{
-			lCATAPPID1=lCATAPPID1+","+$(this).val();
-			
-		}
-		lCount1++;
-	});
-	var lCount2=0;
-	$. each($("input[name='casnames']:checked"), function(){
-		if(lCount2==0){
-			lCATAPPID2=$(this).val();
-		}else{
-			lCATAPPID2=lCATAPPID2+","+$(this).val();
-			
-		}
-		lCount2++;
 	});
 
-	if(lCATAPPID1==lCATAPPID2){
-		
-	}else{
-		alert("Both the IDs do not match.Kindly select the corresponding CAS number.");
-		return false;
-	}
 }
-function selectphenotypesForDownload(){
-	
-	var lCellLine=jQuery("#cellLines").val();
-	
+
+
+function selectphenotypesForDownload() {
+
+	var lCellLine = jQuery("#cellLines").val();
+
 	jQuery("#phenotypes").html("");
-	$.ajax({
-        type: "GET",
-        url: "Phenotypes",
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        data: { 
-            'lCM': lCellLine
-          },
-          	 success: function (responseText) {
-          		
-        	var lPhenolist = responseText.getElementsByTagName("pheno");
-        	for(var i=0;i<lPhenolist.length;i++){
-        		$("#phenotypes").append(new Option(
-        				lPhenolist[i].childNodes[0].firstChild.nodeValue, lPhenolist[i].childNodes[1].firstChild.nodeValue));
-        	}
+	$
+			.ajax({
+				type : "GET",
+				url : "Phenotypes",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				data : {
+					'lCM' : lCellLine
+				},
+				success : function(responseText) {
 
-        }
-          
-    });
+					var lPhenolist = responseText.getElementsByTagName("pheno");
+					for (var i = 0; i < lPhenolist.length; i++) {
+						$("#phenotypes")
+								.append(
+										new Option(
+												lPhenolist[i].childNodes[0].firstChild.nodeValue,
+												lPhenolist[i].childNodes[1].firstChild.nodeValue));
+					}
+
+				}
+
+			});
 }
-function selectphenotypesForDownloadCell(){
-	var lCellLine=jQuery("#cellLine").val();
+function selectphenotypesForDownloadCell() {
+	var lCellLine = jQuery("#cellLine").val();
 	jQuery("#phenotype").html("");
-	$.ajax({
-        type: "GET",
-        url: "Phenotypes",
-        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        data: { 
-            'lCM': lCellLine
-          },
-          	 success: function (responseText) {
-          		/* alert("Test");*/
-        	var lPhenolist = responseText.getElementsByTagName("pheno");
-        	$("#phenotype option[value='--Select--']").remove()
-        	for(var i=0;i<lPhenolist.length;i++){
-        		$("#phenotype").append(new Option(
-        				lPhenolist[i].childNodes[0].firstChild.nodeValue, lPhenolist[i].childNodes[1].firstChild.nodeValue));
-        	}
+	$
+			.ajax({
+				type : "GET",
+				url : "Phenotypes",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				data : {
+					'lCM' : lCellLine
+				},
+				success : function(responseText) {
+					/* alert("Test"); */
+					var lPhenolist = responseText.getElementsByTagName("pheno");
+					$("#phenotype option[value='--Select--']").remove()
+					for (var i = 0; i < lPhenolist.length; i++) {
+						$("#phenotype")
+								.append(
+										new Option(
+												lPhenolist[i].childNodes[0].firstChild.nodeValue,
+												lPhenolist[i].childNodes[1].firstChild.nodeValue));
+					}
 
-        }
-          
-          
-    });
+				}
+
+			});
 	selectTimepoint();
 }
-function selectTimepoint(){
-	var lCellLine=jQuery("#cellLine").val();
-	jQuery("#timepoint").children('option[value="1"]').show();
-	jQuery("#timepoint").children('option[value="2"]').show();
-	jQuery("#timepoint").children('option[value="3"]').show();
-	jQuery("#timepoint").children('option[value="4"]').show();
-	jQuery("#timepoint").children('option[value="5"]').show();
-	jQuery("#timepoint").children('option[value="6"]').show();
-	jQuery("#timepoint").children('option[value="7"]').show();
-	if(lCellLine=="CM"){
-		jQuery("#timepoint").children('option[value="1"]').hide();
-		jQuery("#timepoint").children('option[value="2"]').hide();
-		jQuery("#timepoint").children('option[value="3"]').hide();
-		jQuery("#timepoint").children('option[value="6"]').hide();
-		jQuery("#timepoint").children('option[value="7"]').hide();
-		
-	}else if(lCellLine=="HEP"){
-		jQuery("#timepoint").children('option[value="1"]').hide();
-		jQuery("#timepoint").children('option[value="2"]').hide();
-		jQuery("#timepoint").children('option[value="3"]').hide();
-		jQuery("#timepoint").children('option[value="4"]').hide();
-		jQuery("#timepoint").children('option[value="5"]').hide();
-		jQuery("#timepoint").children('option[value="6"]').hide();
-	}else{
-		jQuery("#timepoint").children('option[value="1"]').show();
-		jQuery("#timepoint").children('option[value="2"]').show();
-		jQuery("#timepoint").children('option[value="3"]').show();
-		jQuery("#timepoint").children('option[value="4"]').show();
-		jQuery("#timepoint").children('option[value="5"]').show();
-		jQuery("#timepoint").children('option[value="6"]').show();
-		jQuery("#timepoint").children('option[value="7"]').show();
+function selectTimepoint() {
+	var lCellLine = jQuery("#cellLine").val();
+	$("#timepoint").html("");
+
+	$
+			.ajax({
+				type : "POST",
+				url : "TimePoint",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				data : {
+					'lCM' : lCellLine,
+				},
+				success : function(responseText) {
+
+					var lPhenolist = responseText.getElementsByTagName("tp");
+					for (var i = 0; i < lPhenolist.length; i++) {
+						$("#timepoint")
+								.append(
+										new Option(
+												lPhenolist[i].childNodes[0].firstChild.nodeValue,
+												lPhenolist[i].childNodes[1].firstChild.nodeValue));
+					}
+
+				}
+
+			});
+}
+// function closemessageheader(){
+// jQuery(".alert").hide();
+// }
+
+function validateInput(event) {
+
+	var $boxes = $('input[name=optradio]:checked');
+	if ($boxes.length == 0) {
+		alert("Please select a checkbox before clicking on Download button");
+		event.preventDefault();
+		return false;
+	} else {
+		/* jQuery("#DFile").submit(); */
+
 	}
 }
-//function closemessageheader(){
-//	jQuery(".alert").hide();
-//}
+function click_tp_button(){
+	
+	var lCellLines="";
+	var lAssays="";
+	var lTimePoint="";
+	var lDilution="";
+	var lPhenotype="";
+	var lDownloadType="";
+	
+	if(document.getElementById('raw').checked){
+		lDownloadType="1";
+	}else if(document.getElementById('pod').checked){
+		lDownloadType="2";
+	}else{
+		lDownloadType="3";
+	}
+	
+		
+	jQuery('.test > input[type=checkbox]').each(
+			function() {
+				if ($(this).prop('checked') == true) {
+					if(lCellLines.length==0){
+						lCellLines=$(this).prop('value');
+					}else{
+						lCellLines=lCellLines+","+$(this).prop('value');
+					}
+					
+				}
+			});
+	jQuery('.all_assays > input[type=checkbox]').each(
+			function() {
+				if ($(this).prop('checked') == true) {
+					if(lAssays.length==0){
+						lAssays=$(this).prop('value');
+					}else{
+						lAssays=lAssays+","+$(this).prop('value');
+					}
+				}
+			});
+	if(document.getElementById('pod').checked){
+		jQuery('.all_phenos > input[type=checkbox]').each(
+				function() {
+					if ($(this).prop('checked') == true) {
+						if(lPhenotype.length==0){
+							lPhenotype=$(this).prop('value');
+						}else{
+							lPhenotype=lPhenotype+","+$(this).prop('value');
+						}
+					}
+				});
+	}
+	
+	if(document.getElementById('raw').checked){
+		
+		jQuery('.all_dilution > input[type=checkbox]').each(
+				function() {
+					if ($(this).prop('checked') == true) {
+						if(lDilution.length==0){
+							lDilution=$(this).prop('value');
+						}else{
+							lDilution=lDilution+","+$(this).prop('value');
+						}
+					}
+				});
+	}
+	
+	jQuery('.all_timepoints > input[type=checkbox]').each(
+			function() {
+				if ($(this).prop('checked') == true) {
+					if(lTimePoint.length==0){
+						lTimePoint=$(this).prop('value');
+					}else{
+						lTimePoint=lTimePoint+","+$(this).prop('value');
+					}
+				}
+			});
+	
+	
+	
+	$.ajax({
+	  url: "ViewFilesForDownload",
+	  data : {
+			'lCM' : lCellLines,
+			'lAN' : lAssays,
+			'lPT' : lPhenotype,
+			'lTP' : lTimePoint,
+			'lDil': lDilution,
+			'lDT' : lDownloadType
+		},
+	  type: 'get',
+	  success: function(data) {
+			var lfileList = data.getElementsByTagName("file");
+
+			var lTableBody;
+			lTableBody = '<br>' +'<table class="table"><thead><tr class="success"><th>Select</th><th>CellLine</th><th>Assay</th>'
+			
+			if(lDownloadType=="1"){
+				lTableBody=lTableBody+'<th>Dilution</th><th>TimePoint</th><th>FileName</th></tr></thead><tbody>';
+			}else if(lDownloadType=="2"){
+				lTableBody=lTableBody+'<th>Phenotype</th><th>TimePoint</th><th>FileName</th></tr></thead><tbody>';
+			}
+					
+			
+			for (var i = 0; i < lfileList.length; i++) {
+				
+				var lEntityId = lfileList[i].childNodes[0].firstChild.nodeValue
+				var lCellLine = lfileList[i].childNodes[1].firstChild.nodeValue;
+				var lAssay =    lfileList[i].childNodes[2].firstChild.nodeValue;
+				var lDilution = lfileList[i].childNodes[3].firstChild.nodeValue;
+				if(lDilution=="00"){
+					lDilution="All";
+				}
+				var lTimePoint = lfileList[i].childNodes[4].firstChild.nodeValue;
+				var lFileName = lfileList[i].childNodes[5].firstChild.nodeValue;
+				
+				
+
+				lTableBody = lTableBody
+				
+						+ '<tr class="active"'
+						+ '>'
+						+ '<td>'
+						+ '<input type="checkbox" name="optradio"  id ='
+						+  lEntityId + '  value=' + lEntityId + '>'
+						+ '</td>' + '<td>' + lCellLine + '</td>'
+						+ '<td>' + lAssay + '</td>'
+						+ '<td>' + lDilution + '</td>'
+						+ '<td>' + lTimePoint + '</td>'
+						+ '<td>' + lFileName + '</td>'
+						+ '</tr>';
+			}
+			lTableBody=lTableBody+'</tbody></table>';
+			var lButtonHTML='<input type="submit" class="btn btn-primary" align="center" style="margin-bottom: 10px;margin-left:15px" name="download"'
+							+'value="Download">';
+			
+			
+			
+		
+
+				
+			
+		
+			
+			jQuery("#tablediv").html("");
+			jQuery("#tablediv").append(lTableBody);
+			jQuery("#right-pane").show();
+			jQuery("#up-pane").show();
+			jQuery("#button-div").html(lButtonHTML);
+			jQuery("#button-div").show();
+		}
+	});		// end of ajax()
+	
+	
+}

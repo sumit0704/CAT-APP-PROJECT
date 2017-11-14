@@ -38,19 +38,38 @@ public class RequestAccessServlet extends HttpServlet {
 	        	HttpSession session=request.getSession();  
 	        	session.setAttribute("forgotEmail",forgotEmail);
 	        	 lConn = new DBConnection().getConnection();
+	        	 String lQuest1=null;
+	        	 String lQuest2=null;
+	        	 String lQuest3=null;
 	        	boolean lVailidityflag=ForgotPasswordServlet.pAuthenticateEmail(forgotEmail, lConn);
 	        	if(lVailidityflag){
-	        		HashMap<Long,String>pSQMap = new LoadDataForHome().getSecurityQuestions();
-	        		request.setAttribute("secqu", pSQMap);
 	        		User lUser =new LoginServlet().fetchUserDetails(forgotEmail, lConn);
+	        		HashMap<Long,String>pSQMap = new LoadDataForHome().getSecurityQuestionsForUsers(lUser.getEntityId());
+	        		request.setAttribute("secqu", pSQMap);
 	        		request.getSession().setAttribute("user", lUser);
-	        		request.getRequestDispatcher("/WEB-INF/ForPassPage.jsp?page=1").include(request, response);
+	        		if(pSQMap.isEmpty()){
+	        			request.getRequestDispatcher("/WEB-INF/ForPassPage.jsp?page=3").include(request, response);
+
+	        		}else{
+	        			int i=0;
+	        			for(Long lKey:pSQMap.keySet()){
+	        				if(i==0){
+	        					lQuest1=pSQMap.get(lKey);
+	        				}else if(i==1){
+	        					lQuest2=pSQMap.get(lKey);
+	        				}else if(i==2){
+	        					lQuest3=pSQMap.get(lKey);
+	        				}
+	        				i++;
+	        			}
+	        			request.setAttribute("qu1", lQuest1);
+	        			request.setAttribute("qu2", lQuest2);
+	        			request.setAttribute("qu3", lQuest3);
+	        			request.getRequestDispatcher("/WEB-INF/ForPassPage.jsp?page=1").include(request, response);
+	        		}
 	        		
 	        	}else{
-	        		response.setContentType("text/html");  
-	        		PrintWriter out=response.getWriter(); 
-	        		response.sendError(1, "Email id is not registered with us. To register click on request access link on our home page.");
-	        		out.close();  
+	        		request.getRequestDispatcher("/WEB-INF/ForPassPage.jsp?page=4").include(request, response);
 	        	}
 	        	
 	        }catch(Exception e){

@@ -87,5 +87,41 @@ public class LoadDataForHome extends HttpServlet {
 		return 	lListofSecurity;
 				
 	}
+public HashMap<Long,String> getSecurityQuestionsForUsers(Long pUserId){
+		
+		HashMap<Long,String>lListofSecurity = new HashMap<Long,String>();
+		//lListofSecurity.put(0l, "-----Select One ------");
+		Connection lConn 		  = null;
+		PreparedStatement lPstmnt = null;
+		ResultSet   lResultSet	  = null;
+		try{
+			lConn= new DBConnection().getConnection();
+			
+		StringBuilder lBuilder = new StringBuilder("select a.entity_id,a.security_question  from security_questions a join security_questions_answers b ");
+								 lBuilder.append( " on a.entity_id=b.question_id where a.rowstate!=-1 and a.is_active='Y' and b.user_id=?");
+		lPstmnt=lConn.prepareStatement(lBuilder.toString());
+		lPstmnt.setLong(1, pUserId);
+		lResultSet=lPstmnt.executeQuery();
+		while(lResultSet.next()){
+			
+			lListofSecurity.put(lResultSet.getLong(1),lResultSet.getString(2));
+		}
+		
+		}catch(Exception e){
+			LOGGER.error("Error Occured while fetching security questions in method getSecurityQuestions------------>LoadDataForHome",e);
+		}finally{
+			try{
+				if(lConn!=null){
+					lConn.close();
+				}if(lPstmnt!=null){
+					lPstmnt.close();
+				}
+			}catch(Exception e){
+				LOGGER.error("Error Occured while closing connection",e);
+			}
+		}
+		return 	lListofSecurity;
+				
+	}
 
 }

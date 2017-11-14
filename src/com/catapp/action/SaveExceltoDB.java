@@ -14,6 +14,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.catapp.servlet.TimePoint;
+
 
 public class SaveExceltoDB {
 	public static final Logger logger = Logger.getLogger(SaveExceltoDB.class.toString());
@@ -37,7 +39,7 @@ public class SaveExceltoDB {
 			while(lChemSet.next()){
 				lChemicalNames.put(lChemSet.getString(2).trim().replaceAll("/ ","/"), lChemSet.getLong(1));
 			}
-			lPstmt.clearParameters();*/
+			lPstmt.clearParameters();*/ 
 			/*********************************************** Start of header save ***************************************/
 			Long lheaderID=null;
 			lInsertQuery= "INSERT INTO processed_readings_header (cellline, assay,"
@@ -47,7 +49,7 @@ public class SaveExceltoDB {
 			PreparedStatement lPstmttoClose=pConnection.prepareStatement(lInsertQuery,Statement.RETURN_GENERATED_KEYS);
 			lPstmttoClose.setString(1, pCellLine);
 			lPstmttoClose.setString(2, pAssay);
-			lPstmttoClose.setString(3, pTimePoint);
+			lPstmttoClose.setString(3, new ChemData().getTimePoints().get(Long.valueOf(pTimePoint)));
 			lPstmttoClose.setTimestamp(4,new Timestamp(System.currentTimeMillis()));
 			lPstmttoClose.setLong(5, 1l);
 			lPstmttoClose.setNull(6, java.sql.Types.TIMESTAMP);
@@ -69,8 +71,11 @@ public class SaveExceltoDB {
 					+ " last_updated_by,is_active,rowstate) "
 		            + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement lPstmtForDetail=pConnection.prepareStatement(lDetailQuery);
-			for(int i=1;i<=mySheet.getLastRowNum();i++){
+			for(int i=2;i<=mySheet.getLastRowNum();i++){
+				
 				Row row =mySheet.getRow(i);
+				System.out.println(row.getCell(0).getStringCellValue());
+				System.out.println("Last Rown No:"+mySheet.getLastRowNum());
 				lPstmtForDetail.setLong(1, lheaderID);
 				lPstmtForDetail.setString(2, row.getCell(0).getStringCellValue());
 				lPstmtForDetail.setDouble(3, row.getCell(4).getNumericCellValue());
@@ -85,6 +90,7 @@ public class SaveExceltoDB {
 				lPstmtForDetail.setString(12, "Y");
 				lPstmtForDetail.setInt(13, 1);
 				lPstmtForDetail.addBatch();
+				lPstmtForDetail.clearParameters();
 					
 				
 			}
@@ -100,14 +106,62 @@ public class SaveExceltoDB {
 			XSSFSheet lControlSheet = myWorkBook.getSheet("Control");
 			
 			String lControlQuery = "INSERT INTO control_readings (header_id,control_tag,"
-					+ " pointone,logged_date,logged_by,last_updated_date,"
+					+ " value1,value2,value3,value4,value5,value6,logged_date,logged_by,last_updated_date,"
 					+ " last_updated_by,is_active,rowstate) "
-		            + " VALUES(?,?,?,?,?,?,?,?,?)";
+		            + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			lPstmt=pConnection.prepareStatement(lControlQuery);
 			
 			for(int i=1;i<=lControlSheet.getLastRowNum();i++){
 				Row row =lControlSheet.getRow(i);
 						lPstmt.setLong(1, lheaderID);
+						if(row.getCell(0).getStringCellValue().trim().length()==0){
+							break;
+						}
+						lPstmt.setString(2, row.getCell(0).getStringCellValue());
+						lPstmt.setDouble(3, row.getCell(1).getNumericCellValue());
+						lPstmt.setDouble(4, row.getCell(2).getNumericCellValue());
+						lPstmt.setDouble(5, row.getCell(3).getNumericCellValue());
+						lPstmt.setDouble(6, row.getCell(4).getNumericCellValue());
+						if(row.getCell(5)!=null){
+							lPstmt.setDouble(7, row.getCell(5).getNumericCellValue());
+						}else{
+							lPstmt.setNull(7, java.sql.Types.DOUBLE);
+						}
+						if(row.getCell(6)!=null){
+							lPstmt.setDouble(8, row.getCell(6).getNumericCellValue());
+						}else{
+							lPstmt.setNull(8, java.sql.Types.DOUBLE);
+						}
+						
+						lPstmt.setTimestamp(9,new Timestamp(System.currentTimeMillis()));
+						lPstmt.setLong(10, 1l);
+						lPstmt.setNull(11, java.sql.Types.TIMESTAMP);
+						lPstmt.setNull(12, java.sql.Types.BIGINT);
+						lPstmt.setString(13, "Y");
+						lPstmt.setInt(14, 1);
+						lPstmt.addBatch();
+					
+				
+			}
+			int[] count1 = lPstmt.executeBatch();
+			lPstmt.clearParameters();
+			lPstmt.close();
+			
+			XSSFSheet lVehicleSheet = myWorkBook.getSheet("Vehicle");
+			
+			String lVehicleQuery = "INSERT INTO vehicle_control (header_id,control_tag,"
+					+ " value,logged_date,logged_by,last_updated_date,"
+					+ " last_updated_by,is_active,rowstate) "
+		            + " VALUES(?,?,?,?,?,?,?,?,?)";
+			PreparedStatement preparedStatement2 = lPstmt=pConnection.prepareStatement(lVehicleQuery);
+			
+			for(int i=1;i<=lVehicleSheet.getLastRowNum();i++){
+				System.out.println("--------------------Inside Vehicle Save");
+				Row row =lVehicleSheet.getRow(i);
+						lPstmt.setLong(1, lheaderID);
+						if(row.getCell(0).getStringCellValue().trim().length()==0){
+							break;
+						}
 						lPstmt.setString(2, row.getCell(0).getStringCellValue());
 						lPstmt.setDouble(3, row.getCell(1).getNumericCellValue());
 						lPstmt.setTimestamp(4,new Timestamp(System.currentTimeMillis()));
@@ -120,7 +174,13 @@ public class SaveExceltoDB {
 					
 				
 			}
-			int[] count1 = lPstmt.executeBatch();
+			System.out.println("--------------------Outside Vehicle Save");
+			int[] count2 = preparedStatement2.executeBatch();
+			System.out.println("--------------------Outside Vehicle Save");
+			preparedStatement2.clearParameters();
+			preparedStatement2.close();
+			
+			pConnection.commit();
 			
 			
 			/*********************************************** End of control save ***************************************/
@@ -140,7 +200,7 @@ public class SaveExceltoDB {
 		finally{
 			try{
 				lPstmt.close();
-				pFile.delete();
+				
 			}catch(Exception e1){
 				logger.error("Error Occured while closing connection",e1);
 			}
