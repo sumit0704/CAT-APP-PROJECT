@@ -11,6 +11,12 @@
     <servlet-class>com.catapp.servlet.NewUserServlet</servlet-class>
     <enabled>true</enabled>
   </servlet>
+   <servlet>
+    <display-name>ForgotPasswordServlet</display-name>
+    <servlet-name>ForgotPasswordServlet</servlet-name>
+    <servlet-class>com.catapp.servlet.ForgotPasswordServlet</servlet-class>
+    <enabled>true</enabled>
+  </servlet>
   <servlet>
     <display-name>CatAppDownloadPageServlet</display-name>
     <servlet-name>CatAppDownloadPageServlet</servlet-name>
@@ -140,6 +146,10 @@
   <servlet-mapping>
     <servlet-name>UserManagementServlet</servlet-name>
     <url-pattern>/UserManagement</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ForgotPasswordServlet</servlet-name>
+    <url-pattern>/ForgotPassword</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>DownloadConcaweAsIs</servlet-name>

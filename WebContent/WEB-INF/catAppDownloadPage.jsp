@@ -329,6 +329,7 @@
 								name="typeRadio" id="processed" value="processed"
 								onchange="displaySearchForm()">Processed Data
 							</label>
+							 <label class="radio-inline"> <h6>(<font color="red">*</font> fields are mandatory)</h6></label>
 
 
 						</div>
@@ -348,10 +349,10 @@
 												<div class="panel-heading">
 													<h4 class="panel-title">
 														<a data-toggle="collapse" data-parent="#accordion"
-															href="#collapseOne" id="sacl">Select Cells </a> &nbsp; &nbsp; <a
+															href="#collapseOne" id="sacl">Select Cells <font color="red">*</font>:</label> </a> &nbsp; &nbsp; <a
 															href="#" id="cell_line_button"
-															onclick="click_cell_line_button()" class="btn btn-info"> Next <span
-															class="fa fa-chevron-right"></span>
+															onclick="click_cell_line_button()" class="btn btn-primary" style="padding:2px 5px" ><font color="white">Next<span
+															class="fa fa-chevron-right"></span></font>
 
 														</a>
 
@@ -385,9 +386,9 @@
 												<div class="panel-heading">
 													<h4 class="panel-title">
 														<a data-toggle="collapse" data-parent="#accordion"
-															href="#collapseTwo" id="sacl">Select Assays</a> <a
-															href="#" id="assay_button" onclick="click_assay_button()">
-															<span class="fa fa-chevron-right"></span>
+															href="#collapseTwo" id="sacl">Select Assays <font color="red">*</font>:</label></a> &nbsp;<a
+															href="#" id="assay_button" class="btn btn-primary" style="padding:2px 5px" onclick="click_assay_button()"><font color="white">Next<span
+															class="fa fa-chevron-right"></span></font>
 
 														</a>
 
@@ -428,10 +429,11 @@
 												<div class="panel-heading">
 													<h4 class="panel-title">
 														<a data-toggle="collapse" data-parent="#accordion"
-															href="#collapseThree" id="sacl">Select Phenotypes</a>
+															href="#collapseThree" id="sacl">Select Phenotypes <font color="red">*</font>:</label></a> &nbsp;
 															<a
-															href="#" id="pheno_button" onclick="click_pheno_button()">
-															<span class="fa fa-chevron-right"></span>
+															href="#" id="pheno_button" class="btn btn-primary" style="padding:2px 5px" onclick="click_pheno_button()">
+															<font color="white">Next<span
+															class="fa fa-chevron-right"></span></font>
 
 														</a>
 
@@ -474,10 +476,11 @@
 												<div class="panel-heading">
 													<h4 class="panel-title">
 														<a data-toggle="collapse" data-parent="#accordion"
-															href="#collapseFour" id="sacl">Select Dilution</a>
+															href="#collapseFour" id="sacl">Select Dilution</a>&nbsp;
 															<a
-															href="#" id="dilution_button" onclick="click_dil_button()">
-															<span class="fa fa-chevron-right"></span>
+															href="#" id="dilution_button" class="btn btn-primary" style="padding:2px 5px" onclick="click_dil_button()">
+															<font color="white">Next<span
+															class="fa fa-chevron-right"></span></font>
 
 														</a>
 
@@ -504,11 +507,11 @@
 												<div class="panel-heading">
 													<h4 class="panel-title">
 														<a data-toggle="collapse" data-parent="#accordion"
-															href="#collapseFive" id="sacl">Select Timepoints</a>
+															href="#collapseFive" id="sacl">Select Timepoints <font color="red">*</font>:</label></a>&nbsp;
 															<a
-															href="#" id="time_button" onclick="click_tp_button()">
-															<span class="fa fa-chevron-right"></span>
-
+															href="#" id="time_button" class="btn btn-primary" style="padding:2px 5px" onclick="click_tp_button()">
+															<font color="white">Next<span
+															class="fa fa-chevron-right"></span></font>
 														</a>
 
 													</h4>

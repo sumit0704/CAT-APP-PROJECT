@@ -87,7 +87,7 @@ function checkPass()
         //The passwords match. 
         //Set the color to the good color and inform
         //the user that they have entered the correct password
-        alert("Passwords Match!");
+        
 
         pass2.style.backgroundColor = goodColor;
         message.style.color = goodColor;
@@ -97,7 +97,7 @@ function checkPass()
         //The passwords do not match.
         //Set the color to the bad color and
         //notify the user.
-        alert("Passwords Match not");
+        
 
         pass2.style.backgroundColor = badColor;
         message.style.color = badColor;

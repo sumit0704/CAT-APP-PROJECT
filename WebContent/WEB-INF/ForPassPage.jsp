@@ -170,7 +170,7 @@ body {
 			<div
 					class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 				<div class="alert alert-danger" role="alert">
-				 Email id is not registered with us. To register click on request access link on our &nbsp; &nbsp; &nbsp; &nbsp; home page.
+				We have sent an temporary password to your registered email id along with a link to change the password.Change your current password using the temporary one.
 				<br>
 				<br>
 				
@@ -187,7 +187,7 @@ body {
 			<div
 					class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 				<div class="alert alert-danger" role="alert">
-				 One or more answers of security questions are incorrect. Please try again.
+				Email id is not registered with us. Please click on register to create your profile.
 				<br>
 				<br>
 				

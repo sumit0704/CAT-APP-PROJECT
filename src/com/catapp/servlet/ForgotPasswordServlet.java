@@ -2,6 +2,7 @@ package com.catapp.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,110 +27,88 @@ public class ForgotPasswordServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-		protected void doPost(HttpServletRequest request, HttpServletResponse response)  
+		protected void doGet(HttpServletRequest request, HttpServletResponse response)  
                                 throws ServletException, IOException {  
 			
 			Connection lConn 				= null;
-			String lAns1					= null;
-			String lAns2					= null;
-			String lAns3					= null;
-			String lQues1					= null;
-			String lQues2					= null;
-			String lQues3					= null;
 			PreparedStatement lPstmt        = null;
 			ResultSet lRst					= null;
-			
 			try{
-				User lUser = (User) request.getSession().getAttribute("user");
+
 				lConn = new DBConnection().getConnection();
-				String lSQ = request.getParameter("pwd");
-				LOGGER.debug("lSQ::"+lSQ);
-				if(lSQ.equals("Validate")){
-					
-					if(request.getParameter("ans1")!=null){
-						lAns1 = request.getParameter("ans1");
-					}
-					
-					if(request.getParameter("ans2")!=null){
-						lAns2 = request.getParameter("ans2");
-					}
-					if(request.getParameter("ans3")!=null){
-						lAns3 = request.getParameter("ans3");
-					}
-					if(request.getParameter("first")!=null){
-						lQues1 = request.getParameter("first");
-					}
-					
-					if(request.getParameter("second")!=null){
-						lQues2 = request.getParameter("second");
-					}
-					if(request.getParameter("third")!=null){
-						lQues3 = request.getParameter("third");
-					}
-					HashMap<Long,String>lAnswerMap =new HashMap<Long,String>();
-					lAnswerMap.put(1L, lAns1);
-					lAnswerMap.put(2L, lAns2);
-					lAnswerMap.put(3L, lAns3);
-					
-					
-					HashMap<String,String>pMap =pAuthenticateAnswers(lAnswerMap, lUser.getEntityId(),
-							lConn);
-					int lCount=0;
-					if(pMap.get(lQues1)!=null){
-						if(pMap.get(lQues1).equals(lAns1)){
-							lCount++;
-						}
-					}
-					if(pMap.get(lQues2)!=null){
-						if(pMap.get(lQues2).equals(lAns2)){
-							lCount++;
-						}
-					}
-					if(pMap.get(lQues3)!=null){
-						if(pMap.get(lQues3).equals(lAns3)){
-							lCount++;
-						}
-					}
-					//LOGGER.debug("lFlag::"+lFlag);
-					if(lCount==3){
-						request.getRequestDispatcher("/WEB-INF/ForPassPage.jsp?page=2").include(request, response);
+				
+				System.out.println("It entered");
+				String lPassword = request.getParameter("password");
+				String ltemppassword = request.getParameter("temppassword");
+				
+				//String lParameter = request.getParameter("test_id");
+				String lParameter=request.getQueryString().split("test_id=")[1].split("&pwd")[0];
+				lParameter=lParameter.replaceAll("%3D", "=");
+				lParameter=URLDecoder.decode(lParameter,"UTF-8");
+				//request.getParameterNames()
+				boolean lChange=false;
+				Long lUserId=null;
+				boolean lPasswordFlag=false;
+				boolean lPassExpired=false;
+				StringBuilder lQueryBuilder=new StringBuilder("select * From temporarypassword where encryptedtext=? and rowstate!=-1");
+				lPstmt=lConn.prepareStatement(lQueryBuilder.toString());
+				lPstmt.setString(1, lParameter);
+				lRst=lPstmt.executeQuery();
+				while(lRst.next()){
+					System.out.println("It entered in first");
+					if(lRst.getString("password").trim().equals(ltemppassword.trim())){
+						lChange=true;
+						lUserId=lRst.getLong("user_id");
 					}else{
-						LOGGER.info("One or more answers didn't match the desired answers.");
-
-						PrintWriter out=response.getWriter(); 
-						response.setContentType("text/html");  
-						out.println("<script type=\"text/javascript\">");  
-						out.println("alert('One or more answers didn't match the desired answers.');");  
-						out.println("</script>");
-						request.getRequestDispatcher("/WEB-INF/ForPassPage.jsp?page=5").include(request, response);
-						return;
-						/*out.close(); */ 
+						lPasswordFlag=true;
 					}
-				}else{
-					LOGGER.info("generating hash");
-
-					String lPassword = request.getParameter("password");
-					User lUsertosave = new User();
-					lUsertosave.setEntityId(lUser.getEntityId());
-					lUsertosave.find(lConn, lUser);
-					lUsertosave.setPassword(Login.generateHash("PWD"+lPassword));
+					if(lRst.getString("expired").equals("Y")){
+						lPassExpired=true;
+					}
 					
-					 String lQuery = "update users set Password=? where entity_id=?";
-					 lPstmt=lConn.prepareStatement(lQuery);
-					 lPstmt.setString(1, lUsertosave.getPassword());
-					 lPstmt.setLong(2, lUsertosave.getEntityId());
-					 lPstmt.executeUpdate();
-					     PrintWriter out = response.getWriter();  
+				}
+				if(lChange && !lPassExpired){
+					System.out.println("It entered in Second");
+					lPstmt.clearParameters();
+					String lQuery = "update users set Password=? where entity_id=?";
+					lPstmt=lConn.prepareStatement(lQuery);
+					lPstmt.setString(1, Login.generateHash("PWD"+lPassword));
+					lPstmt.setLong(2, lUserId);
+					lPstmt.executeUpdate();
+					lPstmt.clearParameters();
+					
+					request.getRequestDispatcher("/WEB-INF/index.jsp").include(request, response);
+					String lInsertQuery="update temporarypassword set expired='Y' where encryptedtext=? ";
+					lPstmt=lConn.prepareStatement(lInsertQuery);
+					lPstmt.setString(1, lParameter);
+					lPstmt.executeUpdate();
+					PrintWriter out = response.getWriter();  
+					response.setContentType("text/html");  
+					out.println("<script type=\"text/javascript\">");  
+					out.println("alert('Password Changed Successfully.');");  
+					out.println("</script>");
+					request.getRequestDispatcher("/WEB-INF/index.jsp").include(request, response);
+					
+				}else{
+					if(lPasswordFlag){
+						PrintWriter out = response.getWriter();  
 						response.setContentType("text/html");  
 						out.println("<script type=\"text/javascript\">");  
-						out.println("alert('Password Changed Successfully.');");  
+						out.println("alert('Temporary password is incorrect.');");  
 						out.println("</script>");
-					//lUsertosave.save(lConn, lUsertosave);
+						request.setAttribute("user_id", lParameter);
+						request.getRequestDispatcher("/WEB-INF/changePassword.jsp").include(request, response);
+						
+					}else if(lPassExpired){
+						PrintWriter out = response.getWriter();  
+						response.setContentType("text/html");  
+						out.println("<script type=\"text/javascript\">");  
+						out.println("alert('The temporary password has expired.Please click on forgot password link again on the home page.');");  
+						out.println("</script>");
 						request.getRequestDispatcher("/WEB-INF/index.jsp").include(request, response);
 
+					}
 				}
-				
-				
 			}catch(Exception e)
 			{
 				LOGGER.error("Exception occurred::",e);

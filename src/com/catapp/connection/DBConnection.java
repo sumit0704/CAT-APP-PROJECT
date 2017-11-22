@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.catapp.entity.User;
-
 public class DBConnection{
 	private static String url = "jdbc:sqlserver://IRUSYN1LAP\\SQLEXPRESS;databaseName=CATAPP;integratedSecurity=true";    
     private static String driverName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";   

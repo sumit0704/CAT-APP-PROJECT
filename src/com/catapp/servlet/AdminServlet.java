@@ -40,7 +40,8 @@ public class AdminServlet extends HttpServlet {
 		
 		try{
 			
-			String query_string = "select * from users where a.email=?";												 
+			String query_string = "select * from users where a.email=?";	
+			lPstmnt=pConnection.prepareStatement(query_string);
 			lPstmnt.setString(1, pEmail);						 
 			lPstmnt = pConnection.prepareStatement(query_string);
 			lRst=lPstmnt.executeQuery();
@@ -64,7 +65,13 @@ public class AdminServlet extends HttpServlet {
 			
 			
 		}catch(Exception e){
-			LOGGER.error("Error Occured while fetching user details", e);
+			LOGGER.error("Error Occured while fetching user details in method fetchuserdetails in------>AdminServlet", e);
+		}finally{
+			try{
+				lPstmnt.close();
+			}catch(Exception e1){
+				LOGGER.error("Error Occured while closing pstmt------>AdminServlet", e1);
+			}
 		}
 		return lUser;
 	}

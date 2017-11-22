@@ -22,16 +22,25 @@
 <link href="/CAT-APP-PROJECT/resources/css/full-width-pics.css"
 	rel="stylesheet">
 <link href="/CAT-APP-PROJECT/resources/css/login.css" rel="stylesheet">
+<script type="text/javascript">
+
+function setUserId(){
+	
+	var myVar = '<%=request.getParameter("user_id") %>';
+	document.getElementById("test_id").value=myVar;
+}
+
+</script>
 
 </head>
 
-<body>
-	<jsp:include page="header.jsp" />
+<body onload="setUserId()">
+	
 	<!-- Navigation -->
 
 
 	<div id="wrapper">
-		<jsp:include page="headerUserHome.jsp" />
+		
 
 		<!-- /. NAV TOP  -->
 		<nav class="navbar-default navbar-side" role="navigation">
@@ -55,10 +64,15 @@
 					<div class="row" style="margin-top: 20px">
 						<div
 							class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-							<form action="ForgotPasswordServlet" method="post">
+							<form action="ForgotPasswordServlet" method="get">
 								<fieldset>
 									<h2 align="center">Change Password</h2>
 									<hr class="colorgraph">
+									<div class="form-group">
+										<input type="password" id="temppassword" name="temppassword"
+											class="form-control input-lg" placeholder="Temporary Password"
+											required="required">
+									</div>
 									<div class="form-group">
 										<input type="password" id="password" name="password"
 											class="form-control input-lg" placeholder="New Password"
@@ -67,7 +81,12 @@
 									<div class="form-group">
 										<input type="password" id="repassword" name="repassword"
 											class="form-control input-lg" placeholder="Re-enter Password"
-											required="required">
+											required="required" onblur="checkPass();"><span id="confirmMessage"
+										class="confirmMessage"></span>
+									</div>
+									<div class="form-group">
+										<input type="hidden" id="test_id" name="test_id"
+											class="form-control input-lg">
 									</div>
 									<hr class="colorgraph">
 									<div class="row">
@@ -75,8 +94,7 @@
 
 											<input type="submit" class="btn btn-lg btn-success btn-block"
 												name="pwd" value="Change" style="margin-left: 50%">
-											<input type="submit" class="btn btn-lg btn-success btn-block"
-												name="pwd" value="Go Back" style="margin-left: 80%">
+											
 
 										</div>
 
@@ -123,6 +141,7 @@
 	<!-- Bootstrap Core JavaScript -->
 	<script src="/CAT-APP-PROJECT/resources/js/bootstrap.min.js"></script>
 	<script src="/CAT-APP-PROJECT/resources/js/homepage.js"></script>
+	<script src="/CAT-APP-PROJECT/resources/js/passwordStrength.js"></script>
 
 </body>
 

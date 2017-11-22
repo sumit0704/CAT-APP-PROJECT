@@ -136,9 +136,7 @@ public class DownloadFileServlet extends HttpServlet {
 						
 						files.add(lTemp);
 					}
-					response.setContentType("Content-type: text/zip");
-					response.setHeader("Content-Disposition",
-							"attachment; filename="+CatAppConstants.fileNameCatAppDownload+System.currentTimeMillis()+".zip");
+					
 
 					
 
@@ -171,6 +169,9 @@ public class DownloadFileServlet extends HttpServlet {
 						zos.closeEntry();
 						System.out.println("Finishedng file " + file.getName());
 					}
+					response.setContentType("Content-type: text/zip");
+					response.setHeader("Content-Disposition",
+							"attachment; filename="+CatAppConstants.fileNameCatAppDownload+System.currentTimeMillis()+".zip");
 					zos.close();
 				}
 		

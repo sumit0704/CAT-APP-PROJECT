@@ -144,14 +144,14 @@ SELECT * from security_questions;
 
 
 
-								<p style="text-align: center">
+								<%-- <p style="text-align: center">
 									<b>Security Questions: </b>
 								</p> <c:forEach var="row" items="${answers_result.rows}">  
 
     			
     				
     			
-    				${questions_result.rows[row.question_id - 1].security_question}
+    				${questions_result.rows[row.question_id - 1].security_question} --%>
     		
 
     				<b>: <span class="text-primary">${row.answer}</span></b>
