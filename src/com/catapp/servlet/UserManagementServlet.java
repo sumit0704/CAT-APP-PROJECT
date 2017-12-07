@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 
@@ -119,6 +120,15 @@ public class UserManagementServlet extends HttpServlet {
 			
 		}catch(Exception e){
 			LOGGER.error("Error Occured while fetching user details", e);
+		}
+		finally 
+		{
+			try {
+				pConnection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return lUser;
 	}

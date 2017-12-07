@@ -82,6 +82,15 @@ public class Phenotypes extends HttpServlet {
 		}catch(SQLException e){
 			
 		}
+		finally 
+		{
+			try {
+				lConn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**

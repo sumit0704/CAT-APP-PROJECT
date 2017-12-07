@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -134,6 +135,15 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 		
 		}catch(Exception e){
 			
+		}
+		finally 
+		{
+			try {
+				lConn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		
@@ -419,7 +429,15 @@ public class SaveAndValidateConcaweData extends HttpServlet {
 			logger.log(Level.INFO,"Error Occured while saving the files",e);
 			lReturnResponse="failure";
 		}
-		
+		finally 
+		{
+			try {
+				pConnection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return lReturnResponse;
 	}
 	

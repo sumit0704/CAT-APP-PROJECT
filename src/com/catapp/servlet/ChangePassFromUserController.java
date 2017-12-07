@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -80,6 +81,15 @@ public class ChangePassFromUserController extends HttpServlet {
 		}catch(Exception e){
 			System.out.println(e);
 			//LOGGER.error("Error Occured while fetching user details", e);
+		}
+		finally 
+		{
+			try {
+				pConnection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}

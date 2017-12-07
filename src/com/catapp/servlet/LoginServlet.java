@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 import javax.servlet.ServletException;
@@ -129,6 +130,15 @@ public class LoginServlet extends HttpServlet {
 				
 			}catch(Exception e){
 				LOGGER.error("Error Occured while fetching user details", e);
+			}
+			finally 
+			{
+				try {
+					pConnection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			return lUser;
 		}

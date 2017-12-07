@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import java.sql.SQLException;
 import java.io.PrintWriter;
 
 
@@ -119,8 +119,16 @@ public class AdminServlet extends HttpServlet {
 			request.getRequestDispatcher("/LogoutServlet").include(request, response);  
 			}
 
+	
+			try {
+				lConn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
-	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

@@ -3,6 +3,7 @@ package com.catapp.action;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -42,6 +43,15 @@ public class ChemData {
 		} catch (Exception e) {
 			logger.error("Error Occured while getting the cellline names", e);
 		}
+		finally
+		{
+			try {
+				pConnection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		System.out.println("End of  getNamesofInputs table name ::" + pTableName);
 		return lPhenotypeMap;
 	}
@@ -63,6 +73,14 @@ public class ChemData {
 
 		} catch (Exception e) {
 			logger.error("Error Occured while getting the cellline names", e);
+		}
+		finally {
+			try {
+				pConnection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		return lPhenotypeMap;
@@ -162,6 +180,15 @@ public class ChemData {
 		} catch (Exception e) {
 			logger.error("Error Occured while getting chemical names", e);
 		}
+			finally 
+			{
+				try {
+					pConnection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		System.out.println("End of getChemicalNames");
 		return lChemicalMap;
 	}
@@ -195,6 +222,14 @@ public class ChemData {
 		} catch (Exception e) {
 			logger.error("Error Occured while getting chemical names", e);
 		}
+		finally {
+			try {
+				pConnection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return lChemicalMap;
 	}
 
@@ -215,6 +250,15 @@ public class ChemData {
 
 		} catch (Exception e) {
 			logger.error("Error Occured while getting attribute names", e);
+		}
+		finally 
+		{
+			try {
+				pConnection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return lMoleculeMap;
 	}
@@ -257,6 +301,15 @@ public class ChemData {
 
 		Exception e) {
 			logger.error("Error Occured while getting chemical names", e);
+		}
+		finally 
+		{
+			try {
+				lConn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		System.out.println("moleculeList::" + moleculeList.size());
 		return moleculeList;
@@ -337,6 +390,15 @@ public class ChemData {
 		} catch (Exception e) {
 			logger.error("Error Occured while getting carbon names", e);
 		}
+		finally 
+		{
+			try {
+				lConn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		System.out.println("lcarbonMap::" + lcarbonMap);
 		return lcarbonMap;
 	}
@@ -387,6 +449,14 @@ public class ChemData {
 
 		Exception e) {
 			logger.error("Error Occured while getting chemical names", e);
+		}
+		finally {
+			try {
+				lConn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		System.out.println("End of method fileInfoList::" + fileInfoList.size());
 		return fileInfoList;
@@ -445,6 +515,14 @@ public class ChemData {
 		Exception e) {
 			logger.error("Error Occured while getting pheno names", e);
 		}
+		finally {
+			try {
+				lConn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		System.out.println("End of method mapList::" + mapList.size());
 		return mapList;
 
@@ -493,6 +571,14 @@ public class ChemData {
 
 		Exception e) {
 			logger.error("Error Occured while getCellAssayList ", e);
+		}
+		finally {
+			try {
+				lConn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		System.out.println("End of method getCellAssayList::" + mapList.size());
 		return mapList;
@@ -547,6 +633,14 @@ public class ChemData {
 
 		Exception e) {
 			logger.error("Error Occured while getTimePoint ", e);
+		}
+		finally {
+			try {
+				lConn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		System.out.println("End of method getTimePoint::" + mapList.size());
 		return mapList;

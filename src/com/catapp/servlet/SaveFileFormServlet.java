@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -266,6 +267,15 @@ public class SaveFileFormServlet extends HttpServlet {
 		}catch(Exception e){
 			logger.log(Level.INFO, "validation error", e);
 		}
+		finally 
+		{
+			try {
+				pConnection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		return lExistsFlag;
 	}
@@ -284,6 +294,15 @@ public class SaveFileFormServlet extends HttpServlet {
 	
 		}catch(Exception e){
 			logger.log(Level.INFO, "validation error", e);
+		}
+		finally 
+		{
+			try {
+				pConnection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return lExistsFlag;

@@ -200,6 +200,7 @@ public class SaveExceltoDB {
 		finally{
 			try{
 				lPstmt.close();
+				pConnection.close();
 				
 			}catch(Exception e1){
 				logger.error("Error Occured while closing connection",e1);
